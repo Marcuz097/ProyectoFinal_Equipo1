@@ -8,7 +8,7 @@ Yeyson Elber Aguilar Echeverria
 
 David Alexander Borja Abrego
 
-Heriverto Josue Echeverria Cardona 
+Heriberto Josue Echeverria Cardona 
 
 Marco Antonio Orellana Guardado 
 
@@ -23,6 +23,8 @@ Usuarios GitHub:
 yeysonecheverria07
 
 David69-code
+
+HeriJosue123
 
 Marcuz097
 

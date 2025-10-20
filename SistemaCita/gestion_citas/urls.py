@@ -2,7 +2,10 @@
 from django.urls import path
 # importando las vistas
 from .views import (
-    EspecialidadListView
+    EspecialidadListView,
+    EspecialidadCreateView
+
+
 )
 
 # agregar un identificador de enrutamiento
@@ -11,7 +14,7 @@ app_name = "gestion_citas"
 # enrutamiento
 urlpatterns = [
     path('especialidades/', EspecialidadListView.as_view(), name="especialidad-list"),
-    #path('categorias/nueva', CategoriaCreateView.as_view(), name="categoria-create"),
+    path('especialidades/nueva', EspecialidadCreateView.as_view(), name="especialidad-create"),
     #proveedores
     #path('proveedores/', ProveedorListView.as_view(), name="proveedor-list"),
     #path('proveedores/nueva', ProveedorCreateView.as_view(), name="proveedor-create"),

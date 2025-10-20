@@ -1,0 +1,32 @@
+{% extends "core/base.html" %}
+
+{% block titulo %} Nueva Especialidad {% endblock %}
+
+{% block contenido %}
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card shadow-lg border-0 rounded-4" style="max-width: 600px; width: 100%;">
+        <div class="card-header bg-gradient bg-primary text-white text-center py-3 rounded-top">
+            <h3 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Nueva Especialidad</h3>
+        </div>
+
+        <form method="post" class="p-3">
+            {% csrf_token %}
+            <div class="card-body bg-light rounded-bottom">
+                <div class="mb-3">
+                    {{ form.nombre.label_tag }}
+                    {{ form.nombre }}
+                </div>
+            </div>
+
+            <div class="card-footer bg-white border-0 d-flex justify-content-center gap-3 pb-3">
+                <button type="submit" class="btn btn-success px-4 shadow-sm">
+                    <i class="fas fa-save me-1"></i> Guardar
+                </button>
+                <a href="{% url 'gestion_citas:especialidad-list' %}" class="btn btn-outline-secondary px-4 shadow-sm">
+                    <i class="fas fa-times me-1"></i> Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

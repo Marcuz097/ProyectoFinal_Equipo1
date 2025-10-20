@@ -1,16 +1,24 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from .models import Especialidad
+from .models import Paciente, Medico, Cita, Especialidad
 
-# Create your views here.
-#importar reverse_lazy de urls para redireccionar la respuesta de un formulario
 from django.urls import reverse_lazy
 
-# crear vistas genericas para categoria
-class EspecialidadListView(ListView):
+from .forms import PacienteForm
+from .forms import MedicoForm
+from .forms import CitaForm
+from .forms import EspecialidadForm
 
-    # indicar cual es el modelo base
+# Especialidad
+class EspecialidadListView(ListView):
     model = Especialidad
-    fields = ["nombre", ]
-    template_name = "especialidades/especialidad-list.html"
-    context_object_name = "especialidades"
+    fields = ["nombre"]
+    template_name = 'especialidad/especialidad-list.html'
+    context_object_name = 'especialidades'
+
+class EspecialidadCreateView(CreateView):
+    model = Especialidad
+    form_class = EspecialidadForm
+    template_name = 'especialidad/especialidad-form.html'
+    success_url = reverse_lazy('gestion_citas:especialidad-list')
+

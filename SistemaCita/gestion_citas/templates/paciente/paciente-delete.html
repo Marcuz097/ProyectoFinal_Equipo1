@@ -6,8 +6,8 @@
 <div class="container mt-5">
     <div class="alert alert-danger shadow-lg" role="alert">
         <h4 class="alert-heading">⚠️ ¡Advertencia!</h4>
-        <p>Estás a punto de eliminar el especialidad:</p>
-        <h2 class="mb-4"><strong>{{ object.nombre }}</strong> </h2>
+        <p>Estás a punto de eliminar el paciente:</p>
+        <h2 class="mb-4"><strong>{{ object.usuario.username }}</strong> </h2>
         <hr>
         <p class="mb-0">¿Estás seguro de que deseas continuar con esta acción? Es irreversible.</p>
     </div>
@@ -15,7 +15,7 @@
     <form method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger btn-lg">Sí, Eliminar</button>
-        <a href="{% url 'gestion_citas:especialidad-list' %}" class="btn btn-secondary btn-lg">Cancelar</a>
+        <a href="{% url 'gestion_citas:paciente-list' %}" class="btn btn-secondary btn-lg">Cancelar</a>
     </form>
 </div>
 {% endblock %}

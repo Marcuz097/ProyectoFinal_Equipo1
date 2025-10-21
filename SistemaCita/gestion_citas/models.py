@@ -1,6 +1,8 @@
 from django.db import models
 
-from django.contrib.auth.models import User 
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 # Modelo Especialidad
 class Especialidad(models.Model):
@@ -19,7 +21,7 @@ class Especialidad(models.Model):
 # Modelo Paciente (Relación 1:1 con el Usuario para autenticación)
 class Paciente(models.Model):
     # Usamos la FK como PK para implementar la relación 1:1, extendiendo al User
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True) 
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     fecha_nacimiento = models.DateField()
     telefono = models.CharField(max_length=20, blank=True)
     direccion = models.CharField(max_length=255, blank=True)
@@ -31,7 +33,7 @@ class Paciente(models.Model):
         ordering = ['usuario__first_name'] #ordenar por nombre
 
     def __str__(self):
-        return f"Paciente: {self.usuario.first_name} {self.usuario.last_name}" 
+        return f"{self.usuario.first_name} {self.usuario.last_name}" 
 
 # Modelo Medico (Relación 1:1 con el Usuario para autenticación)
 class Medico(models.Model):

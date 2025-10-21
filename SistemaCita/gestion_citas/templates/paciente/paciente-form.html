@@ -2,9 +2,9 @@
 
 {% block titulo %} 
     {% if form.instance.pk %}
-        Editar especialidad {{ form.instance.nombre }}
+        Editar Paciente: {{ form.instance.nombre }}
     {% else %}
-        Nuevo Especialidad
+        Nuevo Paciente
     {% endif %}
 {% endblock %}
 
@@ -14,9 +14,9 @@
             <div class="card-header bg-primary text-white">
                 <h2 class="card-title text-center">
                     {% if form.instance.pk %}
-                        Editar Especialidad
+                        Editar Paciente 
                     {% else %}
-                        Registrar Nueva Especialidad
+                        Registrar Nuevo Paciente
                     {% endif %}
                 </h2>
             </div>
@@ -28,7 +28,7 @@
             </div>
             <div class="card-footer d-flex justify-content-evenly">
                 <button type="submit" class="btn btn-success">Guardar</button>
-                <a href="{% url 'gestion_citas:especialidad-list' %}" class="btn btn-outline-info">Cancelar</a>
+                <a href="{% url 'gestion_citas:paciente-list' %}" class="btn btn-outline-info">Cancelar</a>
             </div>
             </form>
         </div>

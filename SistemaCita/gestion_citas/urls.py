@@ -5,7 +5,11 @@ from .views import (
     EspecialidadListView,
     EspecialidadCreateView,
     EspecialidadUpdateView,
-    EspecialidadDeleteView
+    EspecialidadDeleteView,
+    PacienteListView,
+    PacienteCreateView,
+    PacienteUpdateView,
+    PacienteDeleteView,
 
 
 )
@@ -19,7 +23,11 @@ urlpatterns = [
     path('especialidades/nueva', EspecialidadCreateView.as_view(), name="especialidad-create"),
     path('editar/<int:pk>/', EspecialidadUpdateView.as_view(), name='especialidad-update'),
     path('eliminar/<int:pk>/', EspecialidadDeleteView.as_view(), name='especialidad-delete'),
-    #proveedores
+    #pacientes
+    path('pacientes/', PacienteListView.as_view(), name="paciente-list"),
+    path('pacientes/nueva', PacienteCreateView.as_view(), name="paciente-create"),
+    path('pacientes/editar/<int:pk>/', PacienteUpdateView.as_view(), name='paciente-update'),
+    path('pacientes/eliminar/<int:pk>/', PacienteDeleteView.as_view(), name='paciente-delete'),
     #path('proveedores/', ProveedorListView.as_view(), name="proveedor-list"),
     #path('proveedores/nueva', ProveedorCreateView.as_view(), name="proveedor-create"),
     #Productos

@@ -14,6 +14,7 @@ class PacienteForm(forms.ModelForm):
             'fecha_nacimiento': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
             'direccion': forms.TextInput(attrs={'class': 'form-control'}),
+            'usuario': forms.Select(attrs={'class': 'form-select'}),
         }
 
 # Formulario para Medico

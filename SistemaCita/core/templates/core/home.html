@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenido %}
+<div class="mt-4">
+  <h1>Bienvenido {{ user.first_name }} {{ user.last_name }}</h1>
+
+  {% if user.is_staff %}
+    <p>👨‍💼 Panel del administrador</p>
+  {% elif user.groups.all.0.name == "Medicos" %}
+    <p>🩺 Panel del médico</p>
+  {% else %}
+    <p>👤 Panel del paciente</p>
+  {% endif %}
+
+  <a href="{% url 'logout' %}" class="btn btn-danger mt-3">Cerrar sesión</a>
+</div>
+{% endblock %}

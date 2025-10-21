@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os  # 👈 agrega esto al inicio
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'core.Usuario'
 
 # Application definition
 
@@ -40,6 +42,40 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+# 🔹 Aquí agregamos la ruta global para templates
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # 👈 agrega esta línea
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+# 🔹 Configuración del login/logout
+LOGIN_URL = 'login'               # Si el usuario no ha iniciado sesión
+LOGIN_REDIRECT_URL = 'home'       # A dónde redirige después del login
+LOGOUT_REDIRECT_URL = 'login'     # A dónde redirige después del logout
+
+# 🔹 (Opcional) Si quieres idioma español
+LANGUAGE_CODE = 'es'
+
+# 🔹 Ajusta tu zona horaria (El Salvador)
+TIME_ZONE = 'America/El_Salvador'
+
+USE_I18N = True
+USE_TZ = True
+
+# 🔹 Archivos estáticos
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # 👈 agrega esta línea
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,7 +92,7 @@ ROOT_URLCONF = 'SistemaCitas.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # <-- aquí
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

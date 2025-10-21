@@ -3,7 +3,9 @@ from django.urls import path
 # importando las vistas
 from .views import (
     EspecialidadListView,
-    EspecialidadCreateView
+    EspecialidadCreateView,
+    EspecialidadUpdateView,
+    EspecialidadDeleteView
 
 
 )
@@ -15,6 +17,8 @@ app_name = "gestion_citas"
 urlpatterns = [
     path('especialidades/', EspecialidadListView.as_view(), name="especialidad-list"),
     path('especialidades/nueva', EspecialidadCreateView.as_view(), name="especialidad-create"),
+    path('editar/<int:pk>/', EspecialidadUpdateView.as_view(), name='especialidad-update'),
+    path('eliminar/<int:pk>/', EspecialidadDeleteView.as_view(), name='especialidad-delete'),
     #proveedores
     #path('proveedores/', ProveedorListView.as_view(), name="proveedor-list"),
     #path('proveedores/nueva', ProveedorCreateView.as_view(), name="proveedor-create"),

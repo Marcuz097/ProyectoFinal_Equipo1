@@ -12,7 +12,6 @@ from .forms import EspecialidadForm
 # Especialidad
 class EspecialidadListView(ListView):
     model = Especialidad
-    fields = ["nombre"]
     template_name = 'especialidad/especialidad-list.html'
     context_object_name = 'especialidades'
 
@@ -22,3 +21,14 @@ class EspecialidadCreateView(CreateView):
     template_name = 'especialidad/especialidad-form.html'
     success_url = reverse_lazy('gestion_citas:especialidad-list')
 
+
+class EspecialidadUpdateView(UpdateView):
+    model = Especialidad
+    fields = ['nombre']
+    template_name = "especialidad/especialidad-form.html"
+    success_url = reverse_lazy('gestion_citas:especialidad-list')
+
+class EspecialidadDeleteView(DeleteView):
+    model = Especialidad
+    template_name = "especialidad/especialidad-delete.html" # Plantilla para confirmar eliminación
+    success_url = reverse_lazy('gestion_citas:especialidad-list') 

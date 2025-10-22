@@ -28,7 +28,7 @@
                 <td>{{ medico.matricula }}</td>
                 <td>{{ medico.telefono }}</td> 
                 <td>{{ medico.especialidades.first.nombre }}</td>
-                <td>{{ medico.usuario.username }}</td>
+                 <td>{{ medico.usuario.first_name }} {{ medico.usuario.last_name }}</td>
                 <td>
                     <a href="{% url 'gestion_citas:medico-update' pk=medico.pk %}" class="btn btn-sm btn-info">Editar</a>
                     <a href="{% url 'gestion_citas:medico-delete' pk=medico.pk %}" class="btn btn-sm btn-danger">Eliminar</a>

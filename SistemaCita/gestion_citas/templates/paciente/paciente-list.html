@@ -25,7 +25,7 @@
             {% for paciente in pacientes %}
             <tr>
                 <td>{{ forloop.counter }}</td> <!-- Aquí va el contador -->
-                <td>{{ paciente.usuario.username }}</td>
+                <td>{{ paciente.usuario.first_name }} {{ paciente.usuario.last_name }}</td>
                 <td>{{ paciente.fecha_nacimiento }}</td>
                 <td>{{ paciente.telefono }}</td> 
                 <td>{{ paciente.direccion}}</td> 

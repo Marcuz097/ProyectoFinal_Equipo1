@@ -30,8 +30,8 @@
                 <td>{{ cita.fecha_hora|date:"d/m/Y H:i" }}</td>
                 <td>{{ cita.motivo }}</td>
                 <td>{{ cita.estado }}</td>
-                <td>{{ cita.paciente.usuario.username }}</td>
-                <td>{{ cita.medico.usuario.username }}</td>
+                <td>{{ cita.paciente.usuario.first_name }} {{ cita.paciente.usuario.last_name }}</td>
+                <td>{{ cita.medico.usuario.first_name }} {{ cita.medico.usuario.last_name }}</td>
             <td>
                     {% for esp in cita.medico.especialidades.all %}
                         {{ esp.nombre }}{% if not forloop.last %}, {% endif %}

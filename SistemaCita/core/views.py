@@ -5,20 +5,19 @@ from .forms import RegistroForm
 
 def registro(request):
     if request.method == 'POST':
-        form = RegistroForm(request.POST)
-        if form.is_valid():
-            usuario = form.save(commit=False)  # crea el usuario pero no lo guarda aún
-            usuario.save()                     # guarda el usuario
-            login(request, usuario)            # loguea automáticamente
-            # redirige según rol
-            if hasattr(usuario, 'rol'):
-                if usuario.rol == 'admin':
-                    return redirect('admin_dashboard')
-                elif usuario.rol == 'medico':
-                    return redirect('medico_dashboard')
-            return redirect('paciente_dashboard')  # default
+       form = RegistroForm(request.POST)
+       if form.is_valid():
+         usuario = form.save() # ahora el formulario ya guarda first_name/last_name
+         login(request, usuario)
+         # redirige según rol
+         if usuario.rol == 'admin':
+            return redirect('admin_dashboard')
+         elif usuario.rol == 'medico':
+            return redirect('medico_dashboard')
+         else:
+            return redirect('paciente_dashboard')
     else:
-        form = RegistroForm()
+       form = RegistroForm()
     return render(request, 'core/registro.html', {'form': form})
 
 
@@ -36,14 +35,14 @@ def home_page(request):
 
 @login_required
 def admin_dashboard(request):
-    return render(request, 'core/admin_dashboard.html')
+    return render(request, 'base.html')
 
 
 @login_required
 def medico_dashboard(request):
-    return render(request, 'core/medico_dashboard.html')
+    return render(request, 'base.html')
 
 
 @login_required
 def paciente_dashboard(request):
-    return render(request, 'core/paciente_dashboard.html')
+    return render(request, 'base.html')

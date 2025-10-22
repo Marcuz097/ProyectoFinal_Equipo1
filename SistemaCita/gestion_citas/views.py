@@ -38,6 +38,9 @@ class PacienteListView(LoginRequiredMixin, ListView):
     model = Paciente
     template_name = 'paciente/paciente-list.html'
     context_object_name = 'pacientes'
+    def get_queryset(self):
+        # Solo usuarios con rol "paciente"
+        return Paciente.objects.filter(usuario__rol='paciente')
 
 class PacienteCreateView(CreateView):
     model = Paciente
@@ -60,6 +63,9 @@ class MedicoListView(LoginRequiredMixin, ListView):
     model = Medico
     template_name = 'medico/medico-list.html'
     context_object_name = 'medicos'
+    def get_queryset(self):
+        # Solo usuarios con rol "medico"
+        return Medico.objects.filter(usuario__rol='medico')
 
 class MedicoCreateView(CreateView):
     model = Medico
@@ -82,6 +88,19 @@ class CitaListView(LoginRequiredMixin, ListView):
     model = Cita
     template_name = 'cita/cita-list.html'
     context_object_name = 'citas'
+    def get_queryset(self):
+        user = self.request.user
+        # Si es admin: todas las citas
+        if user.rol == 'admin':
+            return Cita.objects.all()
+        # Si es médico: solo las citas del médico logueado
+        elif user.rol == 'medico':
+            return Cita.objects.filter(medico__usuario=user)
+        # Si es paciente: solo sus citas
+        elif user.rol == 'paciente':
+            return Cita.objects.filter(paciente__usuario=user)
+        else:
+            return Cita.objects.none()
 
 class CitaCreateView(CreateView):
     model = Cita

@@ -26,6 +26,7 @@ class MedicoForm(forms.ModelForm):
             'matricula': forms.TextInput(attrs={'class': 'form-control'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
             'especialidades': forms.SelectMultiple(attrs={'class': 'form-select'}),
+            'usuario': forms.Select(attrs={'class': 'form-select'}),
         }
 
 # Formulario para Cita

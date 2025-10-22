@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block titulo %} 
+    {% if form.instance.pk %}
+        Editar Cita: {{ form.instance.nombre }}
+    {% else %}
+        Nueva Cita
+    {% endif %}
+{% endblock %}
+
+{% block contenido %} 
+    <div class="container mt-4 d-flex justify-content-center">
+        <div class="card shadow-lg" style="width: 50%;">
+            <div class="card-header bg-primary text-white">
+                <h2 class="card-title text-center">
+                    {% if form.instance.pk %}
+                        Editar Cita 
+                    {% else %}
+                        Registrar Nueva Cita
+                    {% endif %}
+                </h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }} 
+                    
+            </div>
+            <div class="card-footer d-flex justify-content-evenly">
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a href="{% url 'gestion_citas:cita-list' %}" class="btn btn-outline-info">Cancelar</a>
+            </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

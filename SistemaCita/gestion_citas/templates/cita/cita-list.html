@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block titulo %} Lista de Citas {% endblock %}
+
+{% block contenido %} 
+<div class="container mt-4">
+    <h1 class="mb-4">Lista de Citas</h1>
+    <a href="{% url 'gestion_citas:cita-create' %}" class="btn btn-success mb-3">
+        <i class="fas fa-plus"></i> Nueva Cita
+    </a>
+    
+    {% if citas %}
+    <table class="table table-striped table-hover shadow">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th>ID</th>
+                <th>Fecha y Hora</th>
+                <th>Motivo</th>
+                <th>Estado</th>
+                <th>Paciente</th>
+                <th>Médico</th>
+                <th>Especialidades</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas %}
+            <tr>
+                <td>{{ forloop.counter }}</td> <!-- Aquí va el contador -->
+                <td>{{ cita.fecha_hora|date:"d/m/Y H:i" }}</td>
+                <td>{{ cita.motivo }}</td>
+                <td>{{ cita.estado }}</td>
+                <td>{{ cita.paciente.usuario.username }}</td>
+                <td>{{ cita.medico.usuario.username }}</td>
+            <td>
+                    {% for esp in cita.medico.especialidades.all %}
+                        {{ esp.nombre }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        Sin especialidad
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{% url 'gestion_citas:cita-update' pk=cita.pk %}" class="btn btn-sm btn-info">Editar</a>
+                    <a href="{% url 'gestion_citas:cita-delete' pk=cita.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-warning">No hay productos registrados.</div>
+    {% endif %}
+</div>
+{% endblock %}

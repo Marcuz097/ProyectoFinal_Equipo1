@@ -55,3 +55,48 @@ class PacienteDeleteView(DeleteView):
     model = Paciente
     template_name = 'paciente/paciente-delete.html'
     success_url = reverse_lazy('gestion_citas:paciente-list')
+
+class MedicoListView(LoginRequiredMixin, ListView):
+    model = Medico
+    template_name = 'medico/medico-list.html'
+    context_object_name = 'medicos'
+
+class MedicoCreateView(CreateView):
+    model = Medico
+    form_class = MedicoForm
+    template_name = 'medico/medico-form.html'
+    success_url = reverse_lazy('gestion_citas:medico-list')
+
+class MedicoUpdateView(UpdateView):
+    model = Medico
+    form_class = MedicoForm
+    template_name = 'medico/medico-form.html'
+    success_url = reverse_lazy('gestion_citas:medico-list')
+
+class MedicoDeleteView(DeleteView):
+    model = Medico
+    template_name = 'medico/medico-delete.html'
+    success_url = reverse_lazy('gestion_citas:medico-list')
+
+class CitaListView(LoginRequiredMixin, ListView):
+    model = Cita
+    template_name = 'cita/cita-list.html'
+    context_object_name = 'citas'
+
+class CitaCreateView(CreateView):
+    model = Cita
+    form_class = CitaForm
+    template_name = 'cita/cita-from.html'
+    success_url = reverse_lazy('gestion_citas:cita-list')
+
+class CitaUpdateView(UpdateView):
+    model = Cita
+    form_class = CitaForm
+    template_name = 'cita/cita-from.html'
+    success_url = reverse_lazy('gestion_citas:cita-list')
+
+class CitaDeleteView(DeleteView):
+    model = Cita
+    template_name = 'cita/cita-delete.html'
+    success_url = reverse_lazy('gestion_citas:cita-list')
+

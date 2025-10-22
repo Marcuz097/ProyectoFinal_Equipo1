@@ -35,4 +35,22 @@
     <div class="alert alert-warning">No hay especialidades registradas.</div>
     {% endif %}
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.querySelector("form");
+    form.addEventListener("submit", function(e) {
+        let vacios = [];
+        form.querySelectorAll("input, select, textarea").forEach(el => {
+            if (!el.value.trim()) {
+                vacios.push(el.name || el.id);
+            }
+        });
+        if (vacios.length > 0) {
+            e.preventDefault();
+            alert("Por favor completa todos los campos antes de continuar.");
+        }
+    });
+});
+</script>
 {% endblock %}

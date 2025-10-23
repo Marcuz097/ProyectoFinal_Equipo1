@@ -4,6 +4,7 @@ from .models import Medico
 from .models import Cita
 from .models import Especialidad
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -148,11 +149,12 @@ class CitaForm(forms.ModelForm):
 
     # 🔹 Validación de fecha y hora (no pasada)
     def clean_fecha_hora(self):
-        from datetime import datetime
-        fecha_hora = self.cleaned_data.get('fecha_hora')
-        if fecha_hora and fecha_hora < datetime.now():
-            raise forms.ValidationError("La fecha y hora de la cita no puede estar en el pasado.")
-        return fecha_hora
+     fecha_hora = self.cleaned_data['fecha_hora']
+     ahora = timezone.now()  # Devuelve un datetime con zona horaria (aware)
+    
+     if fecha_hora < ahora:
+        raise forms.ValidationError("La fecha no puede ser en el pasado.")
+     return fecha_hora
 
     # 🔹 Validación motivo
     def clean_motivo(self):

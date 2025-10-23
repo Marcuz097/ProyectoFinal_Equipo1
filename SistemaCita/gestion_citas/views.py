@@ -105,13 +105,13 @@ class CitaListView(LoginRequiredMixin, ListView):
 class CitaCreateView(CreateView):
     model = Cita
     form_class = CitaForm
-    template_name = 'cita/cita-from.html'
+    template_name = 'cita/cita-form.html'
     success_url = reverse_lazy('gestion_citas:cita-list')
 
 class CitaUpdateView(UpdateView):
     model = Cita
     form_class = CitaForm
-    template_name = 'cita/cita-from.html'
+    template_name = 'cita/cita-form.html'
     success_url = reverse_lazy('gestion_citas:cita-list')
 
 class CitaDeleteView(DeleteView):

@@ -24,7 +24,7 @@
                    {% if user.is_authenticated %}
           
           {% if user.rol == "admin" %}
-           <li class="nav-item"><a class="nav-link" href="{% url 'gestion_citas:especialidad-list' %}">Especialidades</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'gestion_citas:especialidad-list' %}">Especialidades</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'gestion_citas:paciente-list' %}">Pacientes</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'gestion_citas:medico-list' %}">Médicos</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'gestion_citas:cita-list' %}">Citas</a></li>

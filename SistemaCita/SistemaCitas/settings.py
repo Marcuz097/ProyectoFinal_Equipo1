@@ -67,11 +67,10 @@ LOGOUT_REDIRECT_URL = 'login'     # A dónde redirige después del logout
 # 🔹 (Opcional) Si quieres idioma español
 LANGUAGE_CODE = 'es'
 
-# 🔹 Ajusta tu zona horaria (El Salvador)
-TIME_ZONE = 'America/El_Salvador'
+USE_TZ = True
+TIME_ZONE = 'America/El_Salvador'  # o la tuya
 
 USE_I18N = True
-USE_TZ = True
 
 # 🔹 Archivos estáticos
 STATIC_URL = 'static/'

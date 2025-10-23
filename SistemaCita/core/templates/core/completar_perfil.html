@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>Completar perfil de {{ tipo }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Guardar perfil</button>
+</form>
+{% endblock %}

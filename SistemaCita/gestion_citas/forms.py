@@ -198,5 +198,28 @@ class EspecialidadForm(forms.ModelForm):
             if not valor:
                 raise forms.ValidationError(f"El campo '{campo}' no puede quedar vacío.")
         return cleaned_data
+    
+class MedicoPerfilForm(forms.ModelForm):
+    especialidades = forms.ModelMultipleChoiceField(
+        queryset=Especialidad.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True,
+        label='Especialidades'
+    )
+
+    class Meta:  # ✅ ahora está dentro de la clase
+        model = Medico
+        fields = ['matricula', 'telefono', 'especialidades']
+  
+class PacientePerfilForm(forms.ModelForm):
+    fecha_nacimiento = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=True,
+        label='Fecha de nacimiento'
+    )
+
+    class Meta:  # ✅ también dentro de la clase
+        model = Paciente
+        fields = ['fecha_nacimiento', 'telefono', 'direccion']
 
 

@@ -5,6 +5,8 @@ from .models import Usuario
 class RegistroForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, label='Nombre')
     last_name = forms.CharField(max_length=30, required=True, label='Apellido')
+    
+    #Campos extras para medico
     class Meta:
         model = Usuario
         fields = ['username', 'email', 'first_name', 'last_name', 'rol', 'password1', 'password2']

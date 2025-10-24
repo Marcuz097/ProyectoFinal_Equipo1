@@ -32,6 +32,11 @@ class RegistroForm(UserCreationForm):
             'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña'}),
             'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirmar contraseña'}),
         }
+        error_messages = {
+            'username': {
+                'required': "El Usuario es obligatorio.",
+            }
+         }
     def __init__(self, *args, **kwargs):
          super().__init__(*args, **kwargs)
          # Filtrar la opción 'admin' para que no aparezca en el registro
@@ -94,7 +99,7 @@ class RegistroForm(UserCreationForm):
 
     # 🔹 Validación de contraseñas
     def clean_password1(self):
-        password1 = self.cleaned_data.get('password1', '')
+        password1 = self.cleaned_data.get('password1', '').strip()
         if not password1:
             raise forms.ValidationError("La contraseña es obligatoria.")
         if len(password1) < 8:

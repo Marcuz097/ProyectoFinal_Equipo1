@@ -22,17 +22,27 @@ class PacienteForm(forms.ModelForm):
             'fecha_nacimiento': forms.DateInput(attrs={
                 'type': 'date', 
                 'class': 'form-control',
-                'max': '9999-12-31'
+                'max': '9999-12-31',
+                'required': False
             }),
             'telefono': forms.TextInput(attrs={
                 'class': 'form-control', 
-                'placeholder': 'Ejemplo: 7777-7777'
+                'placeholder': 'Ejemplo: 7777-7777',
+                'required': False
             }),
             'direccion': forms.TextInput(attrs={
                 'class': 'form-control', 
-                'placeholder': 'Ejemplo: Calle 5, San Salvador'
+                'placeholder': 'Ejemplo: Calle 5, San Salvador',
+                'required': False
             }),
-            'usuario': forms.Select(attrs={'class': 'form-select'}),
+            'usuario': forms.Select(attrs={'class': 'form-select','required': False}),
+        }
+        error_messages = {
+            'fecha_nacimiento': {'required': 'Debes agregar la fecha de nacimiento.'},
+            'telefono': {'required': 'Debes agregar la un numero de telefono.'},
+            'direccion': {'required': 'Debes agregar la direccion.'},
+            'usuario': {'required': 'Debes indicar el paciente.'},
+            
         }
 
     def __init__(self, *args, **kwargs):
@@ -64,12 +74,14 @@ class PacienteForm(forms.ModelForm):
         return direccion
     
     def clean(self):
-        cleaned_data = super().clean()
-        for campo, valor in cleaned_data.items():
-            if not valor:
-                raise forms.ValidationError(f"El campo '{campo}' no puede quedar vacío.")
-        return cleaned_data
-    
+     cleaned_data = super().clean()
+
+     for field in ['usuario', 'fecha_nacimiento', 'telefono', 'direccion']:
+        valor = cleaned_data.get(field)
+        if not valor:
+            self.add_error(field, f"El campo '{field}' no puede quedar vacío.")
+
+     return cleaned_data
 # Formulario para Medico
 # FORMULARIO MÉDICO con validaciones
 class MedicoForm(forms.ModelForm):
@@ -87,6 +99,12 @@ class MedicoForm(forms.ModelForm):
             }),
             'especialidades': forms.SelectMultiple(attrs={'class': 'form-select'}),
             'usuario': forms.Select(attrs={'class': 'form-select'}),
+        }
+        error_messages = {
+            'matricula': {'required': 'Debes agregar el numero de matricula.'},
+            'telefono': {'required': 'Debes agregar la un numero de telefono.'},
+            'especialidades': {'required': 'Debes indicar la especialidad.'},
+            'usuario': {'required': 'Debes indicar el medico.'},
         }
 
     def __init__(self, *args, **kwargs):
@@ -140,6 +158,13 @@ class CitaForm(forms.ModelForm):
             'paciente': forms.Select(attrs={'class': 'form-select'}),
             'medico': forms.Select(attrs={'class': 'form-select'}),
         }
+        error_messages = {
+            'fecha_hora': {'required': 'Debes indicar la fecha y la hora.'},
+            'motivo': {'required': 'Debes agregar el mootivo.'},
+            'estado': {'required': 'Debes indicar el estado de la cita.'},
+            'paciente': {'required': 'Debes indicar el paciente.'},
+            'medico': {'required': 'Debes indicar el medico.'},
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -151,13 +176,18 @@ class CitaForm(forms.ModelForm):
 
     # 🔹 Validación de fecha y hora (no pasada)
     def clean_fecha_hora(self):
-     fecha_hora = self.cleaned_data['fecha_hora']
-     ahora = timezone.now()  # Devuelve un datetime con zona horaria (aware)
-    
-     if fecha_hora < ahora:
-        raise forms.ValidationError("La fecha no puede ser en el pasado.")
-     return fecha_hora
+     fecha_hora = self.cleaned_data.get('fecha_hora')
 
+     # Si el campo está vacío, no seguir comparando
+     if fecha_hora is None:
+        raise forms.ValidationError("Debe ingresar una fecha y hora para la cita.")
+
+    # Validar que la fecha no sea pasada
+     if fecha_hora < timezone.now():
+        raise forms.ValidationError("No puedes registrar una cita en una fecha u hora pasada.")
+
+     return fecha_hora
+ 
     # 🔹 Validación motivo
     def clean_motivo(self):
         motivo = self.cleaned_data.get('motivo', '').strip()
@@ -183,6 +213,10 @@ class EspecialidadForm(forms.ModelForm):
                 'placeholder': 'Ejemplo: Cardiología'
             }),
         }
+        error_messages = {
+            'nombre': {'required': 'Debes agregar el nombre de la especialidad.'},
+        }
+        
        # 🔹 Validación del nombre
     def clean_nombre(self):
         nombre = self.cleaned_data.get('nombre', '').strip()
@@ -221,6 +255,11 @@ class MedicoPerfilForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Ejemplo: 7777-7777'
             }),
+        }
+        error_messages = {
+            'matricula': {'required': 'Debes agregar el numero de matricula.'},
+            'telefono': {'required': 'Debes agregar la un numero de telefono.'},
+            'especialidades': {'required': 'Debes indicar la especialidad.'},
         }
 
     # 🔹 Validar matrícula
@@ -277,6 +316,11 @@ class PacientePerfilForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Ejemplo: Calle 5, San Salvador'
             }),
+        }
+        error_messages = {
+            'fecha_nacimiento': {'required': 'Debes agregar la fecha de nacimiento.'},
+            'telefono': {'required': 'Debes agregar la un numero de telefono.'},
+            'direccion': {'required': 'Debes agregar la direccion.'},
         }
 
     # 🔹 Validar fecha de nacimiento

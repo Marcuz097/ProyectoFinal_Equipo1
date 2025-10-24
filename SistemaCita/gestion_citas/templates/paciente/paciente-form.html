@@ -2,54 +2,79 @@
 
 {% block titulo %} 
     {% if form.instance.pk %}
-        Editar Paciente: {{ form.instance.nombre }}
+        Editar Paciente: {{ form.instance.usuario.first_name }} {{ form.instance.usuario.last_name }}
     {% else %}
         Nuevo Paciente
     {% endif %}
 {% endblock %}
 
 {% block contenido %} 
-    <div class="container mt-4 d-flex justify-content-center">
-        <div class="card shadow-lg" style="width: 50%;">
-            <div class="card-header bg-primary text-white">
-                <h2 class="card-title text-center">
-                    {% if form.instance.pk %}
-                        Editar Paciente 
-                    {% else %}
-                        Registrar Nuevo Paciente
-                    {% endif %}
-                </h2>
-            </div>
-            <div class="card-body">
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }} 
-                    
-            </div>
-            <div class="card-footer d-flex justify-content-evenly">
-                <button type="submit" class="btn btn-success">Guardar</button>
-                <a href="{% url 'gestion_citas:paciente-list' %}" class="btn btn-outline-info">Cancelar</a>
-            </div>
+<div class="container mt-4 d-flex justify-content-center">
+    <div class="card shadow-lg" style="width: 50%;">
+        <div class="card-header bg-primary text-white">
+            <h2 class="card-title text-center">
+                {% if form.instance.pk %}
+                    Editar Paciente 
+                {% else %}
+                    Registrar Nuevo Paciente
+                {% endif %}
+            </h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+
+                {# Mostrar errores generales (non_field_errors) #}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {# Campo Usuario #}
+                <div class="mb-3">
+                    {{ form.usuario.label_tag }}
+                    {{ form.usuario }}
+                    {% for error in form.usuario.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                {# Campo Fecha de Nacimiento #}
+                <div class="mb-3">
+                    {{ form.fecha_nacimiento.label_tag }}
+                    {{ form.fecha_nacimiento }}
+                    {% for error in form.fecha_nacimiento.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                {# Campo Teléfono #}
+                <div class="mb-3">
+                    {{ form.telefono.label_tag }}
+                    {{ form.telefono }}
+                    {% for error in form.telefono.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                {# Campo Dirección #}
+                <div class="mb-3">
+                    {{ form.direccion.label_tag }}
+                    {{ form.direccion }}
+                    {% for error in form.direccion.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="card-footer d-flex justify-content-evenly">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <a href="{% url 'gestion_citas:paciente-list' %}" class="btn btn-outline-info">Cancelar</a>
+                </div>
             </form>
         </div>
     </div>
-    
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const form = document.querySelector("form");
-    form.addEventListener("submit", function(e) {
-        let vacios = [];
-        form.querySelectorAll("input, select, textarea").forEach(el => {
-            if (!el.value.trim()) {
-                vacios.push(el.name || el.id);
-            }
-        });
-        if (vacios.length > 0) {
-            e.preventDefault();
-            alert("Por favor completa todos los campos antes de continuar.");
-        }
-    });
-});
-</script>
+</div>
 {% endblock %}
-

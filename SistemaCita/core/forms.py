@@ -4,6 +4,8 @@ from .models import Usuario
 from gestion_citas.models import Cita
 from gestion_citas.models import Medico
 from django.utils import timezone
+from django.core.exceptions import ValidationError
+from django.contrib.auth.password_validation import validate_password
 import re
 
 
@@ -97,20 +99,25 @@ class RegistroForm(UserCreationForm):
             raise forms.ValidationError("Debe seleccionar un tipo de usuario.")
         return rol
 
-    # 🔹 Validación de contraseñas
+    # 🔹 Validación de las contraseñas y campos vacíos
     def clean_password1(self):
-        password1 = self.cleaned_data.get('password1', '').strip()
-        if not password1:
+        password = self.cleaned_data.get('password1', '')
+
+        if not password:
             raise forms.ValidationError("La contraseña es obligatoria.")
-        if len(password1) < 8:
+        if len(password) < 8:
             raise forms.ValidationError("La contraseña debe tener al menos 8 caracteres.")
-        if not re.search(r'\d', password1):
-            raise forms.ValidationError("La contraseña debe contener al menos un número.")
-        if not re.search(r'[A-Z]', password1):
-            raise forms.ValidationError("La contraseña debe contener al menos una letra mayúscula.")
-        if not re.search(r'[a-z]', password1):
-            raise forms.ValidationError("La contraseña debe contener al menos una letra minúscula.")
-        return password1
+        if not re.search(r'[A-Z]', password):
+            raise forms.ValidationError("La contraseña debe contener al menos una letra mayúscula (A-Z).")
+        if not re.search(r'[a-z]', password):
+            raise forms.ValidationError("La contraseña debe contener al menos una letra minúscula (a-z).")
+        if not re.search(r'\d', password):
+            raise forms.ValidationError("La contraseña debe contener al menos un número (0-9).")
+        # Opcional: exigir un símbolo especial
+        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+            raise forms.ValidationError("La contraseña debe contener al menos un carácter especial (!@#$%^&* etc.).")
+
+        return password
 
     def clean(self):
         cleaned_data = super().clean()

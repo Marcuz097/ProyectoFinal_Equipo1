@@ -11,6 +11,10 @@ from gestion_citas.models import Medico, Paciente
 from gestion_citas.forms import CitaForm
 from gestion_citas.models import Cita
 from .forms import PacienteCitaForm
+from collections import defaultdict
+from django.http import JsonResponse, HttpResponseForbidden
+from django.views.decorators.http import require_POST
+from django.utils import timezone
 
 def registro(request):
     if request.method == 'POST':
@@ -39,7 +43,7 @@ def home_page(request):
     if usuario.rol == 'admin':
         return redirect('admin_dashboard')
     elif usuario.rol == 'medico':
-        return redirect('medico_dashboard')
+        return redirect('agenda_medico')
     else:
         return redirect('paciente_cita_list')
 
@@ -50,8 +54,8 @@ def admin_dashboard(request):
 
 
 @login_required
-def medico_dashboard(request):
-    return render(request, 'medico/medico_dashboard.html')
+def agenda_medico(request):
+    return render(request, 'medico/agenda_medico.html')
 
 
 @login_required
@@ -138,3 +142,63 @@ class PacienteCitaDeleteView(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         # Solo puede eliminar sus propias citas
         return Cita.objects.filter(paciente__usuario=self.request.user)
+    
+
+
+@login_required
+def agenda_medico(request):
+    # Asegurarse de que el usuario sea un medico
+    try:
+        medico = Medico.objects.get(usuario=request.user)
+    except Medico.DoesNotExist:
+        return HttpResponseForbidden("No tienes permisos de médico para ver esta página.")
+
+    # Obtener citas del medico ordenadas
+    citas = Cita.objects.filter(medico=medico).order_by('fecha_hora')
+
+    # Agrupar por fecha (YYYY-MM-DD)
+    dias = defaultdict(list)
+    for c in citas:
+        if c.fecha_hora:
+            dia = c.fecha_hora.date()
+        else:
+            dia = None
+        dias[dia].append(c)
+
+    # Ordenar las claves por fecha (mostramos próximos días primero)
+    dias_ordenados = sorted(dias.items(), key=lambda x: (x[0] is None, x[0]))  # None al final
+
+    context = {
+        'medico': medico,
+        'dias_ordenados': dias_ordenados,
+        'now': timezone.now(),
+    }
+    return render(request, 'medico/agenda_medico.html', context)
+
+
+# Endpoint simple para actualizar estado vía AJAX (POST)
+@login_required
+@require_POST
+def actualizar_estado_cita(request):
+    try:
+        medico = Medico.objects.get(usuario=request.user)
+    except Medico.DoesNotExist:
+        return JsonResponse({'error': 'No autorizado'}, status=403)
+
+    cita_id = request.POST.get('cita_id')
+    nuevo_estado = request.POST.get('estado')
+    if not cita_id or not nuevo_estado:
+        return JsonResponse({'error': 'Datos incompletos'}, status=400)
+
+    cita = get_object_or_404(Cita, pk=cita_id)
+    # Seguridad: solo el médico dueño puede cambiar su cita
+    if cita.medico != medico:
+        return JsonResponse({'error': 'No autorizado a modificar esta cita'}, status=403)
+
+    cita.estado = nuevo_estado
+    cita.save()
+    return JsonResponse({
+        'ok': True,
+        'cita_id': cita_id,
+        'nuevo_estado': nuevo_estado,
+    })

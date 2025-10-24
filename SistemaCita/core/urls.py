@@ -10,7 +10,11 @@ urlpatterns = [
     path('', views.home_page, name='home'),
     path('admin/dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('medico/dashboard/', views.medico_dashboard, name='medico_dashboard'),
-    path('paciente/dashboard/', views.paciente_dashboard, name='paciente_dashboard'),
+    
+    path('paciente/citas/', views.PacienteCitaListView.as_view(), name='paciente_cita_list'),
+    path('paciente/citas/nueva/', views.PacienteCitaCreateView.as_view(), name='paciente_cita_create'),
+    path('paciente/citas/<int:pk>/editar/', views.PacienteCitaUpdateView.as_view(), name='paciente_cita_edit'),
+    path('paciente/citas/<int:pk>/eliminar/', views.PacienteCitaDeleteView.as_view(), name='paciente_cita_delete'),
     
     path('completar-perfil/medico/', views.completar_perfil_medico, name='completar_perfil_medico'),
     path('completar-perfil/paciente/', views.completar_perfil_paciente, name='completar_perfil_paciente'),

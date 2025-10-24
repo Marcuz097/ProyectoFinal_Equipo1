@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Citas</title>
+    <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-primary">Mis Citas</h1>
+        <a href="{% url 'paciente_cita_create' %}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Agendar Nueva Cita
+        </a>
+    </div>
+
+    {% if citas %}
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered shadow-sm">
+                <thead class="table-info">
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha y Hora</th>
+                        <th>Motivo</th>
+                        <th>Estado</th>
+                        <th>Médico</th>
+                        <th>Especialidades</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cita in citas %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ cita.fecha_hora|date:"d/m/Y H:i" }}</td>
+                            <td>{{ cita.motivo }}</td>
+                            <td>
+                                <span class="badge {% if cita.estado == 'Pendiente' %}bg-warning{% elif cita.estado == 'Confirmada' %}bg-success{% else %}bg-secondary{% endif %}">
+                                    {{ cita.estado }}
+                                </span>
+                            </td>
+                            <td>{{ cita.medico.usuario.first_name }} {{ cita.medico.usuario.last_name }}</td>
+                            <td>
+                                {% for esp in cita.medico.especialidades.all %}
+                                    {{ esp.nombre }}{% if not forloop.last %}, {% endif %}
+                                {% empty %}
+                                    Sin especialidad
+                                {% endfor %}
+                            </td>
+                            <td class="d-flex gap-2">
+                                <a href="{% url 'paciente_cita_edit' pk=cita.pk %}" class="btn btn-sm btn-info">Editar</a>
+                                <a href="{% url 'paciente_cita_delete' pk=cita.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center">No tienes citas registradas.</div>
+    {% endif %}
+</div>
+
+<script src="{% static 'core/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

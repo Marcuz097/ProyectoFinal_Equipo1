@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,15 +12,26 @@
 </head>
 
 <body>
-  <!-- Navbar -->
+  <!-- 🔹 Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <i class="bi bi-calendar2-week"></i> Agenda del Médico
       </a>
-      <span class="navbar-text">
-        {{ medico.usuario.first_name }} {{ medico.usuario.last_name }}
-      </span>
+
+      <div class="ms-auto d-flex align-items-center">
+        <span class="navbar-text text-light me-3">
+          {{ medico.usuario.first_name }} {{ medico.usuario.last_name }}
+        </span>
+
+        <!-- 🔹 Botón de cerrar sesión -->
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline-light btn-sm">
+            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+          </button>
+        </form>
+      </div>
     </div>
   </nav>
 
@@ -48,7 +60,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="mb-1">
-                        <i class="bi bi-clock"></i> {{ cita.fecha_hora|date:"H:i" }} —
+                        <i class="bi bi-clock"></i> {{ cita.fecha_hora|date:"H:i" }} — 
                         <span class="fw-bold">{{ cita.paciente.usuario.get_full_name }}</span>
                       </h6>
                       <p class="mb-0 text-muted small">

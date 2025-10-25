@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Usuario
+from gestion_citas.models import Paciente
 from gestion_citas.models import Cita
 from gestion_citas.models import Medico
 from django.utils import timezone
@@ -25,12 +26,10 @@ class RegistroForm(UserCreationForm):
 
     class Meta:
         model = Usuario
-        fields = ['username', 'email', 'first_name', 'last_name', 'rol', 'password1', 'password2']
-        labels = {'rol': 'Tipo de usuario'}
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Usuario'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'correo@ejemplo.com'}),
-            'rol': forms.Select(attrs={'class': 'form-select'}),
             'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña'}),
             'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirmar contraseña'}),
         }
@@ -38,13 +37,16 @@ class RegistroForm(UserCreationForm):
             'username': {
                 'required': "El Usuario es obligatorio.",
             }
-         }
-    def __init__(self, *args, **kwargs):
-         super().__init__(*args, **kwargs)
-         # Filtrar la opción 'admin' para que no aparezca en el registro
-         self.fields['rol'].choices = [
-            (valor, nombre) for valor, nombre in self.fields['rol'].choices if valor != 'admin'
-        ]
+        }
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.rol = 'paciente'  # 🔹 Fuerza que todos los registros sean pacientes
+        if commit:
+            user.save()
+            # 🔹 Crea también el perfil de paciente
+            Paciente.objects.create(usuario=user)
+        return user
 
     # 🔹 Validación del nombre
     def clean_first_name(self):

@@ -10,6 +10,26 @@
 </head>
 <body class="bg-light">
 
+<!-- 🔹 Barra superior -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <span class="navbar-brand">Sistema de Citas</span>
+
+    <div class="d-flex align-items-center ms-auto">
+        <span class="text-light me-3">
+            Usuario: {{ request.user.username }}
+        </span>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-light btn-sm">
+                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+            </button>
+        </form>
+    </div>
+  </div>
+</nav>
+
+<!-- 🔹 Contenido principal -->
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="text-primary">Mis Citas</h1>
@@ -39,7 +59,14 @@
                             <td>{{ cita.fecha_hora|date:"d/m/Y H:i" }}</td>
                             <td>{{ cita.motivo }}</td>
                             <td>
-                                <span class="badge {% if cita.estado == 'Pendiente' %}bg-warning{% elif cita.estado == 'Confirmada' %}bg-success{% else %}bg-secondary{% endif %}">
+                                <span class="badge 
+                                    {% if cita.estado == 'Pendiente' %}
+                                        bg-warning
+                                    {% elif cita.estado == 'Confirmada' %}
+                                        bg-success
+                                    {% else %}
+                                        bg-secondary
+                                    {% endif %}">
                                     {{ cita.estado }}
                                 </span>
                             </td>

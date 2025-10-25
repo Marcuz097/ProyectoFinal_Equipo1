@@ -72,7 +72,7 @@ TIME_ZONE = 'America/El_Salvador'  # o la tuya
 
 USE_I18N = True
 
-# 🔹 Archivos estáticos
+# Archivos estáticos
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # 👈 agrega esta línea
 

@@ -1,30 +1,40 @@
 {% extends "base.html" %}
 
-{% block titulo %} Lista de Medicos {% endblock %}
+{% block titulo %}Lista de Médicos{% endblock %}
 
 {% block contenido %} 
 <div class="container mt-4">
-    <h1 class="mb-4">Lista de Medicos</h1>
-    <a href="{% url 'gestion_citas:medico-create' %}" class="btn btn-success mb-3">
-        <i class="fas fa-plus"></i> Nuevo Medico
-    </a>
-    
+    <h1 class="mb-4">Lista de Médicos</h1>
+
+    <!-- Contenedor de botones en línea, con separación y botón derecho -->
+    <div class="d-flex mb-3 gap-2">
+        <!-- Botón principal -->
+        <a href="{% url 'gestion_citas:medico-create' %}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Nuevo Médico
+        </a>
+
+        <!-- Botón secundario a la derecha con otro color -->
+        <a href="{% url 'registrar_medico' %}" class="btn btn-primary ms-auto">
+            ➕ Registrar nuevo médico
+        </a>
+    </div>
+
     {% if medicos %}
     <table class="table table-striped table-hover shadow">
         <thead class="bg-dark text-white">
             <tr>
                 <th>ID</th>
                 <th>Matricula</th>
-                <th>Telefono</th>
+                <th>Teléfono</th>
                 <th>Especialidad</th>
                 <th>Usuario</th>
-                <th>Accciones</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             {% for medico in medicos %}
             <tr>
-                <td>{{ forloop.counter }}</td> <!-- Aquí va el contador -->
+                <td>{{ forloop.counter }}</td>
                 <td>{{ medico.matricula }}</td>
                 <td>{{ medico.telefono }}</td> 
                 <td>{{ medico.especialidades.first.nombre }}</td>
@@ -38,7 +48,7 @@
         </tbody>
     </table>
     {% else %}
-    <div class="alert alert-warning">No hay productos registrados.</div>
+    <div class="alert alert-warning">No hay médicos registrados.</div>
     {% endif %}
 </div>
 {% endblock %}

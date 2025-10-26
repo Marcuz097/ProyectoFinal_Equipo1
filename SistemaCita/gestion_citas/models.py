@@ -51,7 +51,12 @@ class Medico(models.Model):
         ordering = ['usuario__first_name'] #ordenar por nombre
 
     def __str__(self):
-        return f"Dr(a). {self.usuario.first_name} {self.usuario.last_name} ({', '.join(e.nombre for e in self.especialidades.all())})"
+        nombres = f"{self.usuario.first_name}" if self.usuario.first_name else ""
+        apellidos = f" {self.usuario.last_name}" if self.usuario.last_name else ""
+        especialidades = ", ".join(e.nombre for e in self.especialidades.all()) if self.pk else ""
+        if especialidades:
+            return f"Dr(a). {nombres}{apellidos} ({especialidades})"
+        return f"Dr(a). {nombres}{apellidos}"
 
 # Modelo Cita
 class Cita(models.Model):

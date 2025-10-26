@@ -184,5 +184,76 @@ class PacienteCitaForm(forms.ModelForm):
         if len(motivo) < 5:
             raise forms.ValidationError("El motivo debe tener al menos 5 caracteres.")
         return motivo
+    
+class MedicoRegistroForm(forms.ModelForm):
+    password1 = forms.CharField(
+        label="Contraseña",
+        widget=forms.PasswordInput
+    )
+    password2 = forms.CharField(
+        label="Confirmar contraseña",
+        widget=forms.PasswordInput
+    )
+
+    class Meta:
+        model = Usuario
+        required = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+        fields = ['username', 'first_name', 'last_name', 'email']
+        labels = {
+          'username': 'Nombre de usuario',
+          'first_name': 'Nombre',
+          'last_name': 'Apellido',
+          'email': 'Correo electrónico',
+          
+    }
+    widgets = {
+            'username': forms.TextInput(attrs={'required': False}),
+            'first_name': forms.TextInput(attrs={'required': False}),
+            'last_name': forms.TextInput(attrs={'required': False}),
+            'email': forms.EmailInput(attrs={'required': False}),
+        }
+    error_messages = {
+            'username': {
+                'unique': 'Este nombre de usuario ya existe'
+            },
+            'email': {
+                'invalid': 'Ingrese un correo válido'
+            }
+        }
+
+    
+    def clean_username(self):
+     username = self.cleaned_data.get('username')
+     if not re.match(r'^[a-zA-Z0-9_]+$', username):
+        raise forms.ValidationError("El nombre de usuario solo puede contener letras, números y guiones bajos")
+     return username
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Las contraseñas no coinciden.")
+        return password2
+    
+    def clean(self):
+     cleaned_data = super().clean()
+
+     campos_obligatorios = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+
+     for campo in campos_obligatorios:
+        valor = cleaned_data.get(campo)
+        if not valor:
+            self.add_error(campo, 'Este campo es obligatorio')
+
+     return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        user.rol = 'medico'  # 👈 fuerza el rol de médico
+        user.is_active = True
+        if commit:
+            user.save()
+        return user
 
     

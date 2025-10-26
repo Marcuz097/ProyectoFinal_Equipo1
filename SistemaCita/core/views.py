@@ -12,7 +12,11 @@ from collections import defaultdict
 
 from .forms import RegistroForm, PacienteCitaForm
 from gestion_citas.forms import PacientePerfilForm
+from django.contrib import messages
+from .forms import MedicoRegistroForm
 from gestion_citas.models import Medico, Paciente, Cita
+from .decorators import admin_required, medico_required, paciente_required
+from .mixins import RolRequiredMixin
 
 
 # ==========================================================
@@ -56,13 +60,13 @@ def home_page(request):
     else:
         return redirect('paciente_cita_list')
 
-
 @login_required
+@admin_required
 def admin_dashboard(request):
     return render(request, 'base.html')
 
 
-@login_required
+@medico_required
 def agenda_medico(request):
     try:
         medico = Medico.objects.get(usuario=request.user)
@@ -86,7 +90,7 @@ def agenda_medico(request):
     return render(request, 'medico/agenda_medico.html', context)
 
 
-@login_required
+@paciente_required
 def paciente_cita_list(request):
     return render(request, 'paciente/paciente_cita_list.html')
 
@@ -112,8 +116,9 @@ def completar_perfil_paciente(request):
 # ==========================================================
 # 🔹 CRUD de citas del paciente
 # ==========================================================
-class PacienteCitaListView(LoginRequiredMixin, ListView):
+class PacienteCitaListView(RolRequiredMixin, ListView):
     model = Cita
+    rol_permitido = 'paciente'
     template_name = 'paciente/paciente_cita_list.html'
     context_object_name = 'citas'
 
@@ -124,8 +129,9 @@ class PacienteCitaListView(LoginRequiredMixin, ListView):
         return Cita.objects.none()
 
 
-class PacienteCitaCreateView(LoginRequiredMixin, CreateView):
+class PacienteCitaCreateView(RolRequiredMixin, CreateView):
     model = Cita
+    rol_permitido = 'paciente'
     form_class = PacienteCitaForm
     template_name = 'paciente/paciente_cita_form.html'
     success_url = reverse_lazy('paciente_cita_list')
@@ -135,8 +141,9 @@ class PacienteCitaCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class PacienteCitaUpdateView(LoginRequiredMixin, UpdateView):
+class PacienteCitaUpdateView(RolRequiredMixin, UpdateView):
     model = Cita
+    rol_permitido = 'paciente'
     form_class = PacienteCitaForm
     template_name = 'paciente/paciente_cita_form.html'
     success_url = reverse_lazy('paciente_cita_list')
@@ -145,8 +152,9 @@ class PacienteCitaUpdateView(LoginRequiredMixin, UpdateView):
         return Cita.objects.filter(paciente__usuario=self.request.user)
 
 
-class PacienteCitaDeleteView(LoginRequiredMixin, DeleteView):
+class PacienteCitaDeleteView(RolRequiredMixin, DeleteView):
     model = Cita
+    rol_permitido = 'paciente'
     template_name = 'paciente/paciente_cita_delete.html'
     success_url = reverse_lazy('paciente_cita_list')
 
@@ -181,3 +189,21 @@ def actualizar_estado_cita(request):
         'cita_id': cita_id,
         'nuevo_estado': nuevo_estado,
     })
+
+@login_required
+@admin_required
+def registrar_medico(request):
+    if not request.user.rol == 'admin':
+        messages.error(request, "No tienes permiso para acceder a esta página.")
+        return redirect('home')  # o donde quieras redirigir si no es admin
+
+    if request.method == 'POST':
+        form = MedicoRegistroForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Médico registrado correctamente.")
+            return redirect('gestion_citas:medico-list')  # o vuelve al listado de médicos
+    else:
+        form = MedicoRegistroForm()
+
+    return render(request, 'admin/registrar_medico.html', {'form': form})

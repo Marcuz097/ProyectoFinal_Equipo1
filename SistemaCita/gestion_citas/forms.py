@@ -235,67 +235,6 @@ class EspecialidadForm(forms.ModelForm):
                 raise forms.ValidationError(f"El campo '{campo}' no puede quedar vacío.")
         return cleaned_data
     
-class MedicoPerfilForm(forms.ModelForm):
-    especialidades = forms.ModelMultipleChoiceField(
-        queryset=Especialidad.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=True,
-        label='Especialidades'
-    )
-
-    class Meta:
-        model = Medico
-        fields = ['matricula', 'telefono', 'especialidades']
-        widgets = {
-            'matricula': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Ejemplo: M-12345'
-            }),
-            'telefono': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Ejemplo: 7777-7777'
-            }),
-        }
-        error_messages = {
-            'matricula': {'required': 'Debes agregar el numero de matricula.'},
-            'telefono': {'required': 'Debes agregar la un numero de telefono.'},
-            'especialidades': {'required': 'Debes indicar la especialidad.'},
-        }
-
-    # 🔹 Validar matrícula
-    def clean_matricula(self):
-        matricula = self.cleaned_data.get('matricula', '').strip()
-        if not matricula:
-            raise forms.ValidationError("La matrícula no puede estar vacía.")
-        if not re.match(r'^[A-Za-z0-9\-]{4,15}$', matricula):
-            raise forms.ValidationError("La matrícula debe tener entre 4 y 15 caracteres (letras, números o guiones).")
-        return matricula
-
-    # 🔹 Validar teléfono
-    def clean_telefono(self):
-        telefono = self.cleaned_data.get('telefono', '').strip()
-        if not telefono:
-            raise forms.ValidationError("El teléfono es obligatorio.")
-        if not re.match(r'^\d{4}-\d{4}$', telefono):
-            raise forms.ValidationError("El teléfono debe tener el formato 0000-0000.")
-        return telefono
-
-    # 🔹 Validar especialidades
-    def clean_especialidades(self):
-        especialidades = self.cleaned_data.get('especialidades')
-        if not especialidades or len(especialidades) == 0:
-            raise forms.ValidationError("Debes seleccionar al menos una especialidad.")
-        return especialidades
-
-    # 🔹 Validación general
-    def clean(self):
-        cleaned_data = super().clean()
-        for campo, valor in cleaned_data.items():
-            if not valor:
-                raise forms.ValidationError(f"El campo '{campo}' no puede quedar vacío.")
-        return cleaned_data
-  
-#fields = ['matricula', 'telefono', 'especialidades']
   
 class PacientePerfilForm(forms.ModelForm):
     fecha_nacimiento = forms.DateField(
@@ -359,8 +298,6 @@ class PacientePerfilForm(forms.ModelForm):
         return cleaned_data
         
         
-
-#fields = ['fecha_nacimiento', 'telefono', 'direccion']
 
 
 

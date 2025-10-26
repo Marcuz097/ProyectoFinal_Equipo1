@@ -22,4 +22,7 @@ urlpatterns = [
     
     path('medico/agenda/', views.agenda_medico, name='agenda_medico'),
     path('medico/actualizar-estado/', views.actualizar_estado_cita, name='medico-actualizar-estado'),
+    
+    #Registrar medico
+    path('admin/registrar_medico/', views.registrar_medico, name='registrar_medico'),
 ]

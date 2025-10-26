@@ -35,6 +35,7 @@ app_name = "gestion_citas"
 
 # enrutamiento
 urlpatterns = [
+    #especialidades
     path('especialidades/', EspecialidadListView.as_view(), name="especialidad-list"),
     path('especialidades/nueva', EspecialidadCreateView.as_view(), name="especialidad-create"),
     path('especialidades/editar/<int:pk>/', EspecialidadUpdateView.as_view(), name='especialidad-update'),
@@ -56,6 +57,5 @@ urlpatterns = [
     path('citas/nueva', CitaCreateView.as_view(), name="cita-create"),
     path('citas/editar/<int:pk>/', CitaUpdateView.as_view(), name='cita-update'),
     path('citas/eliminar/<int:pk>/', CitaDeleteView.as_view(), name='cita-delete'),
-
 
 ]

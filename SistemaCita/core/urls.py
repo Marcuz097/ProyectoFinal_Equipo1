@@ -12,14 +12,16 @@ urlpatterns = [
     path('', views.home_page, name='home'),
     path('admin/dashboard/', views.admin_dashboard, name='admin_dashboard'),
     
+    #Paciente URLs Citas
     path('paciente/citas/', views.PacienteCitaListView.as_view(), name='paciente_cita_list'),
     path('paciente/citas/nueva/', views.PacienteCitaCreateView.as_view(), name='paciente_cita_create'),
     path('paciente/citas/<int:pk>/editar/', views.PacienteCitaUpdateView.as_view(), name='paciente_cita_edit'),
     path('paciente/citas/<int:pk>/eliminar/', views.PacienteCitaDeleteView.as_view(), name='paciente_cita_delete'),
     
-   
+    # Completar perfil paciente
     path('completar-perfil/paciente/', views.completar_perfil_paciente, name='completar_perfil_paciente'),
     
+    #Medico URLs Agenda
     path('medico/agenda/', views.agenda_medico, name='agenda_medico'),
     path('medico/actualizar-estado/', views.actualizar_estado_cita, name='medico-actualizar-estado'),
     

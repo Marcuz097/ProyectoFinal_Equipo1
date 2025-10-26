@@ -1,16 +1,18 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Usuario
-from gestion_citas.models import Paciente
-from gestion_citas.models import Cita
-from gestion_citas.models import Medico
+from gestion_citas.models import Paciente, Cita, Medico
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 import re
 
 
+# ==============================
+# FORMULARIO DE REGISTRO DE PACIENTE
+# ==============================
 class RegistroForm(UserCreationForm):
+    # Campos personalizados con placeholders y clases de Bootstrap
     first_name = forms.CharField(
         max_length=30,
         required=False,
@@ -34,21 +36,21 @@ class RegistroForm(UserCreationForm):
             'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirmar contraseña'}),
         }
         error_messages = {
-            'username': {
-                'required': "El Usuario es obligatorio.",
-            }
+            'username': {'required': "El Usuario es obligatorio."}
         }
 
+    # 🔹 Guarda el usuario y crea automáticamente el perfil de Paciente
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.rol = 'paciente'  # 🔹 Fuerza que todos los registros sean pacientes
+        user.rol = 'paciente'  # Todos los registros son pacientes
         if commit:
             user.save()
-            # 🔹 Crea también el perfil de paciente
             Paciente.objects.create(usuario=user)
         return user
 
-    # 🔹 Validación del nombre
+    # ==============================
+    # VALIDACIONES DE CAMPOS
+    # ==============================
     def clean_first_name(self):
         first_name = self.cleaned_data.get('first_name', '').strip()
         if not first_name:
@@ -59,7 +61,6 @@ class RegistroForm(UserCreationForm):
             raise forms.ValidationError("El nombre debe tener al menos 2 caracteres.")
         return first_name
 
-    # 🔹 Validación del apellido
     def clean_last_name(self):
         last_name = self.cleaned_data.get('last_name', '').strip()
         if not last_name:
@@ -70,7 +71,6 @@ class RegistroForm(UserCreationForm):
             raise forms.ValidationError("El apellido debe tener al menos 2 caracteres.")
         return last_name
 
-    # 🔹 Validación del nombre de usuario
     def clean_username(self):
         username = self.cleaned_data.get('username', '').strip()
         if not username:
@@ -83,7 +83,6 @@ class RegistroForm(UserCreationForm):
             raise forms.ValidationError("Este nombre de usuario ya está en uso.")
         return username
 
-    # 🔹 Validación del correo electrónico
     def clean_email(self):
         email = self.cleaned_data.get('email', '').strip()
         if not email:
@@ -94,31 +93,20 @@ class RegistroForm(UserCreationForm):
             raise forms.ValidationError("Este correo ya está registrado.")
         return email
 
-    # 🔹 Validación del rol
-    def clean_rol(self):
-        rol = self.cleaned_data.get('rol')
-        if not rol:
-            raise forms.ValidationError("Debe seleccionar un tipo de usuario.")
-        return rol
-
-    # 🔹 Validación de las contraseñas y campos vacíos
     def clean_password1(self):
         password = self.cleaned_data.get('password1', '')
-
         if not password:
             raise forms.ValidationError("La contraseña es obligatoria.")
         if len(password) < 8:
             raise forms.ValidationError("La contraseña debe tener al menos 8 caracteres.")
         if not re.search(r'[A-Z]', password):
-            raise forms.ValidationError("La contraseña debe contener al menos una letra mayúscula (A-Z).")
+            raise forms.ValidationError("Debe contener al menos una letra mayúscula.")
         if not re.search(r'[a-z]', password):
-            raise forms.ValidationError("La contraseña debe contener al menos una letra minúscula (a-z).")
+            raise forms.ValidationError("Debe contener al menos una letra minúscula.")
         if not re.search(r'\d', password):
-            raise forms.ValidationError("La contraseña debe contener al menos un número (0-9).")
-        # Opcional: exigir un símbolo especial
+            raise forms.ValidationError("Debe contener al menos un número.")
         if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
-            raise forms.ValidationError("La contraseña debe contener al menos un carácter especial (!@#$%^&* etc.).")
-
+            raise forms.ValidationError("Debe contener al menos un carácter especial (!@#$...).")
         return password
 
     def clean(self):
@@ -126,32 +114,26 @@ class RegistroForm(UserCreationForm):
         password1 = cleaned_data.get('password1')
         password2 = cleaned_data.get('password2')
 
+        # Validación de coincidencia de contraseñas
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Las contraseñas no coinciden.")
         
+        # Validar que ningún campo quede vacío
         for campo, valor in cleaned_data.items():
             if valor in [None, '']:
                 raise forms.ValidationError(f"El campo '{campo}' no puede quedar vacío.")
         return cleaned_data
 
-    def save(self, commit=True):
-        usuario = super().save(commit=False)
-        usuario.first_name = self.cleaned_data.get('first_name', '').strip()
-        usuario.last_name = self.cleaned_data.get('last_name', '').strip()
-        if commit:
-            usuario.save()
-        return usuario
-
+# ==============================
+# FORMULARIO DE CITA PARA PACIENTE
+# ==============================
 class PacienteCitaForm(forms.ModelForm):
     class Meta:
         model = Cita
         fields = ['medico', 'fecha_hora', 'motivo']  # paciente y estado se asignan automáticamente
         widgets = {
             'medico': forms.Select(attrs={'class': 'form-select'}),
-            'fecha_hora': forms.DateTimeInput(attrs={
-                'class': 'form-control',
-                'type': 'datetime-local'
-            }),
+            'fecha_hora': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
             'motivo': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Describe el motivo de tu cita'}),
         }
         error_messages = {
@@ -160,23 +142,20 @@ class PacienteCitaForm(forms.ModelForm):
             'motivo': {'required': 'Debes indicar el motivo de la cita.'},
         }
 
-    # 🔹 Validación del médico
     def clean_medico(self):
         medico = self.cleaned_data.get('medico')
         if not medico:
             raise forms.ValidationError("Debes seleccionar un médico.")
         return medico
 
-    # 🔹 Validación de fecha y hora
     def clean_fecha_hora(self):
         fecha_hora = self.cleaned_data.get('fecha_hora')
         if not fecha_hora:
             raise forms.ValidationError("Debes seleccionar la fecha y hora de la cita.")
-        if fecha_hora < timezone.now():  # ⚡ usar timezone.now() en vez de datetime.datetime.now()
+        if fecha_hora < timezone.now():
             raise forms.ValidationError("La fecha y hora de la cita no puede ser en el pasado.")
         return fecha_hora
 
-    # 🔹 Validación del motivo
     def clean_motivo(self):
         motivo = self.cleaned_data.get('motivo', '').strip()
         if not motivo:
@@ -184,49 +163,39 @@ class PacienteCitaForm(forms.ModelForm):
         if len(motivo) < 5:
             raise forms.ValidationError("El motivo debe tener al menos 5 caracteres.")
         return motivo
-    
+
+# ==============================
+# FORMULARIO DE REGISTRO DE MÉDICO
+# ==============================
 class MedicoRegistroForm(forms.ModelForm):
-    password1 = forms.CharField(
-        label="Contraseña",
-        widget=forms.PasswordInput
-    )
-    password2 = forms.CharField(
-        label="Confirmar contraseña",
-        widget=forms.PasswordInput
-    )
+    password1 = forms.CharField(label="Contraseña", widget=forms.PasswordInput)
+    password2 = forms.CharField(label="Confirmar contraseña", widget=forms.PasswordInput)
 
     class Meta:
         model = Usuario
-        required = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
         fields = ['username', 'first_name', 'last_name', 'email']
         labels = {
-          'username': 'Nombre de usuario',
-          'first_name': 'Nombre',
-          'last_name': 'Apellido',
-          'email': 'Correo electrónico',
-          
-    }
-    widgets = {
+            'username': 'Nombre de usuario',
+            'first_name': 'Nombre',
+            'last_name': 'Apellido',
+            'email': 'Correo electrónico',
+        }
+        widgets = {
             'username': forms.TextInput(attrs={'required': False}),
             'first_name': forms.TextInput(attrs={'required': False}),
             'last_name': forms.TextInput(attrs={'required': False}),
             'email': forms.EmailInput(attrs={'required': False}),
         }
-    error_messages = {
-            'username': {
-                'unique': 'Este nombre de usuario ya existe'
-            },
-            'email': {
-                'invalid': 'Ingrese un correo válido'
-            }
+        error_messages = {
+            'username': {'unique': 'Este nombre de usuario ya existe'},
+            'email': {'invalid': 'Ingrese un correo válido'}
         }
 
-    
     def clean_username(self):
-     username = self.cleaned_data.get('username')
-     if not re.match(r'^[a-zA-Z0-9_]+$', username):
-        raise forms.ValidationError("El nombre de usuario solo puede contener letras, números y guiones bajos")
-     return username
+        username = self.cleaned_data.get('username')
+        if not re.match(r'^[a-zA-Z0-9_]+$', username):
+            raise forms.ValidationError("El nombre de usuario solo puede contener letras, números y guiones bajos")
+        return username
 
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')
@@ -234,26 +203,21 @@ class MedicoRegistroForm(forms.ModelForm):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Las contraseñas no coinciden.")
         return password2
-    
+
     def clean(self):
-     cleaned_data = super().clean()
-
-     campos_obligatorios = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
-
-     for campo in campos_obligatorios:
-        valor = cleaned_data.get(campo)
-        if not valor:
-            self.add_error(campo, 'Este campo es obligatorio')
-
-     return cleaned_data
+        cleaned_data = super().clean()
+        campos_obligatorios = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+        for campo in campos_obligatorios:
+            valor = cleaned_data.get(campo)
+            if not valor:
+                self.add_error(campo, 'Este campo es obligatorio')
+        return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        user.rol = 'medico'  # 👈 fuerza el rol de médico
+        user.rol = 'medico'  # Fuerza el rol de médico
         user.is_active = True
         if commit:
             user.save()
         return user
-
-    

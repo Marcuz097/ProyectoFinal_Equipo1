@@ -1,12 +1,23 @@
+# Importa funciones para renderizar templates, redirigir URLs y obtener objetos o devolver 404 si no existe
 from django.shortcuts import render, redirect, get_object_or_404
+# Permite iniciar sesión de un usuario
 from django.contrib.auth import login
+# Permite generar URLs inversas usando nombres de rutas, útil en redirecciones
 from django.urls import reverse_lazy
+# Decorador para requerir que un usuario esté logueado para acceder a una vista
 from django.contrib.auth.decorators import login_required
+# Clases genéricas de Django para manejo de login y logout
 from django.contrib.auth.views import LoginView, LogoutView
+# Clases genéricas de vistas de Django para listar, crear, actualizar o eliminar objetos
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+# Decorador para requerir que una vista solo acepte solicitudes POST
 from django.views.decorators.http import require_POST
+# Proporciona utilidades para trabajar con fechas y horas considerando la zona horaria
 from django.utils import timezone
+# Para devolver respuestas en formato JSON
+# Para devolver una respuesta HTTP de “prohibido” (403)
 from django.http import JsonResponse, HttpResponseForbidden
+# Permite crear diccionarios con valores por defecto para cada clave
 from collections import defaultdict
 
 # Formularios importados

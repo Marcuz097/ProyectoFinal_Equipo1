@@ -1,144 +1,168 @@
-from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from .models import Paciente, Medico, Cita, Especialidad
-from django.contrib import messages
-
-from django.urls import reverse_lazy
-
-from .forms import PacienteForm
-from .forms import MedicoForm
-from .forms import CitaForm
-from .forms import EspecialidadForm
-from core.mixins import RolRequiredMixin
-
-# Especialidad
-class EspecialidadListView(RolRequiredMixin, ListView):
-    model = Especialidad
-    rol_permitido = 'admin'
-    template_name = 'especialidad/especialidad-list.html'
-    context_object_name = 'especialidades'
-
-class EspecialidadCreateView(RolRequiredMixin, CreateView):
-    model = Especialidad
-    rol_permitido = 'admin'
-    form_class = EspecialidadForm
-    template_name = 'especialidad/especialidad-form.html'
-    success_url = reverse_lazy('gestion_citas:especialidad-list')
+from django.shortcuts import render # Permite renderizar plantillas HTML y devolverlas como respuesta HTTP
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView # Vistas genéricas de Django para listar, crear, actualizar y eliminar registros
+from .models import Paciente, Medico, Cita, Especialidad # Importa los modelos definidos en el mismo módulo para ser usados en las vistas
+from django.contrib import messages # Sistema de mensajes de Django (usado para mostrar notificaciones al usuario)
 
 
-class EspecialidadUpdateView(RolRequiredMixin, UpdateView):
-    model = Especialidad
-    rol_permitido = 'admin'
-    fields = ['nombre']
-    template_name = "especialidad/especialidad-form.html"
-    success_url = reverse_lazy('gestion_citas:especialidad-list')
+from django.urls import reverse_lazy # Genera URLs de forma perezosa, útil para evitar dependencias circulares
 
-class EspecialidadDeleteView(RolRequiredMixin, DeleteView):
-    model = Especialidad
-    rol_permitido = 'admin'
-    template_name = "especialidad/especialidad-delete.html" # Plantilla para confirmar eliminación
-    success_url = reverse_lazy('gestion_citas:especialidad-list') 
 
-class PacienteListView(RolRequiredMixin, ListView):
-    model = Paciente
-    rol_permitido = 'admin'
-    template_name = 'paciente/paciente-list.html'
-    context_object_name = 'pacientes'
-    def get_queryset(self):
-        # Solo usuarios con rol "paciente"
-        return Paciente.objects.filter(usuario__rol='paciente')
+from .forms import PacienteForm # Formulario del modelo Paciente
+from .forms import MedicoForm # Formulario del modelo Medico
+from .forms import CitaForm # Formulario del modelo Cita
+from .forms import EspecialidadForm # Formulario del modelo Especialidad
+from core.mixins import RolRequiredMixin # Mixin personalizado para restringir acceso según el rol del usuario
 
-class PacienteCreateView(RolRequiredMixin, CreateView):
-    model = Paciente
-    rol_permitido = 'admin'
-    form_class = PacienteForm
-    template_name = 'paciente/paciente-form.html'
-    success_url = reverse_lazy('gestion_citas:paciente-list')
 
-class PacienteUpdateView(RolRequiredMixin, UpdateView):
-    model = Paciente
-    rol_permitido = 'admin'
-    form_class = PacienteForm
-    template_name = 'paciente/paciente-form.html'
-    success_url = reverse_lazy('gestion_citas:paciente-list')
+# ===============================
+# VISTAS PARA ESPECIALIDAD
+# ===============================
 
-class PacienteDeleteView(RolRequiredMixin, DeleteView):
-    model = Paciente
-    rol_permitido = 'admin'
-    template_name = 'paciente/paciente-delete.html'
-    success_url = reverse_lazy('gestion_citas:paciente-list')
 
-class MedicoListView(RolRequiredMixin, ListView):
-    model = Medico
-    rol_permitido = 'admin'
-    template_name = 'medico/medico-list.html'
-    context_object_name = 'medicos'
-    def get_queryset(self):
-        # Solo usuarios con rol "medico"
-        return Medico.objects.filter(usuario__rol='medico')
+class EspecialidadListView(RolRequiredMixin, ListView): # Muestra la lista de especialidades disponibles
+ model = Especialidad # Especifica el modelo que se listará
+ rol_permitido = 'admin' # Solo los usuarios con rol 'admin' pueden acceder a esta vista
+ template_name = 'especialidad/especialidad-list.html' # Plantilla HTML a utilizar
+ context_object_name = 'especialidades' # Nombre de la variable que contendrá los datos en la plantilla
 
-class MedicoCreateView(RolRequiredMixin, CreateView):
-    model = Medico
-    rol_permitido = 'admin'
-    form_class = MedicoForm
-    template_name = 'medico/medico-form.html'
-    success_url = reverse_lazy('gestion_citas:medico-list')
 
-class MedicoUpdateView(RolRequiredMixin, UpdateView):
-    model = Medico
-    rol_permitido = 'admin'
-    form_class = MedicoForm
-    template_name = 'medico/medico-form.html'
-    success_url = reverse_lazy('gestion_citas:medico-list')
+class EspecialidadCreateView(RolRequiredMixin, CreateView): # Permite crear una nueva especialidad
+ model = Especialidad # Modelo al que pertenece el formulario
+ rol_permitido = 'admin' # Solo los administradores pueden crear especialidades
+ form_class = EspecialidadForm # Usa el formulario definido en forms.py
+ template_name = 'especialidad/especialidad-form.html' # Plantilla HTML del formulario
+ success_url = reverse_lazy('gestion_citas:especialidad-list') # Redirección después de crear con éxito
 
-class MedicoDeleteView(RolRequiredMixin,DeleteView):
-    model = Medico
-    rol_permitido = 'admin'
-    template_name = 'medico/medico-delete.html'
-    success_url = reverse_lazy('gestion_citas:medico-list')
 
-class CitaListView(RolRequiredMixin, ListView):
-    model = Cita
-    template_name = 'cita/cita-list.html'
-    context_object_name = 'citas'
+class EspecialidadUpdateView(RolRequiredMixin, UpdateView): # Permite editar una especialidad existente
+ model = Especialidad # Modelo a editar
+ rol_permitido = 'admin' # Solo los administradores pueden modificar
+ fields = ['nombre'] # Campos que se pueden editar
+ template_name = "especialidad/especialidad-form.html" # Reutiliza la plantilla de creación
+ success_url = reverse_lazy('gestion_citas:especialidad-list') # Redirección al listado tras actualizar
 
-    # Solo los roles permitidos pueden entrar a esta vista
-    rol_permitido= 'admin'  # Puede ser 'admin', 'medico' o 'paciente'
 
-    def get_queryset(self):
-        user = self.request.user
+class EspecialidadDeleteView(RolRequiredMixin, DeleteView): # Permite eliminar una especialidad
+ model = Especialidad # Modelo que se eliminará
+ rol_permitido = 'admin' # Solo los administradores pueden eliminar
+ template_name = "especialidad/especialidad-delete.html" # Plantilla de confirmación de eliminación
+ success_url = reverse_lazy('gestion_citas:especialidad-list') # Redirección tras la eliminación
 
-        if user.rol == 'admin':
-            # Admin ve todas las citas
-            return Cita.objects.all()
-        elif user.rol == 'medico':
-            # Médico solo ve sus citas
-            return Cita.objects.filter(medico__usuario=user)
-        elif user.rol == 'paciente':
-            # Paciente solo ve sus citas
-            return Cita.objects.filter(paciente__usuario=user)
-        else:
-            # Otros roles no ven nada
-            return Cita.objects.none()
 
-class CitaCreateView(RolRequiredMixin, CreateView):
-    model = Cita
-    rol_permitido = 'admin'
-    form_class = CitaForm
-    template_name = 'cita/cita-form.html'
-    success_url = reverse_lazy('gestion_citas:cita-list')
+# ===============================
+# VISTAS PARA PACIENTE
+# ===============================
 
-class CitaUpdateView(RolRequiredMixin,UpdateView):
-    model = Cita
-    rol_permitido = 'admin'
-    form_class = CitaForm
-    template_name = 'cita/cita-form.html'
-    success_url = reverse_lazy('gestion_citas:cita-list')
 
-class CitaDeleteView(RolRequiredMixin,DeleteView):
-    model = Cita
-    rol_permitido = 'admin'
-    template_name = 'cita/cita-delete.html'
-    success_url = reverse_lazy('gestion_citas:cita-list')
-    
+class PacienteListView(RolRequiredMixin, ListView): # Muestra todos los pacientes registrados
+ model = Paciente # Modelo a listar
+ rol_permitido = 'admin' # Solo administradores pueden acceder
+ template_name = 'paciente/paciente-list.html' # Plantilla de la lista de pacientes
+ context_object_name = 'pacientes' # Variable de contexto accesible en la plantilla
 
+
+class PacienteCreateView(RolRequiredMixin, CreateView): # Permite crear un nuevo paciente
+ model = Paciente # Modelo asociado
+ rol_permitido = 'admin' # Solo admin puede crear pacientes
+ form_class = PacienteForm # Formulario para la creación
+ template_name = 'paciente/paciente-form.html' # Plantilla HTML del formulario
+ success_url = reverse_lazy('gestion_citas:paciente-list') # Redirección tras creación
+
+
+class PacienteUpdateView(RolRequiredMixin, UpdateView): # Permite modificar un paciente existente
+ model = Paciente # Modelo asociado
+ rol_permitido = 'admin' # Solo admin puede modificar
+ form_class = PacienteForm # Formulario para la edición
+ template_name = 'paciente/paciente-form.html' # Plantilla reutilizada
+ success_url = reverse_lazy('gestion_citas:paciente-list') # Redirección al listado tras editar
+
+
+class PacienteDeleteView(RolRequiredMixin, DeleteView): # Permite eliminar un paciente
+ model = Paciente # Modelo asociado
+ rol_permitido = 'admin' # Solo admin puede eliminar
+ template_name = 'paciente/paciente-delete.html' # Plantilla de confirmación de eliminación
+ success_url = reverse_lazy('gestion_citas:paciente-list') # Redirección tras eliminar
+
+
+# ===============================
+# VISTAS PARA MÉDICO
+# ===============================
+
+
+class MedicoListView(RolRequiredMixin, ListView): # Muestra la lista de médicos registrados
+ model = Medico # Modelo a listar
+ rol_permitido = 'admin' # Solo admin puede acceder
+ template_name = 'medico/medico-list.html' # Plantilla HTML con la lista
+ context_object_name = 'medicos' # Nombre de la variable de contexto en la plantilla
+
+
+class MedicoCreateView(RolRequiredMixin, CreateView): # Permite registrar un nuevo médico
+ model = Medico # Modelo asociado
+ rol_permitido = 'admin' # Solo admin puede crear médicos
+ form_class = MedicoForm # Formulario para la creación
+ template_name = 'medico/medico-form.html' # Plantilla HTML del formulario
+ 
+class MedicoUpdateView(RolRequiredMixin, UpdateView): # Permite actualizar datos de un médico
+ model = Medico # Modelo asociado
+ rol_permitido = 'admin' # Solo admin puede modificar
+ form_class = MedicoForm # Formulario usado para la edición
+ template_name = 'medico/medico-form.html' # Plantilla HTML del formulario
+ success_url = reverse_lazy('gestion_citas:medico-list') # Redirección tras actualizar
+
+
+class MedicoDeleteView(RolRequiredMixin, DeleteView): # Permite eliminar un médico
+ model = Medico # Modelo a eliminar
+ rol_permitido = 'admin' # Solo admin puede eliminar
+ template_name = 'medico/medico-delete.html' # Plantilla para confirmar eliminación
+ success_url = reverse_lazy('gestion_citas:medico-list') # Redirección tras eliminar
+
+
+# ===============================
+# VISTAS PARA CITA
+# ===============================
+
+
+class CitaListView(RolRequiredMixin, ListView): # Muestra la lista de citas disponibles según el rol
+ model = Cita # Modelo a listar
+ template_name = 'cita/cita-list.html' # Plantilla HTML donde se muestran las citas
+ context_object_name = 'citas' # Nombre de la variable que contendrá las citas en la plantilla
+
+
+ rol_permitido = 'admin' # Solo ciertos roles pueden acceder a esta vista ('admin', 'medico', 'paciente')
+
+
+def get_queryset(self): # Método que filtra las citas según el rol del usuario autenticado
+ user = self.request.user # Obtiene el usuario actual de la solicitud
+
+
+ if user.rol == 'admin': # Si el usuario es administrador
+  return Cita.objects.all() # Devuelve todas las citas
+ elif user.rol == 'medico': # Si el usuario es médico
+  return Cita.objects.filter(medico__usuario=user) # Muestra solo las citas del médico actual
+ elif user.rol == 'paciente': # Si el usuario es paciente
+  return Cita.objects.filter(paciente__usuario=user) # Muestra solo las citas del paciente actual
+ else:
+  return Cita.objects.none() # Si el rol no es válido, no devuelve resultados
+
+
+class CitaCreateView(RolRequiredMixin, CreateView): # Permite crear una nueva cita médica
+ model = Cita # Modelo asociado
+ rol_permitido = 'admin' # Solo el admin puede crear citas manualmente
+ form_class = CitaForm # Formulario usado para la creación
+ template_name = 'cita/cita-form.html' # Plantilla HTML del formulario
+ success_url = reverse_lazy('gestion_citas:cita-list') # Redirección al listado de citas tras crear
+
+
+class CitaUpdateView(RolRequiredMixin, UpdateView): # Permite modificar una cita existente
+ model = Cita # Modelo asociado
+ rol_permitido = 'admin' # Solo admin puede modificar
+ form_class = CitaForm # Formulario para la edición
+ template_name = 'cita/cita-form.html' # Plantilla reutilizada
+ success_url = reverse_lazy('gestion_citas:cita-list') # Redirección tras editar
+
+
+class CitaDeleteView(RolRequiredMixin, DeleteView): # Permite eliminar una cita médica
+ model = Cita # Modelo asociado
+ rol_permitido = 'admin' # Solo admin puede eliminar
+ template_name = 'cita/cita-delete.html' # Plantilla HTML para confirmar la eliminación
+ success_url = reverse_lazy('gestion_citas:cita-list') # Redirección al listado tras eliminar

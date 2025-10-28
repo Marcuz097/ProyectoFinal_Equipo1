@@ -225,7 +225,7 @@ class MedicoRegistroForm(forms.ModelForm):
 
     def clean(self):  # Validación general de campos obligatorios
         cleaned_data = super().clean()
-        campos_obligatorios = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+        campos_obligatorios = ['username', 'first_name', 'last_name', 'email','password1','password2']
         for campo in campos_obligatorios:
             valor = cleaned_data.get(campo)
             if not valor:

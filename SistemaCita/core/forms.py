@@ -44,6 +44,7 @@ class RegistroForm(UserCreationForm):  # Hereda de UserCreationForm para registr
 
     class Meta:  # Configuración interna del formulario
         model = Usuario  # Modelo asociado
+        required = True
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']  # Campos visibles
         widgets = {  # Personalización de los inputs
             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Usuario'}),
@@ -147,6 +148,7 @@ class RegistroForm(UserCreationForm):  # Hereda de UserCreationForm para registr
 class PacienteCitaForm(forms.ModelForm):
     class Meta:
         model = Cita  # Modelo asociado
+        required = True
         fields = ['medico', 'fecha_hora', 'motivo']  # Campos visibles (paciente y estado se asignan automáticamente)
         widgets = {  # Personalización de inputs
             'medico': forms.Select(attrs={'class': 'form-select'}),
@@ -200,7 +202,7 @@ class MedicoRegistroForm(forms.ModelForm):
             'email': 'Correo electrónico',
         }
         widgets = {  # Personalización de inputs
-            'username': forms.TextInput(attrs={'required': False}),
+            'username': forms.TextInput(attrs={'required': True}),
             'first_name': forms.TextInput(attrs={'required': False}),
             'last_name': forms.TextInput(attrs={'required': False}),
             'email': forms.EmailInput(attrs={'required': False}),

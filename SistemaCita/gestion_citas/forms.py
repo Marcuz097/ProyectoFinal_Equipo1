@@ -85,6 +85,7 @@ class PacienteForm(forms.ModelForm):  # Formulario basado en el modelo Paciente
 class MedicoForm(forms.ModelForm):  # Formulario para registrar o editar médicos
     class Meta:
         model = Medico
+        required = True
         fields = ['usuario', 'matricula', 'telefono', 'especialidades']
         widgets = {
             'matricula': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ejemplo: M-12345'}),
@@ -129,6 +130,7 @@ class MedicoForm(forms.ModelForm):  # Formulario para registrar o editar médico
 class CitaForm(forms.ModelForm):  # Formulario para crear o modificar citas
     class Meta:
         model = Cita
+        required = True
         fields = ['fecha_hora', 'motivo', 'estado', 'paciente', 'medico']
         widgets = {
             'fecha_hora': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),

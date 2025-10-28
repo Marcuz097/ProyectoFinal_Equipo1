@@ -204,8 +204,7 @@ class EspecialidadForm(forms.ModelForm):  # Formulario para crear o modificar es
 # FORMULARIO PARA PERFIL DE PACIENTE
 # ==============================
 class PacientePerfilForm(forms.ModelForm):  # Formulario para que el paciente edite su perfil
-    fecha_nacimiento = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}), required=True, label='Fecha de nacimiento')
-
+    fecha_nacimiento = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}), label='Fecha de nacimiento')
     class Meta:
         model = Paciente
         fields = ['fecha_nacimiento', 'telefono', 'direccion']

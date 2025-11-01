@@ -40,12 +40,12 @@ from .mixins import RolRequiredMixin
 # 🔹 LOGIN Y LOGOUT PERSONALIZADOS
 # ==========================================================
 class CustomLoginView(LoginView):
-    template_name = "core/login.html"  # Plantilla para login
-    redirect_authenticated_user = True  # Redirige si ya está logueado
+    template_name = "core/login.html" # Plantilla para login
+    redirect_authenticated_user = True # Redirige si ya está logueado
 
 
 class CustomLogoutView(LogoutView):
-    next_page = reverse_lazy('login')  # Redirige al login tras cerrar sesión
+    next_page = reverse_lazy('login') # Redirige al login tras cerrar sesión
 
 
 # ==========================================================
@@ -53,14 +53,14 @@ class CustomLogoutView(LogoutView):
 # ==========================================================
 def registro(request):
     if request.method == 'POST':
-        form = RegistroForm(request.POST)  # Se reciben datos del formulario
-        if form.is_valid():  # Validación de formulario
-            user = form.save()  # Guarda el usuario
-            login(request, user)  # Inicia sesión automáticamente
+        form = RegistroForm(request.POST) # Se reciben datos del formulario
+        if form.is_valid(): # Validación de formulario
+            user = form.save() # Guarda el usuario
+            login(request, user) # Inicia sesión automáticamente
             # Redirige a completar perfil de paciente
-            return redirect('completar_perfil_paciente')  
+            return redirect('completar_perfil_paciente') 
     else:
-        form = RegistroForm()  # Formulario vacío si GET
+        form = RegistroForm() # Formulario vacío si GET
     return render(request, 'core/registro.html', {'form': form})
 
 
@@ -82,8 +82,8 @@ def home_page(request):
 @login_required
 @admin_required
 def admin_dashboard(request):
-    # Renderiza dashboard de admin
-    return render(request, 'base.html')
+    # CORRECCIÓN APLICADA: Renderizar la plantilla específica del panel de administración
+    return render(request, 'admin/panel_admin.html', {}) 
 
 
 @medico_required
@@ -125,12 +125,12 @@ def paciente_cita_list(request):
 # ==========================================================
 def completar_perfil_paciente(request):
     user = request.user
-    form = PacientePerfilForm(request.POST or None)  # Formulario con POST o vacío
+    form = PacientePerfilForm(request.POST or None) # Formulario con POST o vacío
 
     if request.method == 'POST' and form.is_valid():
-        paciente = form.save(commit=False)  # No guarda todavía
-        paciente.usuario = user  # Asigna usuario logueado
-        paciente.save()  # Guarda paciente
+        paciente = form.save(commit=False) # No guarda todavía
+        paciente.usuario = user # Asigna usuario logueado
+        paciente.save() # Guarda paciente
         return redirect('home')
 
     return render(request, 'core/completar_perfil.html', {
@@ -144,7 +144,7 @@ def completar_perfil_paciente(request):
 # ==========================================================
 class PacienteCitaListView(RolRequiredMixin, ListView):
     model = Cita
-    rol_permitido = 'paciente'  # Solo pacientes
+    rol_permitido = 'paciente' # Solo pacientes
     template_name = 'paciente/paciente_cita_list.html'
     context_object_name = 'citas'
 
@@ -241,7 +241,7 @@ def registrar_medico(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Médico registrado correctamente.")
-            return redirect('gestion_citas:medico-list')  # Redirige al listado de médicos
+            return redirect('gestion_citas:medico-list') # Redirige al listado de médicos
     else:
         form = MedicoRegistroForm()
 

@@ -1,21 +1,143 @@
 {% extends "base.html" %}
 
-{% block titulo %} Confirmar Eliminación {% endblock %}
+{% block titulo %} Confirmar Eliminación de Cita {% endblock %}
 
 {% block contenido %} 
-<div class="container mt-5">
-    <div class="alert alert-danger shadow-lg" role="alert">
-        <h4 class="alert-heading">⚠️ ¡Advertencia!</h4>
-        <p>Estás a punto de eliminar la cita:</p>
-        <h2 class="mb-4"><strong>{{ object.usuario.first_name }}</strong> </h2>
-        <hr>
-        <p class="mb-0">¿Estás seguro de que deseas continuar con esta acción? Es irreversible.</p>
-    </div>
+<style>
+    /* ------------------------------------------------------------------
+       PALETA DE COLORES Y ESTILOS CONSISTENTES 
+       ------------------------------------------------------------------ */
+    body {
+        background-color: #F4F7F9; 
+    }
 
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger btn-lg">Sí, Eliminar</button>
-        <a href="{% url 'gestion_citas:cita-list' %}" class="btn btn-secondary btn-lg">Cancelar</a>
-    </form>
+    /* Azul Marino Oscuro */
+    .bg-deep-navy {
+        background-color: #002850 !important; 
+    }
+    .text-deep-navy {
+        color: #002850 !important;
+    }
+    
+    /* Rojo Oscuro Elegante para la acción de eliminar */
+    .red-deep-elegant { 
+        background-color: #A31526; 
+        border-color: #A31526;
+        transition: background-color 0.3s ease, box-shadow 0.3s;
+        box-shadow: 0 4px 8px rgba(163, 21, 38, 0.2);
+    }
+    .red-deep-elegant:hover {
+        background-color: #8c1322; 
+        border-color: #8c1322;
+        box-shadow: 0 6px 12px rgba(163, 21, 38, 0.3);
+    }
+    
+    /* Botón Cancelar (Outline Azul Marino) */
+    .btn-outline-marine {
+        color: #002850;
+        border: 2px solid #002850; 
+        transition: all 0.2s ease;
+    }
+    .btn-outline-marine:hover {
+        background-color: #002850;
+        color: #fff;
+    }
+    
+    /* ------------------------------------------------------------------
+       ESTILOS PARA EL MODAL DE ELIMINACIÓN (MENOS ANCHO)
+       ------------------------------------------------------------------ */
+    .dialog-container {
+        /* Tamaño compacto */
+        max-width: 400px; 
+        margin-top: 1.5rem; 
+    }
+    .card-delete-elegant {
+        border-radius: 15px !important; 
+        border: none; 
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
+    }
+
+    /* Encabezado de la Tarjeta */
+    .card-header-subtle-danger {
+        border-bottom: 4px solid #A31526; 
+        background-color: #f9f9f9; 
+        color: #002850; 
+        font-weight: 600;
+        padding: 1.25rem 1.5rem; 
+    }
+    .card-header-subtle-danger h5 {
+        font-weight: 800; 
+        letter-spacing: 0.5px;
+    }
+
+    /* Detalle de la Cita Destacado (Motivo) */
+    .cita-detalle-destacado {
+        font-size: 1.15rem; 
+        font-style: italic; 
+        font-weight: 500; 
+        color: #333; 
+        padding: 0.5rem 0.25rem;
+        border: 1px dashed #DDD; 
+        border-radius: 8px;
+        display: block;
+        margin-bottom: 1rem;
+        background-color: #FEFEFE;
+    }
+    .cita-label {
+        font-weight: 700; 
+        font-size: 1rem;
+        color: #002850; 
+        margin-bottom: 0.25rem !important;
+    }
+    /* Botones de Acción */
+    .btn-lg {
+        padding: 0.8rem 2.2rem;
+        font-size: 1rem;
+        border-radius: 50px;
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center">
+    
+    <div class="col-12 dialog-container">
+        
+        <div class="card shadow-lg card-delete-elegant">
+            
+            <div class="card-header card-header-subtle-danger d-flex align-items-center">
+                <i class="bi bi-x-octagon-fill fs-4 me-3 text-red-deep-elegant"></i> 
+                <h5 class="mb-0 fw-bold">Confirmar Eliminación de Cita</h5>
+            </div>
+            
+            <div class="card-body p-4 text-center">
+                
+                <p class="lead text-muted mb-3 fw-bolder"> 
+                    Advertencia de Seguridad:
+                </p>
+                
+                <p class="cita-label">Motivo de la Cita a Eliminar:</p>
+                
+                <span class="cita-detalle-destacado">
+                    <i class="bi bi-chat-left-text me-2 text-red-deep-elegant"></i> 
+                    <strong>{{ object.motivo }}</strong>
+                </span>
+                
+                <p class="mb-4 mt-4 text-secondary">
+                    <span class="text-danger fw-semibold">Esta acción es irreversible.</span> ¿Deseas eliminar permanentemente esta cita?
+                </p>
+
+                <form method="post" class="d-grid gap-3">
+                    {% csrf_token %}
+                    <button type="submit" class="btn red-deep-elegant text-white btn-lg fw-bold">
+                        <i class="bi bi-trash-fill me-2"></i> Sí, Eliminar Cita
+                    </button>
+                    
+                    <a href="{% url 'gestion_citas:cita-list' %}" class="btn btn-outline-marine btn-lg">
+                        <i class="bi bi-arrow-left me-2"></i> Regresar y Cancelar
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

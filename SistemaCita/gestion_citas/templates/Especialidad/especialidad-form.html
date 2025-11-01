@@ -4,33 +4,164 @@
     {% if form.instance.pk %}
         Editar especialidad {{ form.instance.nombre }}
     {% else %}
-        Nuevo Especialidad
+        Registrar Nueva Especialidad
     {% endif %}
 {% endblock %}
 
 {% block contenido %} 
-    <div class="container mt-4 d-flex justify-content-center">
-        <div class="card shadow-lg" style="width: 50%;">
-            <div class="card-header bg-primary text-white">
-                <h2 class="card-title text-center">
+    
+    <style>
+        /* ------------------------------------------------------------------
+           CSS (Mantenemos los estilos definidos anteriormente)
+           ------------------------------------------------------------------ */
+        body { background-color: #F4F7F9; }
+        .bg-deep-navy { background-color: #002D62 !important; }
+        .color-contrast-blue { color: #4A90E2; }
+        .card-innovadora {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 45, 98, 0.1); 
+            max-width: 400px; 
+            width: 95%; 
+            overflow: hidden;
+        }
+        .card-header-marine {
+            background-color: #002D62; 
+            color: white;
+            border-radius: 0.75rem 0.75rem 0 0 !important;
+            padding: 1.5rem;
+            border-bottom: 4px solid #4A90E2;
+        }
+        .card-header-marine h3 {
+            font-weight: 700 !important;
+            font-size: 1.4rem !important;
+            letter-spacing: 0.5px;
+        }
+        .card-body-content { padding: 1.5rem; }
+
+        /* Estilos de Input */
+        .form-control-styled {
+            padding: 10px 15px; 
+            border: 1px solid #D1D9E6;
+            border-radius: 8px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-control-styled:focus {
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+            outline: none;
+        }
+        
+        /* Botones */
+        .btn-principal {
+            background-color: #004080; 
+            border: none;
+            color: white;
+            padding: 0.7rem 2rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 45, 98, 0.2);
+        }
+        .btn-principal:hover {
+            background-color: #002D62; 
+            transform: translateY(-1px);
+        }
+        
+        /* BOTÓN CANCELAR: ROJO OSCURO OUTLINE (INNOVADOR) */
+        .btn-secundario {
+            background: none;
+            color: #A31526; /* Texto Rojo Oscuro */
+            border: 2px solid #A31526; /* Borde Rojo Oscuro */
+            padding: 0.7rem 2rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            transition: all 0.2s ease;
+        }
+        .btn-secundario:hover {
+            background-color: #A31526; /* Relleno Rojo Oscuro al hover */
+            color: white;
+        }
+        
+        /* Clases específicas para el campo de especialidad */
+        .label-style {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.3rem;
+            color: #333;
+        }
+
+    </style>
+
+    <div class="container d-flex justify-content-center align-items-center py-5">
+        
+        <div class="card shadow-lg border-0 rounded-4 card-innovadora">
+            
+            <div class="card-header bg-deep-navy text-white text-center py-3 rounded-top-4 card-header-marine">
+                <h3 class="card-title mb-0 fw-bolder fs-4">
+                    <i class="bi bi-clipboard-heart me-2"></i>
                     {% if form.instance.pk %}
-                        Editar Especialidad
+                        EDITAR ESPECIALIDAD
                     {% else %}
-                        Registrar Nueva Especialidad
+                        REGISTRAR NUEVA ESPECIALIDAD
                     {% endif %}
-                </h2>
+                </h3>
             </div>
-            <div class="card-body">
-                <form method="post">
+            
+            <div class="card-body card-body-content">
+                <form method="post" class="needs-validation" novalidate>
                     {% csrf_token %}
-                    {{ form.as_p }} 
+
+                    <div class="mb-3">
+                        
+                        <label for="{{ form.nombre.id_for_label }}" class="label-style">
+                            <i class="bi bi-tag-fill me-1"></i> Nombre de la Especialidad
+                        </label>
+
+                        <input type="text" 
+                               name="{{ form.nombre.name }}" 
+                               id="{{ form.nombre.id_for_label }}"
+                               class="form-control form-control-styled" 
+                               placeholder="Ejemplo: Cardiología, Neurología, Odontología" 
+                               value="{{ form.nombre.value|default_if_none:'' }}"
+                               {% if form.nombre.field.required %}required{% endif %}>
+                        
+                        {% if form.nombre.help_text %}<div class="form-text mt-1 text-secondary small">{{ form.nombre.help_text }}</div>{% endif %}
+                        <div class="invalid-feedback">Este campo es obligatorio.</div>
+                        {{ form.nombre.errors }}
+                    </div>
                     
+                    <div class="d-flex justify-content-center mt-4 gap-3">
+                        
+                        <button type="submit" class="btn btn-principal px-4 fw-bold rounded-pill">
+                            <i class="bi bi-save-fill me-1"></i> Guardar
+                        </button>
+                        
+                        <a href="{% url 'gestion_citas:especialidad-list' %}" class="btn btn-secundario px-4 fw-bold rounded-pill">
+                            <i class="bi bi-x-circle me-1"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
             </div>
-            <div class="card-footer d-flex justify-content-evenly">
-                <button type="submit" class="btn btn-success">Guardar</button>
-                <a href="{% url 'gestion_citas:especialidad-list' %}" class="btn btn-outline-info">Cancelar</a>
-            </div>
-            </form>
+            
         </div>
     </div>
+
+    <script>
+    // Validación de Bootstrap (se mantiene)
+    (function () {
+      'use strict'
+
+      var form = document.querySelector('form')
+      if (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+      }
+    })()
+    </script>
 {% endblock %}

@@ -74,7 +74,9 @@ USE_I18N = True
 
 # Archivos estáticos
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # 👈 agrega esta línea
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'core', 'static')]  # 👈 agrega esta línea
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Carpeta para collectstatic
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -115,7 +117,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'mssql', 
         'NAME': 'SistemaCitasDB', 
-        'HOST': 'MARCO2512', 
+        'HOST': 'localhost', 
         'PORT': '1433',
         'USER': '', # Dejar vacío para autenticación de Windows
         'PASSWORD': '', # Dejar vacío para autenticación de Windows

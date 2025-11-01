@@ -2,17 +2,114 @@
 
 {% block titulo %} 
     {% if form.instance.pk %}
-        Editar Cita: {{ form.instance.nombre }}
+        Editar Cita 
     {% else %}
         Nueva Cita
     {% endif %}
 {% endblock %}
 
 {% block contenido %} 
-    <div class="container mt-4 d-flex justify-content-center">
-        <div class="card shadow-lg" style="width: 50%;">
-            <div class="card-header bg-primary text-white">
-                <h2 class="card-title text-center">
+    <style>
+        /* Paleta de Colores y Estilos Base */
+        body {
+            background-color: #F4F7F9; 
+        }
+        .text-contrast-blue {
+            color: #4A90E2 !important; 
+        }
+        
+        /* Estilos de Tarjeta (ULTRA-COMPACTA Y CUADRADA) */
+        .card-shadow-innovador {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1); 
+            max-width: 500px; 
+            width: 95%; 
+        }
+        .card-header-navy {
+            background-color: #002D62; 
+            color: white;
+            border-radius: 15px 15px 0 0;
+            padding: 1rem;
+            border-bottom: 4px solid #4A90E2;
+        }
+        .card-header-navy h2 {
+            font-weight: 700;
+            font-size: 1.5rem; 
+            letter-spacing: 0.5px;
+        }
+
+        /* -----------------------------------------------------------
+           ESTILOS DE CAMPOS RENDERIZADOS POR Django
+           ----------------------------------------------------------- */
+        .card-body {
+            padding: 1.5rem 2rem;
+        }
+        .card-body p {
+            margin-bottom: 0.5rem; 
+        }
+        .card-body label {
+            font-weight: 700; 
+            color: #333;
+            display: block;
+            margin-bottom: 0.2rem;
+            font-size: 0.85rem; 
+        }
+        .card-body input, 
+        .card-body select, 
+        .card-body textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #D1D9E6;
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .card-body input:focus, 
+        .card-body select:focus, 
+        .card-body textarea:focus {
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2); 
+            outline: none;
+        }
+
+
+        /* Botones (Estilo Píldora Consistente) */
+        .btn-principal {
+            background-color: #004080; 
+            border: none;
+            color: white;
+            padding: 0.6rem 1.75rem; 
+            font-weight: 600;
+            border-radius: 50px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-principal:hover {
+            background-color: #002D62;
+        }
+        
+        /* BOTÓN CANCELAR: ROJO OSCURO OUTLINE */
+        .btn-secundario-outline {
+            background: none;
+            color: #A31526; 
+            border: 2px solid #A31526; 
+            padding: 0.6rem 1.75rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secundario-outline:hover {
+            background-color: #A31526; 
+            color: white;
+        }
+    </style>
+
+    <div class="container mt-3 d-flex justify-content-center"> 
+        <div class="card card-shadow-innovador">
+            
+            <div class="card-header card-header-navy text-white text-center">
+                <h2 class="card-title">
+                    <i class="bi bi-calendar-plus-fill me-2"></i>
                     {% if form.instance.pk %}
                         Editar Cita 
                     {% else %}
@@ -20,16 +117,67 @@
                     {% endif %}
                 </h2>
             </div>
-            <div class="card-body">
-                <form method="post">
+            
+            <form method="post">
+                <div class="card-body">
                     {% csrf_token %}
-                    {{ form.as_p }} 
                     
-            </div>
-            <div class="card-footer d-flex justify-content-evenly">
-                <button type="submit" class="btn btn-success">Guardar</button>
-                <a href="{% url 'gestion_citas:cita-list' %}" class="btn btn-outline-info">Cancelar</a>
-            </div>
+                    {% for field in form %}
+                        <p>
+                            <label for="{{ field.id_for_label }}">
+                                {% if field.name == 'paciente' %}
+                                    <i class="bi bi-person-fill text-contrast-blue"></i> Paciente
+                                {% elif field.name == 'medico' %}
+                                    <i class="bi bi-person-badge-fill text-contrast-blue"></i> Médico
+                                {% elif field.name == 'fecha_hora' %}
+                                    <i class="bi bi-calendar-date-fill text-contrast-blue"></i> Fecha y Hora
+                                {% elif field.name == 'motivo' %}
+                                    <i class="bi bi-chat-dots-fill text-contrast-blue"></i> Motivo
+                                {% elif field.name == 'estado' %}
+                                    <i class="bi bi-activity text-contrast-blue"></i> Estado
+                                {% endif %}
+                            </label>
+                            
+                            {% if field.name == 'paciente' or field.name == 'medico' %}
+                                {{ field.errors }}
+                                <select name="{{ field.name }}" id="{{ field.id_for_label }}"
+                                        class="form-select" 
+                                        {% if field.field.required %}required{% endif %}>
+                                    
+                                    <option value="" {% if not field.value %}selected{% endif %} disabled>
+                                        -- Seleccionar --
+                                    </option>
+                                    
+                                    {% for obj in field.field.queryset %}
+                                        <option value="{{ obj.pk }}" {% if field.value|stringformat:"s" == obj.pk|stringformat:"s" %}selected{% endif %}>
+                                            {% if field.name == 'medico' %}Dr(a). {% endif %}{{ obj.usuario.first_name }} {{ obj.usuario.last_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            {% elif field.name == 'motivo' %}
+                                {{ field.errors }}
+                                <textarea name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                                        class="form-control" rows="2" 
+                                        placeholder="Describa brevemente el motivo de la cita...">{{ field.value|default_if_none:'' }}</textarea>
+                            {% else %}
+                                {{ field.errors }}
+                                {{ field }} 
+                            {% endif %}
+                            
+                            {% if field.help_text %}<small class="form-text text-muted">{{ field.help_text }}</small>{% endif %}
+                        </p>
+                    {% endfor %}
+                    
+                </div>
+                
+                <div class="card-footer d-flex justify-content-center gap-4 py-3 bg-light">
+                    <button type="submit" class="btn btn-principal">
+                        <i class="bi bi-save-fill me-1"></i> Guardar
+                    </button>
+                    <a href="{% url 'gestion_citas:cita-list' %}" class="btn btn-secundario-outline">
+                        <i class="bi bi-x-circle-fill me-1"></i> Cancelar
+                    </a>
+                </div>
             </form>
         </div>
     </div>

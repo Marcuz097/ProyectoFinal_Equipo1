@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block titulo %} Dashboard de Administración {% endblock %}
+
+{% block contenido %}
+<style>
+    /* Estilos del BODY para la Imagen de Fondo (TOTALMENTE VISIBLE) */
+    body {
+        background-image: url('{% static "img/fondo_clinica.avif" %}'); 
+        background-size: cover;         
+        background-repeat: no-repeat;
+        background-attachment: fixed;   
+        background-position: center center;
+        background-color: #002D62; /* Color de reserva */
+    }
+
+    /* --------------------------------------------------------
+       ESTILO DE PROYECCIÓN NEÓN SIMPLE (MÁXIMA CLARIDAD)
+       -------------------------------------------------------- */
+    .dashboard-content {
+        min-height: calc(100vh - 120px); 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 5rem 2rem;
+        text-align: center;
+        color: white; 
+    }
+
+    /* TÍTULO PRINCIPAL (HEALTHCARE SYSTEM) */
+    .hud-title {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 900; 
+        font-size: 5rem; /* Tamaño masivo para impacto */
+        color: white; /* Base blanca */
+        letter-spacing: 5px; 
+        line-height: 1.1;
+        
+        /* Efecto Neón Azul: Fuerte y dinámico */
+        text-shadow: 0 0 12px #4A90E2, 
+                     0 0 40px #4A90E2, 
+                     0 0 1px #FFF; 
+        margin-bottom: 0.5rem;
+        animation: fadeIn 1.5s ease-out;
+    }
+
+    /* SUBTÍTULO Y REFERENCIA (ÉNFASIS Y CONTRASTE) */
+    .hud-subtitle {
+        font-family: 'Consolas', monospace;
+        /* APLICAMOS NEGRITA Y AZUL ELÉCTRICO PARA CONTRASTE */
+        font-weight: 700; 
+        font-size: 1.8rem;
+        color: #00BFFF; /* AZUL ELÉCTRICO (Contraste Fuerte) */
+        letter-spacing: 3px; /* Espaciado ajustado */
+        text-shadow: 0 0 5px #0000FF, /* Sombra azul más profunda */
+                     0 0 2px rgba(0, 0, 0, 0.7);
+        margin-top: 1rem;
+        animation: fadeIn 1.8s ease-out;
+    }
+
+
+    /* Animación de entrada */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Media queries para mantener el impacto visual en móviles */
+    @media (max-width: 991px) {
+        .hud-title {
+            font-size: 3.5rem;
+            letter-spacing: 4px;
+        }
+        .hud-subtitle {
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+        }
+    }
+    @media (max-width: 576px) {
+        .hud-title {
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+        }
+        .hud-subtitle {
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+    }
+</style>
+
+<div class="dashboard-content">
+    
+    <h1 class="hud-title">
+        <i class="bi bi-heart-pulse-fill me-3"></i> HEALTHCARE SYSTEM
+    </h1>
+    
+    <h2 class="hud-subtitle">
+        — PANEL DE ADMINISTRACIÓN CENTRAL —
+    </h2>
+    
+</div>
+
+{% endblock %}

@@ -101,6 +101,7 @@ class MedicoCreateView(RolRequiredMixin, CreateView): # Permite registrar un nue
  rol_permitido = 'admin' # Solo admin puede crear médicos
  form_class = MedicoForm # Formulario para la creación
  template_name = 'medico/medico-form.html' # Plantilla HTML del formulario
+ success_url = reverse_lazy('gestion_citas:medico-list') # Redirección tras creación
  
 class MedicoUpdateView(RolRequiredMixin, UpdateView): # Permite actualizar datos de un médico
  model = Medico # Modelo asociado

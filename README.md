@@ -34,7 +34,7 @@ jenniruiz0820
 
 ------------------------------------------------------------------------------------------------------------------
 
-AVANCES DEL PROYECTO ASTA EL MOMENTO 
+AVANCES DEL PROYECTO HASTA EL MOMENTO 
 
 Core: maneja la autenticación de usuarios, registro e inicio de sesión, así como la asignación de roles (administrador, médico y paciente).
 
@@ -61,4 +61,34 @@ Implementar filtros de citas según el rol (paciente o médico).
 Agregar validaciones y control de permisos más específicos.
 
 
+------------------------------------------------------------------------------------------------------------------
+
+NUEVOS AVANCES DEL PROYECTO HASTA EL MOMENTO
+
+Fecha: 31 / 10 / 2025
+
+En esta versión del proyecto se han implementado diversas mejoras y nuevas características que amplían la funcionalidad general del sistema:
+
+🔧 Funcionalidades incorporadas
+
+Gestión avanzada de usuarios:
+Se mejoró el control de roles (Administrador, Médico y Paciente), con permisos específicos para cada tipo de usuario.
+
+Módulo de gestión de citas actualizado:
+Se optimizó el CRUD de Citas, permitiendo validar fechas y horarios disponibles, así como mostrar los datos relacionados de médicos y pacientes.
+
+Interfaz mejorada:
+Se aplicaron estilos adicionales con Bootstrap y plantillas reutilizables para lograr una apariencia más profesional y consistente.
+
+Mensajes de retroalimentación:
+Se incorporaron mensajes de éxito y error dinámicos al realizar operaciones CRUD.
+
+Filtros y búsquedas:
+Se añadieron filtros por especialidad, médico o paciente para facilitar la administración de las citas.
+
+Navegación y seguridad:
+Se mejoró el enrutamiento, la protección de vistas con decoradores @login_required, y la validación de acceso por tipo de usuario.
+
+Conexión estable con base de datos:
+Se optimizó la configuración del entorno y los modelos para un mejor rendimiento y estabilidad en consultas.
 

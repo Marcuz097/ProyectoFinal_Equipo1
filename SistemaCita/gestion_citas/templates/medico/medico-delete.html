@@ -1,132 +1,46 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block titulo %} Confirmar Eliminación de Médico {% endblock %}
 
-{% block contenido %} 
-<style>
-    /* ------------------------------------------------------------------
-       PALETA DE COLORES Y ESTILOS CONSISTENTES 
-       ------------------------------------------------------------------ */
-    body {
-        background-color: #F4F7F9; 
-    }
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/CSS-personalizado/medico-delete.css' %}">
+{% endblock %}
 
-    /* Azul Marino Oscuro */
-    .bg-deep-navy {
-        background-color: #002850 !important; 
-    }
-    .text-deep-navy {
-        color: #002850 !important;
-    }
-    
-    /* Rojo Oscuro Elegante para la acción de eliminar */
-    .red-deep-elegant { 
-        background-color: #A31526; 
-        border-color: #A31526;
-        transition: background-color 0.3s ease;
-    }
-    .red-deep-elegant:hover {
-        background-color: #8c1322;
-        border-color: #8c1322;
-    }
-    
-    /* Botón Cancelar (Outline Azul Marino) */
-    .btn-outline-marine {
-        color: #002850;
-        border-color: #002850;
-    }
-    .btn-outline-marine:hover {
-        background-color: #002850;
-        color: #fff;
-    }
-    
-    /* ------------------------------------------------------------------
-       ESTILOS PARA EL MODAL CENTRADO (DELGADO, COMPACTO Y CERCA DEL TOP)
-       ------------------------------------------------------------------ */
-    .dialog-container {
-        max-width: 380px; 
-        /* AJUSTE CLAVE: Reducimos el margin-top para acercarlo al nav/borde superior */
-        margin-top: 1.5rem; /* Reducido de 2.5rem */
-    }
-    .card-delete-elegant {
-        border-radius: 1.5rem !important; 
-        border: 1px solid rgba(0, 0, 0, 0.05); 
-        overflow: hidden;
-    }
+{% block contenido %}
+<div class="container d-flex justify-content-center align-items-center py-4">
+    <div class="card card-delete-elegant">
+        <div class="card-header-danger-solid">
+            <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+            <span>Confirmar Eliminación</span>
+        </div>
 
-    /* Encabezado con línea de acento rojo oscuro */
-    .card-header-subtle-danger {
-        border-bottom: 4px solid #A31526; 
-        background-color: #f9f9f9; 
-        color: #002850; 
-        font-weight: 600;
-        padding: 1.25rem 1.5rem; 
-    }
-    
-    /* Clase para asegurar que el icono del encabezado usa el color de acento */
-    .text-red-deep-elegant {
-        color: #A31526 !important;
-    }
-    
-    /* Estilo del nombre */
-    .nombre-destacado-medico {
-        font-size: 1.75rem;
-        font-weight: 800;
-        color: #002850; 
-        padding: 0.5rem 0;
-        border-bottom: 1px solid #EEE;
-        display: block;
-    }
-    
-    /* Cuerpo de la tarjeta para controlar el padding vertical general */
-    .card-body-delete {
-        padding: 1.5rem; 
-    }
+        <div class="card-body card-body-delete">
+            <i class="bi bi-person-x-fill text-danger-vibrant mb-3" style="font-size: 3.5rem;"></i>
 
-    /* Estilo para los botones dentro de la tarjeta de eliminación */
-    .btn-delete-full-width {
-        width: 100%; 
-        padding: 0.8rem 1.5rem; 
-        font-size: 1.05rem; 
-    }
-</style>
+            <h3>¿Estás seguro de eliminar este médico?</h3>
+            <p>Esta acción es <span class="text-danger fw-semibold">irreversible</span> y eliminará permanentemente al profesional:</p>
 
-<div class="container d-flex justify-content-center align-items-center"> 
-    
-    <div class="col-12 dialog-container">
-        
-        <div class="card shadow-lg card-delete-elegant">
-            
-            <div class="card-header card-header-subtle-danger d-flex align-items-center">
-                <i class="bi bi-x-octagon-fill fs-4 me-3 text-red-deep-elegant"></i> 
-                <h5 class="mb-0 fw-bold">Confirmar Eliminación</h5>
-            </div>
-            
-            <div class="card-body card-body-delete text-center">
-                
-                <p class="lead text-muted mb-2 fw-bolder"> 
-                    Advertencia de Seguridad:
+            <div class="detail-block">
+                <p><span>Nombre:</span> {{ object.usuario.first_name }} {{ object.usuario.last_name }}</p>
+                <p><span>Especialidad:</span>
+                    {% for esp in object.especialidades.all %}
+                        {{ esp.nombre }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        Sin especialidades registradas
+                    {% endfor %}
                 </p>
-                
-                <h2 class="text-deep-navy mb-4 fw-bolder">
-                    <i class="bi bi-person-badge-fill me-2"></i> {{ object.usuario.first_name }} {{ object.usuario.last_name }}
-                </h2>
-                
-                <p class="mb-4 text-secondary"> 
-                    <span class="text-danger fw-semibold">Esta acción es irreversible.</span> ¿Deseas eliminar permanentemente a este médico?
-                </p>
-
-                <form method="post" class="d-grid gap-3">
-                    {% csrf_token %}
-                    <button type="submit" class="btn red-deep-elegant text-white rounded-pill fw-bold btn-delete-full-width">
-                        <i class="bi bi-trash-fill me-2"></i> Sí, Eliminar Permanentemente
-                    </button>
-                    
-                    <a href="{% url 'gestion_citas:medico-list' %}" class="btn btn-outline-marine rounded-pill btn-delete-full-width">
-                        <i class="bi bi-arrow-left me-2"></i> Regresar y Cancelar
-                    </a>
-                </form>
             </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-confirm-delete">
+                    <i class="bi bi-trash-fill me-2"></i> Eliminar Definitivamente
+                </button>
+                <a href="{% url 'gestion_citas:medico-list' %}" class="btn btn-outline-marine-action">
+                    <i class="bi bi-x-lg me-2"></i> Cancelar
+                </a>
+            </form>
         </div>
     </div>
 </div>

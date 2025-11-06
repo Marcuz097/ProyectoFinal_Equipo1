@@ -1,0 +1,111 @@
+/* ================================================================= */
+/* ---------------------- DEFINICIÓN DE ANIMACIÓN ---------------------- */
+/* ================================================================= */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------------------- 1. UTILIDADES Y PALETA DE EMERGENCIA ---------------------- */
+
+.text-danger-vibrant { color: var(--color-danger-vibrant) !important; }
+.text-marine-deep { color: var(--color-marine-deep) !important; }
+.bg-danger-vibrant { background-color: var(--color-danger-vibrant) !important; }
+.bg-light-danger { background-color: #fcebeb !important; } 
+
+
+/* ---------------------- 2. TARJETA DE CONFIRMACIÓN (Ajustada) ---------------------- */
+
+.card-delete-confirmation {
+    border: none;
+    border-radius: 20px; 
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25); 
+    max-width: 500px; 
+    width: 95%;
+    overflow: hidden;
+    background: white;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    
+    /* AJUSTE CLAVE: Aplicación de la animación de entrada */
+    opacity: 0; /* Empieza invisible */
+    animation: fadeInUp 0.5s ease-out forwards; /* Aplica la animación */
+    
+    margin: 5px auto 0 auto; 
+}
+
+.card-delete-confirmation:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 15px 45px rgba(163, 21, 38, 0.35); 
+}
+
+/* Header de la Tarjeta (ROJO PURO) */
+.card-header {
+    padding: 1.5rem;
+    border-radius: 20px 20px 0 0;
+    font-size: 1.8rem;
+    font-weight: 800;
+    background-color: var(--color-danger-vibrant); 
+    color: white; 
+}
+.card-header h2 {
+    font-weight: 800;
+    font-size: 1.8rem;
+    margin-bottom: 0;
+    color: white; 
+}
+.card-header .text-danger-vibrant { 
+    color: white !important; 
+}
+
+
+/* ---------------------- 3. BOTONES DE ACCIÓN ---------------------- */
+
+/* Botón Principal (Eliminar - Rojo con Sombra Profunda) */
+.btn-confirm-delete {
+    background: var(--color-danger-vibrant) !important;
+    color: white !important;
+    border: none;
+    padding: 0.8rem 2rem;
+    font-weight: 700;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(163, 21, 38, 0.6); 
+    transition: all var(--transition-speed) ease;
+    text-transform: uppercase;
+}
+.btn-confirm-delete:hover {
+    background: #c0001a !important; 
+    transform: translateY(-2px); 
+    box-shadow: 0 8px 20px rgba(163, 21, 38, 0.9);
+}
+
+/* Botón Secundario (Cancelar - Diseño con ícono) */
+.btn-outline-marine-action {
+    background: none;
+    color: var(--color-marine-deep) !important;
+    border: 2px solid var(--color-marine-deep) !important; 
+    padding: 0.8rem 1.5rem; 
+    font-weight: 700;
+    border-radius: 50px;
+    transition: all var(--transition-speed) ease;
+    text-transform: uppercase;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; 
+}
+.btn-outline-marine-action:hover {
+    background-color: var(--color-marine-deep) !important;
+    color: white !important;
+    transform: translateY(-2px); 
+}
+.btn-outline-marine-action .icon-cancel {
+    font-size: 1.2rem; 
+    line-height: 1; 
+}

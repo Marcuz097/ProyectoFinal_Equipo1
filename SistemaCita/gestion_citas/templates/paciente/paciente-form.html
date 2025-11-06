@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block titulo %} 
     {% if form.instance.pk %}
@@ -8,118 +9,23 @@
     {% endif %}
 {% endblock %}
 
+{% block extra_css %}
+<!-- Carga del nuevo CSS unificado -->
+<link rel="stylesheet" href="{% static 'core/css/CSS-personalizado/paciente-form.css' %}">
+{% endblock %}
+
 {% block contenido %} 
-<style>
-    /* ------------------------------------------------------------------
-       PALETA DE COLORES Y ESTILOS BASE
-       ------------------------------------------------------------------ */
-    body {
-        background-color: #F4F7F9; /* Fondo muy claro para destacar la tarjeta */
-    }
-
-    /* Azul Marino Principal */
-    .bg-deep-navy {
-        background-color: #002D62 !important; 
-    }
-    .text-deep-navy {
-        color: #002D62 !important;
-    }
+<!-- AJUSTE CLAVE: Se cambia mt-5 a mt-3 para subir el contenedor. 
+     Se mantiene py-4 para el padding interno de seguridad. -->
+<div class="container d-flex justify-content-center mt-3 py-4">
     
-    /* Botón Guardar (Azul Marino) */
-    .btn-principal {
-        background-color: #004080; 
-        border: none;
-        color: white;
-        padding: 0.7rem 2rem;
-        font-size: 1rem;
-        border-radius: 50px;
-        transition: all 0.2s ease;
-        box-shadow: 0 4px 8px rgba(0, 45, 98, 0.2);
-    }
-    .btn-principal:hover {
-        background-color: #002D62; 
-        transform: translateY(-1px);
-        box-shadow: 0 6px 12px rgba(0, 45, 98, 0.3);
-        color: white;
-    }
-
-    /* Botón Cancelar (Outline ROJO OSCURO - INNOVADOR) */
-    .btn-secundario {
-        background: none;
-        color: #A31526; /* Texto Rojo Oscuro */
-        border: 2px solid #A31526; /* Borde Rojo Oscuro */
-        padding: 0.7rem 2rem;
-        font-size: 1rem;
-        border-radius: 50px;
-        transition: all 0.2s ease;
-    }
-    .btn-secundario:hover {
-        background-color: #A31526; /* Relleno Rojo Oscuro al hover */
-        color: white;
-    }
-
-    /* ------------------------------------------------------------------
-       ESTILOS DEL FORMULARIO (ULTRA-COMPACTO)
-       ------------------------------------------------------------------ */
-    .card-innovadora {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 10px 20px rgba(0, 45, 98, 0.1); 
-        max-width: 500px; /* Ancho ajustado */
-        width: 95%; 
-        overflow: hidden;
-    }
-    .card-header-marine {
-        background-color: #002D62; 
-        color: white;
-        border-radius: 0.75rem 0.75rem 0 0 !important;
-        padding: 1.5rem; 
-    }
-    .card-header-marine h3 {
-        font-weight: 700 !important;
-        font-size: 1.5rem !important;
-        letter-spacing: 0.5px;
-    }
-    
-    .form-container-pad {
-        padding: 1.5rem; /* Padding reducido */
-    }
-
-    /* Estilos de Campos (Compactos) */
-    .mb-3 {
-        margin-bottom: 0.7rem !important;
-    }
-    .form-label {
-        font-weight: 700; 
-        color: #333;
-        display: block;
-        margin-bottom: 0.2rem;
-        font-size: 0.9rem;
-    }
-    .form-control-styled {
-        width: 100%;
-        padding: 8px 12px; /* Compacto */
-        border: 1px solid #D1D9E6;
-        border-radius: 8px;
-        transition: border-color 0.3s, box-shadow 0.3s;
-        box-sizing: border-box; 
-    }
-    .form-control-styled:focus {
-        border-color: #4A90E2;
-        box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-        outline: none;
-    }
-</style>
-
-<div class="container d-flex justify-content-center align-items-center py-5">
-    
-    <div class="card shadow-lg border-0 rounded-4 card-innovadora">
+    <div class="card border-0 card-innovadora">
         
-        <div class="card-header bg-deep-navy text-white text-center py-3 rounded-top-4 card-header-marine">
-            <h3 class="card-title mb-0 fw-bolder fs-4">
-                <i class="bi bi-person-fill me-2"></i>
+        <div class="card-header text-white text-center card-header-marine">
+            <h3 class="card-title mb-0 fw-bolder">
+                <i class="bi bi-person-badge me-2 text-contrast-blue"></i> 
                 {% if form.instance.pk %}
-                    EDITAR PACIENTE
+                    EDITAR DATOS DE PACIENTE
                 {% else %}
                     REGISTRAR NUEVO PACIENTE
                 {% endif %}
@@ -131,8 +37,8 @@
                 {% csrf_token %}
 
                 {% if form.non_field_errors %}
-                    <div class="alert alert-danger rounded-3" role="alert">
-                        <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill me-2"></i> Error</h5>
+                    <div class="alert alert-danger rounded-3 mb-4" role="alert">
+                        <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill me-2"></i> Error de Validación</h5>
                         {% for error in form.non_field_errors %}
                             <p class="mb-0">{{ error }}</p>
                         {% endfor %}
@@ -141,20 +47,23 @@
                 
                 {% for field in form %}
                     <div class="mb-3">
-                        <label for="{{ field.id_for_label }}" class="form-label text-deep-navy fw-medium">
+                        <label for="{{ field.id_for_label }}" class="form-label text-main-blue">
                             {% if field.name == 'usuario' %}
-                                <i class="bi bi-person-circle me-1"></i> 
+                                <i class="bi bi-person-circle me-1 text-contrast-blue"></i> Usuario
                             {% elif field.name == 'fecha_nacimiento' %}
-                                <i class="bi bi-calendar-date-fill me-1"></i> 
+                                <i class="bi bi-calendar-heart me-1 text-contrast-blue"></i> Fecha de Nacimiento
                             {% elif field.name == 'telefono' %}
-                                <i class="bi bi-telephone-fill me-1"></i> 
+                                <i class="bi bi-phone-fill me-1 text-contrast-blue"></i> Teléfono
                             {% elif field.name == 'direccion' %}
-                                <i class="bi bi-geo-alt-fill me-1"></i> 
+                                <i class="bi bi-geo-alt-fill me-1 text-contrast-blue"></i> Dirección
+                            {% else %}
+                                {{ field.label }}
                             {% endif %}
-                            {{ field.label }}
                         </label>
                         
-                        {{ field.errors }}
+                        {% if field.errors %}
+                            <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+                        {% endif %}
                         
                         {% if field.field.widget.input_type == 'select' %}
                             <select name="{{ field.name }}" id="{{ field.id_for_label }}"
@@ -177,36 +86,35 @@
                         {% elif field.field.widget.input_type == 'textarea' %}
                             <textarea name="{{ field.name }}" id="{{ field.id_for_label }}"
                                     class="form-control form-control-styled" 
-                                    placeholder="{{ field.field.widget.attrs.placeholder|default:'' }}"
+                                    placeholder="{{ field.field.widget.attrs.placeholder|default:'Información adicional' }}"
                                     {% if field.field.required %}required{% endif %}>{{ field.value|default_if_none:'' }}</textarea>
 
                         {% else %}
                             <input type="{{ field.field.widget.input_type|default:'text' }}" 
-                                   name="{{ field.name }}" 
-                                   id="{{ field.id_for_label }}" 
-                                   class="form-control form-control-styled" 
-                                   placeholder="{{ field.field.widget.attrs.placeholder|default:'' }}"
-                                   
-                                   {% if field.name == 'fecha_nacimiento' %}
-                                       value="{{ field.value|date:'Y-m-d'|default_if_none:'' }}"
-                                   {% else %}
-                                       value="{{ field.value|default_if_none:'' }}"
-                                   {% endif %}
-                                   
-                                   {% if field.field.required %}required{% endif %}>
+                                    name="{{ field.name }}" 
+                                    id="{{ field.id_for_label }}" 
+                                    class="form-control form-control-styled" 
+                                    placeholder="{{ field.field.widget.attrs.placeholder|default:'' }}"
+                                    
+                                    {% if field.name == 'fecha_nacimiento' %}
+                                        value="{{ field.value|date:'Y-m-d'|default_if_none:'' }}"
+                                    {% else %}
+                                        value="{{ field.value|default_if_none:'' }}"
+                                    {% endif %}
+                                    
+                                    {% if field.field.required %}required{% endif %}>
                         {% endif %}
 
                         {% if field.help_text %}<div class="form-text mt-1 text-secondary small">{{ field.help_text }}</div>{% endif %}
                     </div>
                 {% endfor %}
                 
-                <div class="d-flex justify-content-center mt-4 gap-3">
-                    
-                    <button type="submit" class="btn btn-principal px-4 fw-bold rounded-pill">
+                <div class="d-flex justify-content-center mt-4 gap-4"> 
+                    <button type="submit" class="btn btn-principal px-5 fw-bold rounded-pill">
                         <i class="bi bi-save-fill me-1"></i> Guardar
                     </button>
                     
-                    <a href="{% url 'gestion_citas:paciente-list' %}" class="btn btn-secundario px-4 fw-bold rounded-pill">
+                    <a href="{% url 'gestion_citas:paciente-list' %}" class="btn btn-secundario px-5 fw-bold rounded-pill">
                         <i class="bi bi-x-circle me-1"></i> Cancelar
                     </a>
                 </div>
@@ -217,19 +125,19 @@
 </div>
 
 <script>
-// Validación de Bootstrap
+// Script para habilitar la validación de formularios nativa de Bootstrap (Se mantiene)
 (function () {
-  'use strict'
-  var form = document.querySelector('form')
-  if (form) {
-    form.addEventListener('submit', function (event) {
-      if (!form.checkValidity()) {
-        event.preventDefault()
-        event.stopPropagation()
-      }
-      form.classList.add('was-validated')
-    }, false)
-  }
+    'use strict'
+    var form = document.querySelector('form')
+    if (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    }
 })()
 </script>
 {% endblock %}

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks', # Para personalizar formularios en templates
 ]
 
 # 🔹 Aquí agregamos la ruta global para templates
@@ -62,7 +63,7 @@ TEMPLATES = [
 # 🔹 Configuración del login/logout
 LOGIN_URL = 'login'               # Si el usuario no ha iniciado sesión
 LOGIN_REDIRECT_URL = 'home'       # A dónde redirige después del login
-LOGOUT_REDIRECT_URL = 'login'     # A dónde redirige después del logout
+LOGOUT_REDIRECT_URL = 'home'     # A dónde redirige después del logout
 
 # 🔹 (Opcional) Si quieres idioma español
 LANGUAGE_CODE = 'es'
@@ -151,11 +152,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/El_Salvador'
 
-USE_I18N = True
+USE_I18N = True  # Soporte para internacionalización (idiomas)
+
+USE_L10N = True  # Soporte para localización (fechas y números)
 
 USE_TZ = True
 

@@ -1,47 +1,78 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
 
 {% block titulo %}Registrar Médico{% endblock %}
 
+{% block extra_css %}
+<!-- Carga del nuevo CSS de formulario unificado -->
+<link rel="stylesheet" href="{% static 'core/css/CSS-personalizado/registrar_medico.css' %}">
+{% endblock %}
+
 {% block contenido %}
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <div class="card shadow-sm">
-      <div class="card-header bg-success text-white">
-        <h4 class="mb-0">Registrar Nuevo Médico</h4>
-      </div>
-      <div class="card-body">
-        <!-- Mostrar mensajes -->
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-              {{ message }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="row justify-content-center pt-5 pb-5">
+    <!-- ✅ AJUSTE: Contenedor más compacto (col-lg-5) -->
+    <div class="col-12 col-md-8 col-lg-5"> 
+        
+        <!-- Tarjeta Principal con la clase corregida -->
+        <div class="medico-register-card card shadow-sm"> 
+            
+            <!-- Encabezado con el diseño de bloque sólido y acento verde -->
+            <!-- El centrado del texto se manejará en el CSS -->
+            <div class="medico-register-header">
+                <h4 class="mb-0 fw-bold">
+                    <i class="bi bi-person-plus-fill me-2"></i> REGISTRAR NUEVO MÉDICO
+                </h4>
             </div>
-          {% endfor %}
-        {% endif %}
-
-        <!-- Formulario -->
-        <form method="post">
-          {% csrf_token %}
-          {% for field in form %}
-            <div class="mb-3">
-              <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-              {{ field }}
-              {% if field.errors %}
-                <div class="text-danger small">
-                  {{ field.errors|striptags }}
+            
+            <div class="card-body p-4 p-md-5">
+                {% if messages %}
+                <div class="mb-4">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
                 </div>
-              {% endif %}
+                {% endif %}
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                        <!-- ✅ AJUSTE: Margen inferior del campo reducido a mb-3 -->
+                        <div class="mb-3">
+                            <!-- ✅ Usamos form-label estándar y dejamos que el CSS lo estilice -->
+                            <label class="form-label" for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+                            <!-- ✅ Aplicamos form-control para estilos de input -->
+                            {% render_field field class="form-control" %}
+                            
+                            {% if field.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ field.errors|striptags }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <!-- ✅ AJUSTE: Botones centrados (justify-content-center) -->
+                    <div class="d-flex gap-3 justify-content-center mt-5">
+                        <!-- Botón Principal: Guardar (Verde) -->
+                        <button type="submit" class="btn btn-main-action fw-bold flex-grow-1">
+                            <i class="bi bi-save-fill me-2"></i> GUARDAR
+                        </button>
+                        
+                        <!-- Botón Secundario: Cancelar (Rojo Contorno) -->
+                        <a href="{% url 'gestion_citas:medico-list' %}" class="btn btn-secondary-action fw-bold flex-grow-1">
+                            <i class="bi bi-x-circle-fill me-2"></i> CANCELAR
+                        </a>
+                    </div>
+                </form>
             </div>
-          {% endfor %}
-
-          <button type="submit" class="btn btn-success w-100">Guardar Médico</button>
-        </form>
-
-        <hr>
-        <a href="{% url 'gestion_citas:medico-list' %}" class="btn btn-secondary w-100 mt-2">Volver al listado de médicos</a>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
 {% endblock %}

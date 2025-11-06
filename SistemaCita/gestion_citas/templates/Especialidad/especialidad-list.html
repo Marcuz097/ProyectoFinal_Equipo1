@@ -1,183 +1,56 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block titulo %} Lista de Especialidades {% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/CSS-personalizado/especialidad-list.css' %}">
+{% endblock %}
+
 {% block contenido %} 
-<style>
-    /* Paleta de Colores y Base */
-    .bg-deep-navy {
-        background-color: #002D62 !important; /* Azul marino principal */
-    }
-    .text-deep-navy {
-        color: #002D62 !important;
-    }
-    .text-contrast-blue {
-        color: #4A90E2 !important;
-    }
-    
-    /* Botones de Acción Consistentes */
-    .btn-outline-marine {
-        color: #002D62;
-        border-color: #002D62;
-        transition: all 0.2s;
-    }
-    .btn-outline-marine:hover {
-        background-color: #002D62;
-        color: #fff;
-    }
-    .btn-delete-outline-innovador {
-        background-color: white; 
-        border: 2px solid #A31526; 
-        color: #A31526; 
-        transition: all 0.2s;
-        font-weight: 700;
-    }
-    .btn-delete-outline-innovador:hover {
-        background-color: #A31526; 
-        border-color: #A31526;
-        color: white; 
-    }
 
-    /* Título y Acciones Globales */
-    .btn-main-action {
-        background-color: #002D62; 
-        border: none;
-        color: white;
-        padding: 0.75rem 2rem;
-        font-weight: 700;
-        border-radius: 50px;
-        box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4); 
-        transition: background-color 0.2s;
-    }
-    .btn-main-action:hover {
-        background-color: #004080;
-    }
-
-    /* --- CAMBIO DE ENCABEZADO INNOVADOR (BLOQUE SÓLIDO) --- */
-    .header-dynamic-block {
-        /* Estilo de tarjeta/widget de encabezado */
-        background-color: white;
-        border-left: 8px solid #002D62; /* Borde de color Azul Marino fuerte */
-        padding: 1.5rem 2rem; /* Más espacio interno */
-        margin-bottom: 3rem !important; /* Separación de la lista */
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Sombra para levantarlo */
-    }
-
-    .header-dynamic-block h1 {
-        font-weight: 900; /* Texto muy fuerte */
-        font-size: 2rem;
-        margin-bottom: 0;
-    }
-    /* ---------------------------------------------------- */
-
-
-    /* ------------------------------------------------------------------
-       ESTILOS DE LA TARJETA (Consolidado)
-       ------------------------------------------------------------------ */
-    .widget-consolidated {
-        border: 1px solid #E0E0EE;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        overflow: hidden;
-        background: white;
-        display: flex;
-        flex-direction: column;
-    }
-    .widget-consolidated:hover {
-        transform: translateY(-5px); 
-        box-shadow: 0 12px 25px rgba(0, 45, 98, 0.15); 
-    }
-
-    /* Franja Azul Marino (Header que contiene ID y Nombre) */
-    .widget-navy-header {
-        background-color: #002D62;
-        color: white;
-        padding: 1.5rem 1rem;
-        text-align: center;
-        border-radius: 12px 12px 0 0;
-    }
-    .widget-navy-header .header-icon {
-        font-size: 2.2rem;
-        margin-bottom: 0.5rem;
-        opacity: 0.9;
-    }
-    .specialty-title-header {
-        font-size: 1.5rem;
-        font-weight: 900;
-        line-height: 1.2;
-        margin-bottom: 0.25rem;
-    }
-    .specialty-id-header {
-        font-size: 0.85rem;
-        font-weight: 600;
-        opacity: 0.8;
-    }
-
-    /* Cuerpo y Footer */
-    .widget-body-clean {
-        min-height: 20px; 
-        padding: 0.5rem;
-    }
-    .widget-footer-actions {
-        padding: 1rem 1.5rem;
-        background-color: #F8F9FA;
-        display: flex;
-        justify-content: center;
-        gap: 0.75rem;
-    }
-    
-    .btn-action-wide {
-        padding: 0.6rem 1.2rem;
-        font-size: 0.9rem;
-        font-weight: 700;
-        border-radius: 12px;
-    }
-</style>
-
-<div class="container mt-5">
+<div class="container py-4">
     
     <div class="header-dynamic-block d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
         
         <h1 class="text-deep-navy">
-            <i class="bi bi-clipboard2-pulse-fill me-2 text-contrast-blue"></i> 
+            <i class="bi bi-clipboard2-pulse-fill me-3 text-contrast-blue"></i> 
             Lista de Especialidades
         </h1>
         
-        <a href="{% url 'gestion_citas:especialidad-create' %}" class="btn btn-main-action text-white shadow-sm rounded-pill">
+        <a href="{% url 'gestion_citas:especialidad-create' %}" class="btn btn-main-action rounded-pill mt-3 mt-md-0">
             <i class="bi bi-plus-circle-fill me-2"></i> Nueva Especialidad
         </a>
     </div>
+    
     {% if especialidades %}
     
     <div class="row g-4">
         {% for e in especialidades %}
         <div class="col-12 col-sm-6 col-lg-4">
-            <div class="card widget-consolidated h-100 shadow-lg">
+            <div class="card widget-consolidated h-100">
                 
                 <div class="widget-navy-header">
-                    <i class="bi bi-patch-check-fill header-icon"></i>
-                    
                     <h3 class="specialty-title-header text-truncate" title="{{ e.nombre }}">
                         {{ e.nombre }}
                     </h3>
-
-                    <p class="specialty-id-header mb-0">
-                        ID: {{ e.pk }}
-                    </p>
                 </div>
 
                 <div class="widget-body-clean">
+                    <i class="bi bi-patch-check-fill widget-main-icon"></i>
+                    
+                    <span class="id-tag">
+                        <i class="bi bi-key-fill me-2"></i> ID: {{ e.pk }}
+                    </span>
                 </div>
                 
                 <div class="widget-footer-actions">
                     <a href="{% url 'gestion_citas:especialidad-update' pk=e.pk %}" 
-                       class="btn btn-outline-marine btn-sm btn-action-wide">
-                        <i class="bi bi-pencil"></i> Editar
+                        class="btn btn-outline-marine btn-action-wide">
+                        <i class="bi bi-pencil-square"></i> Editar
                     </a>
                     <a href="{% url 'gestion_citas:especialidad-delete' pk=e.pk %}" 
-                       class="btn btn-delete-outline-innovador btn-sm btn-action-wide">
+                        class="btn btn-delete-outline-innovador btn-action-wide">
                         <i class="bi bi-trash"></i> Eliminar
                     </a>
                 </div>
@@ -187,9 +60,14 @@
     </div>
 
     {% else %}
-    <div class="alert alert-info text-center shadow-sm py-4">
-        <h4 class="alert-heading"><i class="bi bi-info-circle me-2"></i> ¡Lista Vacía!</h4>
-        <p class="mb-0">No hay especialidades registradas en el sistema.</p>
+    <div class="alert alert-info text-center shadow-lg border-0 py-5" style="background-color: #e6f3ff;">
+        <h4 class="alert-heading text-deep-navy">
+            <i class="bi bi-emoji-frown me-3"></i> No se encontraron Especialidades
+        </h4>
+        <p class="mb-0 text-secondary">Utiliza el botón **"Nueva Especialidad"** para comenzar a registrar datos en el sistema.</p>
+        <a href="{% url 'gestion_citas:especialidad-create' %}" class="btn btn-main-action mt-3 rounded-pill">
+            <i class="bi bi-plus-circle-fill me-2"></i> Registrar Especialidad
+        </a>
     </div>
     {% endif %}
 </div>

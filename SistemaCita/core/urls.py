@@ -1,16 +1,24 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
-from .views import CustomLoginView, CustomLogoutView
+from .views import CustomLoginView, CustomLogoutView, landing_page # Importamos la nueva vista
 
 
 urlpatterns = [
+    # PÁGINA PRINCIPAL / LANDING PAGE (Esta es la raíz '/')
+    # Muestra los recuadros que redirigen al login.
+    path('', landing_page, name='landing_page'),
+    # -------------------------------------------------------------------
+
+    # Redirección de Dashboard Post-Login (home.html)
+    # Se accede solo después de iniciar sesión.
+    path('dashboard/', views.home_page, name='home'),
+
     # Autenticación
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('registro/', views.registro, name='registro'),
 
-    path('', views.home_page, name='home'),
     path('admin/dashboard/', views.admin_dashboard, name='admin_dashboard'),
     
     #Paciente URLs Citas

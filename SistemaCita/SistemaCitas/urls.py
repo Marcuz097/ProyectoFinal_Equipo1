@@ -21,4 +21,6 @@ urlpatterns = [
     path('', include('core.urls')), 
     path('admin/', admin.site.urls),
     path('gestion_citas/', include('gestion_citas.urls')),
+    # ESTA LÍNEA HACE QUE LA APP 'core' MANEJE LA URL RAÍZ ('/')
+    path('', include('core.urls')), 
 ]

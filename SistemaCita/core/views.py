@@ -35,6 +35,16 @@ from .decorators import admin_required, medico_required, paciente_required
 # Mixins para vistas basadas en clases
 from .mixins import RolRequiredMixin
 
+# ==========================================================
+# 🏠 NUEVA PÁGINA PRINCIPAL (LANDING PAGE) 
+# ==========================================================
+def landing_page(request):
+    # Si el usuario ya está autenticado, lo redirigimos a su dashboard
+    if request.user.is_authenticated:
+        return redirect('home') # 'home' ahora es la vista que redirige por rol
+        
+    # Si NO está autenticado, mostramos la página principal con los botones de login
+    return render(request, 'core/home.html')
 
 # ==========================================================
 # 🔹 LOGIN Y LOGOUT PERSONALIZADOS

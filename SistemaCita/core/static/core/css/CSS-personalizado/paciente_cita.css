@@ -1,0 +1,314 @@
+/* --- ESTILOS ESPECÍFICOS DE LA VISTA DEL PACIENTE (FINAL Y PULIDO) --- */
+
+body {
+    background-color: var(--color-bg-light);
+}
+
+
+/* 1. Definición de colores VIVOS/FUERTES para los estados */
+:root {
+    /* Colores Vivos/Fuertes para Badges */
+    --color-warning-strong: #ff9800;
+    /* Pendiente - Naranja/Ámbar Brillante */
+    --color-success-strong: #4caf50;
+    /* Completada - Verde Brillante */
+    --color-danger-strong: #f44336;
+    /* Cancelada - Rojo Vivo */
+    --color-info-strong: #2196f3;
+    /* Confirmada - Azul Brillante */
+
+    /* Asumo estas variables de tu base.css para consistencia */
+    --color-marine-deep: #021C3F;
+    --color-marine-base: #133757;
+    --color-accent-green: #00A878;
+    --color-marine-text: #191919;
+    --color-bg-light: #FBFDFF;
+    --border-radius-xl: 16px;
+}
+
+/* --- 2. Navbar, Header y Botones Globales --- */
+
+/* NAVBAR: Estilo corporativo */
+.system-navbar-paciente {
+    background-color: var(--color-marine-deep) !important;
+    border-bottom: 3px solid var(--color-accent-green);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Navbar: Estilo del Usuario y Links */
+.system-navbar-paciente .navbar-text,
+.system-navbar-paciente .nav-link {
+    color: white !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.system-navbar-paciente .nav-link:hover {
+    color: var(--color-accent-green) !important;
+}
+
+
+/* Botón de Cerrar Sesión (Rediseño Lindo y Visible) */
+.btn-logout-innovative {
+    background: linear-gradient(45deg, var(--color-marine-base) 0%, #3a608d 100%) !important;
+    border: none;
+    color: white !important;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 12px rgba(19, 55, 87, 0.5);
+}
+
+.btn-logout-innovative:hover {
+    background: linear-gradient(45deg, #3a608d 0%, var(--color-marine-base) 100%) !important;
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(19, 55, 87, 0.8);
+    color: var(--color-accent-green) !important;
+}
+
+
+/* Subrayado Dual Innovador (Línea de 100% debajo de Mis Citas) */
+.agenda-header-clean {
+    border-bottom: none;
+    padding-bottom: 25px;
+    margin-bottom: 3rem !important;
+    position: relative;
+}
+
+.agenda-header-clean::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right,
+            var(--color-marine-base) 0%,
+            var(--color-marine-base) 30%,
+            var(--color-accent-green) 70%,
+            var(--color-accent-green) 100%);
+    border-radius: 1.5px;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: drawLine 1s ease-out 0.5s forwards;
+}
+
+@keyframes drawLine {
+    to {
+        transform: scaleX(1);
+    }
+}
+
+.h1-elegant-clean {
+    font-weight: 900;
+    color: var(--color-marine-deep);
+    font-size: 3.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.h1-elegant-clean i {
+    color: var(--color-accent-green) !important;
+    text-shadow: 1px 1px 5px rgba(0, 168, 120, 0.6);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Botón Agendar Nueva Cita (Verde Innovador) */
+.btn-primary-innovative {
+    background-color: var(--color-accent-green) !important;
+    color: white !important;
+    border: none !important;
+    font-weight: 700;
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0, 168, 120, 0.4);
+}
+
+.btn-primary-innovative:hover {
+    background-color: #00897b !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 168, 120, 0.6);
+}
+
+
+/* --- 3. Diseño de Tarjeta de Cita (Restaurado y Pulido) --- */
+
+.cita-card-item {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.cita-card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(19, 55, 87, 0.15) !important;
+}
+
+/* Header de la Cita (FECHA Y HORA UNIFICADAS) */
+.cita-header-paciente {
+    background-color: var(--color-marine-deep) !important;
+    color: white;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 5px solid var(--color-accent-green);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.time-label {
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.cita-header-paciente h5 {
+    font-weight: 400;
+    font-size: 1.1rem;
+    margin-top: 0;
+}
+
+/* Contenido del Cuerpo de la Tarjeta */
+.card-body {
+    padding: 1.5rem 1.8rem;
+}
+
+.patient-doctor-name {
+    color: var(--color-marine-deep);
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.bg-secondary-subtle {
+    background-color: #f0f4f7 !important;
+    color: var(--color-marine-deep) !important;
+    font-weight: 600;
+    border-radius: 4px;
+}
+
+
+/* --- 4. Estado y Acciones (Colores FUERTES y Visibles) --- */
+
+/* Badge de Estado - Colores VIVOS y Redondeado */
+.status-badge {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 800;
+    border-radius: 50px;
+    text-transform: uppercase;
+    min-width: 110px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    /* FIX: Se usa !important para asegurar que sobreescriba Bootstrap */
+    color: white !important;
+}
+
+/* Mapeo de colores FUERTES */
+.status-pendiente {
+    background-color: var(--color-warning-strong) !important;
+    color: var(--color-marine-deep) !important;
+}
+
+.status-confirmada {
+    background-color: var(--color-info-strong) !important;
+    color: white !important;
+}
+
+.status-completada {
+    background-color: var(--color-success-strong) !important;
+    color: white !important;
+}
+
+.status-cancelada {
+    background-color: var(--color-danger-strong) !important;
+    color: white !important;
+}
+
+
+/* Botones de acción (Modificar/Cancelar) */
+.cita-footer-actions {
+    background-color: transparent !important;
+    border-top: 1px solid #eee;
+    padding: 1rem 1.8rem;
+    justify-content: flex-end !important;
+}
+
+.action-btn {
+    background-color: transparent !important;
+    border: none !important;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    box-shadow: 0 0 0 0 transparent;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-outline-info-custom {
+    color: var(--color-accent-green);
+}
+
+.btn-outline-info-custom:hover {
+    color: white !important;
+    background-color: var(--color-accent-green) !important;
+    box-shadow: 0 4px 8px rgba(0, 168, 120, 0.4);
+}
+
+.btn-outline-danger-custom {
+    color: var(--color-danger-strong);
+}
+
+.btn-outline-danger-custom:hover {
+    color: white !important;
+    background-color: var(--color-danger-strong) !important;
+    box-shadow: 0 4px 8px rgba(244, 69, 54, 0.4);
+}
+
+
+/* --- Estilo mejorado para las especialidades del doctor --- */
+.patient-doctor-name+p .badge {
+    font-size: 0.95rem;
+    /* Un poco más grande */
+    padding: 0.35rem 0.75rem;
+    /* Espaciado cómodo */
+    border-radius: 8px;
+    /* Bordes más suaves y redondeados */
+    font-weight: 600;
+    /* Un poco más marcado */
+    background-color: #f3f6f8 !important;
+    /* Gris azulado suave */
+    color: var(--color-marine-base) !important;
+    /* Azul marino suave */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    /* Sombrita sutil */
+}
+
+/* --- 5. Animación Global CORREGIDA (Solo Entrada, SIN SCROLL) --- */
+
+@keyframes fadeInSlide {
+
+    /* Estado inicial: un poco abajo y transparente */
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    /* Estado final: visible y en posición */
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Aplicamos la animación al contenedor principal, y hacemos que sea visible por defecto. */
+/* Esto reemplaza cualquier clase JavaScript que pudiera estar ocultándolo inicialmente. */
+.main-content-fade-in {
+    animation: fadeInSlide 0.8s ease-out forwards;
+    /* Animación más rápida */
+    /* El elemento NO debe tener 'opacity: 0;' por defecto para que las tarjetas se vean al inicio */
+}

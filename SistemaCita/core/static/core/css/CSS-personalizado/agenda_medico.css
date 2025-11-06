@@ -1,0 +1,385 @@
+/* --- ESTILOS ESPECÍFICOS DE LA VISTA AGENDA DEL MÉDICO (FINAL CON ESTILO VIBRANTE) --- */
+/* Utiliza variables de base.css: --color-marine-deep, --color-accent-green, etc. */
+
+/* 1. Definición de colores VIVOS/FUERTES para los estados */
+:root {
+    /* Colores Vivos/Fuertes para Badges */
+    --color-warning-strong: #FFD700;      /* Pendiente - Oro brillante */
+    --color-success-strong: #32CD32;      /* Completada - Verde Lima */
+    --color-danger-strong: #FF4500;       /* Cancelada - Rojo Naranja Intenso */
+    --color-info-strong: #1E90FF;         /* Confirmada - Azul Rey */
+    
+    /* Asumo estas variables de tu base.css para consistencia */
+    --color-marine-deep: #021C3F; 
+    --color-marine-base: #133757;
+    --color-accent-green: #00A878;
+    --color-marine-text: #191919;
+    --color-bg-light: #FBFDFF;
+    --border-radius-xl: 16px;
+}
+
+/* --- 2. Header, Iconos y Botones --- */
+
+.agenda-header-clean {
+    border-bottom: none;
+    padding-bottom: 25px;
+    margin-bottom: 3rem !important;
+    position: relative;
+}
+
+/* ⬅️ AGREGAR ESTE BLOQUE EXACTAMENTE AQUÍ (Desarrollo de la Línea) */
+.agenda-header-clean::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    
+    /* FIX: ANCHO DEL 100% DEL CONTENEDOR */
+    width: 100%; 
+    
+    height: 3px; 
+    /* Degradado de Azul a Verde Esmeralda */
+    background: linear-gradient(to right, 
+        var(--color-marine-base) 0%, 
+        var(--color-marine-base) 30%, 
+        var(--color-accent-green) 70%, 
+        var(--color-accent-green) 100%);
+    border-radius: 1.5px;
+    
+    /* Animación de entrada */
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: drawLine 1s ease-out 0.5s forwards; 
+}
+
+@keyframes drawLine {
+    to {
+        transform: scaleX(1);
+    }
+}
+/* ⬆️ FIN DEL BLOQUE A AGREGAR */
+
+.h1-elegant-clean {
+    font-weight: 900;
+    color: var(--color-marine-deep); 
+    font-size: 3.5rem; 
+    letter-spacing: -1.5px;
+    margin-bottom: 0;
+}
+
+/* Icono de Mi Agenda: Verde Esmeralda (Más animado) */
+.h1-elegant-clean i {
+    color: var(--color-accent-green) !important;
+    text-shadow: 1px 1px 5px rgba(0, 168, 120, 0.6); 
+    transition: transform 0.3s ease-in-out;
+}
+.h1-elegant-clean i:hover {
+    transform: rotate(5deg) scale(1.05); 
+}
+
+/* Diseño de la Fecha (Badge Flotante Animado) */
+.header-date-elegant {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-marine-deep) !important;
+    padding: 0.5rem 1.2rem;
+    background-color: #f0f4f7; 
+    border: 2px solid var(--color-marine-base); 
+    border-radius: 20px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header-date-elegant:hover {
+    transform: translateY(-5px) scale(1.03); 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25); 
+    color: var(--color-accent-green) !important;
+    background-color: #e5eef3; 
+}
+
+/* Botón de Cerrar Sesión INNOVADOR (Animación mejorada) */
+.navbar form .btn-logout-innovative { 
+    background-color: transparent;
+    border: 2px solid var(--color-accent-green);
+    color: var(--color-accent-green) !important;
+    font-weight: 700;
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
+    box-shadow: 0 0 8px rgba(0, 168, 120, 0.5); 
+}
+
+.navbar form .btn-logout-innovative:hover {
+    background-color: var(--color-accent-green) !important;
+    color: white !important;
+    transform: scale(1.1) rotate(2deg); 
+    box-shadow: 0 8px 20px rgba(0, 168, 120, 0.8); 
+    animation: bounceEffect 0.6s ease-in-out infinite alternate; 
+}
+
+/* Keyframes para el rebote del botón de cerrar sesión */
+@keyframes bounceEffect {
+    from { transform: scale(1.1) rotate(2deg); }
+    to { transform: scale(1.08) rotate(-2deg); }
+}
+
+/* Enlaces deshabilitados (Pacientes/Reportes) */
+.disabled-link {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.disabled-link:hover {
+    opacity: 0.8; 
+}
+
+
+/* --- 3. Tarjetas y Citas (Diseño Estable con animaciones mejoradas) --- */
+
+.cita-day-card {
+    border: none;
+    background-color: var(--color-bg-light); 
+    border-radius: var(--border-radius-xl); 
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12); 
+    overflow: hidden;
+}
+
+.day-card-header-navy {
+    background-color: var(--color-marine-deep) !important; 
+    font-weight: 700;
+    padding: 1rem 1.5rem !important;
+    border-bottom: 5px solid var(--color-accent-green);
+    transition: background-color 0.3s ease;
+}
+.day-card-header-navy:hover {
+    background-color: #0b2f50 !important; 
+}
+
+.appointment-item {
+    padding: 1.8rem 2rem;
+    background-color: white; 
+    border-bottom: 1px solid #f0f0f0; 
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
+    border-left: 6px solid transparent; 
+    position: relative;
+    cursor: pointer;
+}
+
+.appointment-item:hover {
+    background-color: #f8fcfd; 
+    transform: translateY(-8px) scale(1.01); 
+    box-shadow: 0 25px 55px rgba(18, 55, 87, 0.45); 
+    z-index: 10;
+}
+
+/* Borde izquierdo dinámico por estado (Usa colores FUERTES) */
+.border-pending { border-left-color: var(--color-warning-strong); }
+.border-confirmed { border-left-color: var(--color-info-strong); }
+.border-completed { border-left-color: var(--color-success-strong); }
+.border-cancelled { border-left-color: var(--color-danger-strong); }
+
+.appointment-time-box {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--color-marine-deep); 
+    min-width: 80px; 
+    text-align: left;
+    line-height: 1;
+    border-right: 2px solid #e9ecef;
+    padding-right: 15px;
+    margin-right: 15px;
+}
+.patient-name-innovative {
+    font-size: 1.3rem;
+    font-weight: 700 !important;
+    color: var(--color-marine-text);
+}
+
+/* Motivo de la Cita (NUEVO ESTILO - Badge sutil con animación) */
+.reason-text {
+    font-size: 0.95rem; 
+    font-weight: 600; 
+    font-style: normal; 
+    color: #555 !important;
+    background-color: #e9ecef; 
+    border-radius: 15px; 
+    padding: 0.4em 0.8em; 
+    display: inline-flex; 
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.reason-text:hover {
+    background-color: #dee2e6;
+    transform: scale(1.03); 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.reason-text i {
+    color: var(--color-marine-base); 
+}
+
+
+/* --- 4. Badges de Estado --- */
+
+.status-actions-box {
+    display: flex;
+    align-items: center;
+}
+
+.status-badge {
+    padding: 0.6em 1.2em;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 50px; 
+    text-transform: uppercase;
+    min-width: 120px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); 
+    margin-right: 30px !important; 
+    transition: all 0.3s ease;
+}
+
+.status-badge:hover {
+    transform: translateY(-2px) scale(1.05); 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Paleta de colores VIVOS */
+.status-pendiente { background-color: var(--color-warning-strong); color: var(--color-marine-deep); }
+.status-confirmada { background-color: var(--color-info-strong); color: white; }
+.status-completada { background-color: var(--color-success-strong); color: white; }
+.status-cancelada { background-color: var(--color-danger-strong); color: white; }
+
+
+/* --- 5. Recuadro de Edición de Estado (¡DISEÑO ESPECTACULAR Y ANIMADO!) --- */
+
+.form-estado {
+    border: none;
+    display: flex;
+    gap: 0;
+    /* Píldora Vibrante */
+    background: linear-gradient(135deg, #f0f4f8 0%, #e0e7ed 100%); 
+    border-radius: 50px; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+    overflow: hidden; 
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.form-estado:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25); 
+    transform: translateY(-2px); 
+}
+
+/* Select de Estado (Integrado en la píldora) */
+.status-select-custom-image {
+    font-size: 0.9rem; 
+    font-weight: 700; 
+    color: var(--color-marine-deep); 
+    border: none; 
+    background-color: transparent; 
+    
+    padding: 0.5rem 2rem 0.5rem 1.2rem; 
+    
+    appearance: none; 
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); 
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center; 
+    background-size: 16px 12px;
+    width: 150px; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.status-select-custom-image:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: rgba(255, 255, 255, 0.2); 
+}
+
+/* Botón de Guardar (¡JOYEL VIBRANTE!) */
+.btn-save-status {
+    background: linear-gradient(45deg, var(--color-accent-green) 0%, #00C890 100%) !important; 
+    border: none !important; 
+    color: white; 
+    width: 45px; 
+    height: 45px; 
+    padding: 0;
+    border-radius: 0 50px 50px 0 !important; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 12px rgba(0, 168, 120, 0.4); 
+}
+
+.btn-save-status i {
+    font-size: 1.3rem; 
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8); 
+    transition: all 0.4s ease;
+}
+
+.btn-save-status:hover {
+    background: linear-gradient(45deg, #00C890 0%, #00E0A0 100%) !important; 
+    transform: scale(1.15) rotate(5deg); 
+    box-shadow: 0 8px 25px rgba(0, 168, 120, 0.7); 
+    animation: buttonPulse 0.8s infinite alternate; 
+}
+
+/* Animación de pulsación para el botón de guardar */
+@keyframes buttonPulse {
+    from {
+        transform: scale(1.15) rotate(5deg);
+        box-shadow: 0 8px 25px rgba(0, 168, 120, 0.7);
+    }
+    to {
+        transform: scale(1.12) rotate(3deg);
+        box-shadow: 0 6px 20px rgba(0, 168, 120, 0.5);
+    }
+}
+
+
+/* --- 6. Responsividad --- */
+
+@media (min-width: 768px) {
+    .status-actions-box {
+        justify-content: flex-end !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .status-actions-box {
+        justify-content: space-between !important;
+        width: 100%;
+        margin-top: 10px;
+    }
+    .status-badge {
+        margin-right: 15px !important; 
+    }
+    .form-estado {
+        flex-grow: 1; 
+    }
+    .status-select-custom-image {
+        width: calc(100% - 45px); 
+    }
+}
+/* --- ANIMACIÓN DE ENTRADA GLOBAL --- */
+
+/* Keyframes para la aparición suave (Fade-in and slight move up) */
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Aplicar la animación al contenido principal para un efecto de carga inicial elegante */
+.main-content-fade-in {
+    animation: fadeInSlide 1.2s ease-out forwards;
+    opacity: 0; /* Asegura que el contenido esté oculto al inicio */
+}
+
+/* Nota: Las animaciones de AOS se ejecutan por separado en las tarjetas. */

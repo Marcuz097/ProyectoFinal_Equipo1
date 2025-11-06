@@ -161,6 +161,24 @@ class CitaForm(forms.ModelForm):  # Formulario para crear o modificar citas
         if fecha_hora < timezone.now():
             raise forms.ValidationError("No puedes registrar una cita en una fecha u hora pasada.")
         return fecha_hora
+    
+    # def clean_fecha_hora(self):
+    #     fecha_hora = self.cleaned_data.get('fecha_hora')
+
+    #     if fecha_hora is None:
+    #         raise forms.ValidationError("Debe ingresar una fecha y hora para la cita.")
+
+    #     ahora = timezone.now()
+
+    # Si la fecha es antes del día actual → no permitir (ayer u antes)
+        if fecha_hora.date() < ahora.date():
+            raise forms.ValidationError("No puedes registrar una cita en días pasados.")
+
+    # Si la fecha es hoy, pero la hora ya pasó → no permitir
+        if fecha_hora.date() == ahora.date() and fecha_hora.time() <= ahora.time():
+            raise forms.ValidationError("La hora ingresada ya ha pasado para el día de hoy.")
+
+        return fecha_hora
 
     def clean_motivo(self):  # Valida que el motivo tenga longitud mínima
         motivo = self.cleaned_data.get('motivo', '').strip()

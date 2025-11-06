@@ -1,107 +1,23 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block titulo %} Confirmar Eliminación de Especialidad {% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'core/css/CSS-personalizado/especialidad-delete.css' %}">
+{% endblock %}
+
 {% block contenido %} 
-<style>
-    /* ------------------------------------------------------------------
-       PALETA DE COLORES Y ESTILOS CONSISTENTES 
-       ------------------------------------------------------------------ */
-    body {
-        background-color: #F4F7F9; 
-    }
 
-    /* Azul Marino Oscuro */
-    .bg-deep-navy {
-        background-color: #002850 !important; 
-    }
-    .text-deep-navy {
-        color: #002850 !important;
-    }
-    
-    /* Rojo Oscuro Elegante para la acción de eliminar */
-    .red-deep-elegant { 
-        background-color: #A31526; 
-        border-color: #A31526;
-        transition: background-color 0.3s ease;
-    }
-    .red-deep-elegant:hover {
-        background-color: #8c1322;
-        border-color: #8c1322;
-    }
-    
-    /* Botón Cancelar (Outline Azul Marino) */
-    .btn-outline-marine {
-        color: #002850;
-        border-color: #002850;
-    }
-    .btn-outline-marine:hover {
-        background-color: #002850;
-        color: #fff;
-    }
-    
-    /* ------------------------------------------------------------------
-       ESTILOS PARA EL MODAL CENTRADO (DELGADO Y COMPACTO)
-       ------------------------------------------------------------------ */
-    .dialog-container {
-        /* CONTROL DE ANCHO: Delgado */
-        max-width: 380px; 
-        /* CONTROL DE ALTURA: Eliminamos el py-5 y usamos un margin-top bajo */
-        margin-top: 1.5rem; 
-    }
-    .card-delete-elegant {
-        border-radius: 1.5rem !important; 
-        border: 1px solid rgba(0, 0, 0, 0.05); 
-        overflow: hidden;
-    }
 
-    /* Encabezado con línea de acento rojo oscuro */
-    .card-header-subtle-danger {
-        border-bottom: 4px solid #A31526; 
-        background-color: #f9f9f9; 
-        color: #002850; 
-        font-weight: 600;
-        padding: 1.25rem 1.5rem; /* Padding reducido para altura compacta */
-    }
+<div class="container d-flex justify-content-center pt-5 pb-5">
     
-    /* Clase para asegurar que el icono del encabezado usa el color de acento */
-    .text-red-deep-elegant {
-        color: #A31526 !important;
-    }
-    
-    /* Estilo del nombre */
-    .nombre-destacado-especialidad {
-        font-size: 1.75rem;
-        font-weight: 800;
-        color: #002850; 
-        padding: 0.5rem 0;
-        border-bottom: 1px solid #EEE;
-        display: block;
-    }
-    
-    /* Cuerpo de la tarjeta para controlar el padding vertical general */
-    .card-body-delete {
-        padding: 1.5rem; /* Padding compacto similar al p-4 original */
-    }
-
-    /* Estilo para los botones dentro de la tarjeta de eliminación */
-    .btn-delete-full-width {
-        width: 100%; 
-        padding: 0.8rem 1.5rem; 
-        font-size: 1.05rem; 
-    }
-</style>
-
-<!-- ELIMINAMOS PY-5 DEL CONTENEDOR PRINCIPAL -->
-<div class="container d-flex justify-content-center align-items-center">
-    
-    <div class="col-12 dialog-container">
+    <div class="col-12 dialog-container mt-0">
         
         <div class="card shadow-lg card-delete-elegant">
             
             <div class="card-header card-header-subtle-danger d-flex align-items-center">
-                <i class="bi bi-x-octagon-fill fs-4 me-3 text-red-deep-elegant"></i> 
-                <!-- Texto en Negrita -->
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> 
                 <h5 class="mb-0 fw-bold">Confirmar Eliminación</h5>
             </div>
             
@@ -112,7 +28,6 @@
                 </p>
                 
                 <h2 class="text-deep-navy mb-4 fw-bolder">
-                    <!-- ICONO DE ESPECIALIDAD -->
                     <i class="bi bi-tags-fill me-2"></i> {{ object.nombre }}
                 </h2>
                 
@@ -122,13 +37,11 @@
 
                 <form method="post" class="d-grid gap-3">
                     {% csrf_token %}
-                    <!-- Botón Eliminar: Compacto y Rojo -->
                     <button type="submit" class="btn red-deep-elegant text-white rounded-pill fw-bold btn-delete-full-width">
                         <i class="bi bi-trash-fill me-2"></i> Sí, Eliminar Permanentemente
                     </button>
                     
-                    <!-- Botón Cancelar: Compacto y Outline Azul -->
-                    <a href="{% url 'gestion_citas:especialidad-list' %}" class="btn btn-outline-marine rounded-pill btn-delete-full-width">
+                    <a href="{% url 'gestion_citas:especialidad-list' %}" class="btn btn-outline-marine rounded-pill fw-bold btn-delete-full-width">
                         <i class="bi bi-arrow-left me-2"></i> Regresar y Cancelar
                     </a>
                 </form>

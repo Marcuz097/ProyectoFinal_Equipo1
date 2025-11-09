@@ -1,42 +1,38 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "base.html" %} <!-- Extiende la plantilla base -->
+{% load static %} <!-- Permite usar archivos estáticos -->
 
 {% block titulo %} 
-    {% if form.instance.pk %}
+    {% if form.instance.pk %} <!-- Si existe el paciente, estamos editando -->
         Editar Paciente: {{ form.instance.usuario.first_name }} {{ form.instance.usuario.last_name }}
-    {% else %}
+    {% else %} <!-- Si no existe, es un registro nuevo -->
         Registrar Nuevo Paciente
     {% endif %}
 {% endblock %}
 
 {% block extra_css %}
-<!-- Carga del nuevo CSS unificado -->
-<link rel="stylesheet" href="{% static 'core/css/CSS-personalizado/paciente-form.css' %}">
+<link rel="stylesheet" href="{% static 'core/css/CSS-personalizado/paciente-form.css' %}"> <!-- CSS específico del formulario -->
 {% endblock %}
 
 {% block contenido %} 
-<!-- AJUSTE CLAVE: Se cambia mt-5 a mt-3 para subir el contenedor. 
-     Se mantiene py-4 para el padding interno de seguridad. -->
-<div class="container d-flex justify-content-center mt-3 py-4">
-    
-    <div class="card border-0 card-innovadora">
-        
-        <div class="card-header text-white text-center card-header-marine">
+<!-- Contenedor principal centrado -->
+<div class="container d-flex justify-content-center mt-3 py-4"> 
+    <!-- Tarjeta principal -->
+    <div class="card border-0 card-innovadora"> 
+        <!-- Encabezado de la tarjeta -->
+        <div class="card-header text-white text-center card-header-marine"> 
             <h3 class="card-title mb-0 fw-bolder">
                 <i class="bi bi-person-badge me-2 text-contrast-blue"></i> 
-                {% if form.instance.pk %}
-                    EDITAR DATOS DE PACIENTE
-                {% else %}
-                    REGISTRAR NUEVO PACIENTE
-                {% endif %}
+                {% if form.instance.pk %} EDITAR DATOS DE PACIENTE {% else %} REGISTRAR NUEVO PACIENTE {% endif %}
             </h3>
         </div>
         
-        <div class="card-body form-container-pad">
-            <form method="post" class="needs-validation" novalidate>
-                {% csrf_token %}
+        <!-- Cuerpo de la tarjeta con el formulario -->
+        <div class="card-body form-container-pad"> 
+            <form method="post" class="needs-validation" novalidate> 
+                {% csrf_token %} <!-- Token de seguridad CSRF -->
 
-                {% if form.non_field_errors %}
+                <!-- Errores generales del formulario -->
+                {% if form.non_field_errors %} 
                     <div class="alert alert-danger rounded-3 mb-4" role="alert">
                         <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill me-2"></i> Error de Validación</h5>
                         {% for error in form.non_field_errors %}
@@ -45,70 +41,46 @@
                     </div>
                 {% endif %}
                 
-                {% for field in form %}
+                <!-- Itera sobre cada campo del formulario -->
+                {% for field in form %} 
                     <div class="mb-3">
-                        <label for="{{ field.id_for_label }}" class="form-label text-main-blue">
-                            {% if field.name == 'usuario' %}
-                                <i class="bi bi-person-circle me-1 text-contrast-blue"></i> Usuario
-                            {% elif field.name == 'fecha_nacimiento' %}
-                                <i class="bi bi-calendar-heart me-1 text-contrast-blue"></i> Fecha de Nacimiento
-                            {% elif field.name == 'telefono' %}
-                                <i class="bi bi-phone-fill me-1 text-contrast-blue"></i> Teléfono
-                            {% elif field.name == 'direccion' %}
-                                <i class="bi bi-geo-alt-fill me-1 text-contrast-blue"></i> Dirección
-                            {% else %}
-                                {{ field.label }}
-                            {% endif %}
+                        <!-- Label del campo -->
+                        <label for="{{ field.id_for_label }}" class="form-label text-main-blue"> 
+                            {% if field.name == 'usuario' %} Usuario
+                            {% elif field.name == 'fecha_nacimiento' %} Fecha de Nacimiento
+                            {% elif field.name == 'telefono' %} Teléfono
+                            {% elif field.name == 'direccion' %} Dirección
+                            {% else %} {{ field.label }} {% endif %}
                         </label>
                         
-                        {% if field.errors %}
+                        {% if field.errors %} <!-- Muestra errores de campo -->
                             <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
                         {% endif %}
                         
-                        {% if field.field.widget.input_type == 'select' %}
-                            <select name="{{ field.name }}" id="{{ field.id_for_label }}"
-                                class="form-select form-control-styled" 
-                                {% if field.field.required %}required{% endif %}>
-                                
-                                <option value="" {% if not field.value %}selected{% endif %} disabled>
-                                    --- Seleccionar ---
-                                </option>
-                                
+                        {% if field.field.widget.input_type == 'select' %} <!-- Campos tipo select -->
+                            <select name="{{ field.name }}" id="{{ field.id_for_label }}" class="form-select form-control-styled" {% if field.field.required %}required{% endif %}>
+                                <option value="" {% if not field.value %}selected{% endif %} disabled>--- Seleccionar ---</option>
                                 {% for value, label in field.field.choices %}
                                     {% if value %} 
-                                        <option value="{{ value }}" {% if field.value|stringformat:"s" == value|stringformat:"s" %}selected{% endif %}>
-                                            {{ label }}
-                                        </option>
+                                        <option value="{{ value }}" {% if field.value|stringformat:"s" == value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>
                                     {% endif %}
                                 {% endfor %}
                             </select>
-
-                        {% elif field.field.widget.input_type == 'textarea' %}
-                            <textarea name="{{ field.name }}" id="{{ field.id_for_label }}"
-                                    class="form-control form-control-styled" 
-                                    placeholder="{{ field.field.widget.attrs.placeholder|default:'Información adicional' }}"
-                                    {% if field.field.required %}required{% endif %}>{{ field.value|default_if_none:'' }}</textarea>
-
-                        {% else %}
-                            <input type="{{ field.field.widget.input_type|default:'text' }}" 
-                                    name="{{ field.name }}" 
-                                    id="{{ field.id_for_label }}" 
-                                    class="form-control form-control-styled" 
-                                    placeholder="{{ field.field.widget.attrs.placeholder|default:'' }}"
-                                    
-                                    {% if field.name == 'fecha_nacimiento' %}
-                                        value="{{ field.value|date:'Y-m-d'|default_if_none:'' }}"
-                                    {% else %}
-                                        value="{{ field.value|default_if_none:'' }}"
-                                    {% endif %}
-                                    
-                                    {% if field.field.required %}required{% endif %}>
+                        {% elif field.field.widget.input_type == 'textarea' %} <!-- Campos tipo textarea -->
+                            <textarea name="{{ field.name }}" id="{{ field.id_for_label }}" class="form-control form-control-styled" placeholder="{{ field.field.widget.attrs.placeholder|default:'Información adicional' }}" {% if field.field.required %}required{% endif %}>{{ field.value|default_if_none:'' }}</textarea>
+                        {% else %} <!-- Campos tipo input -->
+                            <input type="{{ field.field.widget.input_type|default:'text' }}" name="{{ field.name }}" id="{{ field.id_for_label }}" class="form-control form-control-styled" placeholder="{{ field.field.widget.attrs.placeholder|default:'' }}" 
+                                {% if field.name == 'fecha_nacimiento' %} value="{{ field.value|date:'Y-m-d'|default_if_none:'' }}" {% else %} value="{{ field.value|default_if_none:'' }}" {% endif %} 
+                                {% if field.field.required %}required{% endif %}>
                         {% endif %}
 
-                        {% if field.help_text %}<div class="form-text mt-1 text-secondary small">{{ field.help_text }}</div>{% endif %}
+                        {% if field.help_text %} <!-- Texto de ayuda -->
+                            <div class="form-text mt-1 text-secondary small">{{ field.help_text }}</div>
+                        {% endif %}
                     </div>
                 {% endfor %}
                 
+                <!-- Botones de acción -->
                 <div class="d-flex justify-content-center mt-4 gap-4"> 
                     <button type="submit" class="btn btn-principal px-5 fw-bold rounded-pill">
                         <i class="bi bi-save-fill me-1"></i> Guardar
@@ -124,18 +96,15 @@
     </div>
 </div>
 
+<!-- Script para habilitar validación de formulario nativa de Bootstrap -->
 <script>
-// Script para habilitar la validación de formularios nativa de Bootstrap (Se mantiene)
-(function () {
+(function () {  
     'use strict'
     var form = document.querySelector('form')
     if (form) {
         form.addEventListener('submit', function (event) {
-            if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-            }
-            form.classList.add('was-validated')
+            if (!form.checkValidity()) { event.preventDefault(); event.stopPropagation(); } // <!-- Evita submit si inválido -->
+            form.classList.add('was-validated') // <!-- Añade clase para estilos de validación -->
         }, false)
     }
 })()

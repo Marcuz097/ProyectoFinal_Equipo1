@@ -1,7 +1,5 @@
 /* ---------------------- 1. CONFIGURACIÓN DEL FONDO (NO INCLUYE IMAGEN) ---------------------- */
-
-/* NOTA: La imagen de fondo se inyecta en el <style> de panel_admin.html. */
-/* Este CSS se enfoca solo en el contenido. */
+/* Color Verde Esmeralda: #00A878 */
 
 /* ---------------------- 2. CONTENIDO (Centrado, Flotante y Animado) ---------------------- */
 
@@ -13,56 +11,58 @@
     justify-content: center; 
     align-items: center;
     text-align: center;
-    color: white; /* Base de texto blanco para construir el brillo */
-    /* Ligera sombra para separar el contenido de la imagen de fondo */
+    color: white; 
     text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
 }
 
-/* TÍTULO PRINCIPAL: Resplandor Futurista y Elegante (en una sola línea) */
+/* TÍTULO PRINCIPAL: Ahora claramente el más grande */
 .hud-title {
-    font-family: 'Inter', sans-serif; /* Usamos Inter para la coherencia */
-    font-weight: 900; /* Más peso para impacto */
-    color: white; /* Color base para el texto */
-    letter-spacing: 12px; /* Mayor espaciado para una sola línea */
-    white-space: nowrap; /* Intenta mantenerlo en una sola línea */
+    font-family: 'Inter', sans-serif; 
+    font-weight: 900; 
+    color: white; 
+    /* 🛠️ CORRECCIÓN 1: Reducimos el espaciado de 12px a 8px */
+    letter-spacing: 8px; 
+    white-space: nowrap; 
     line-height: 1.1;
     text-transform: uppercase;
-    font-size: 4.8rem; /* TAMAÑO REDUCIDO */
+    /* ⬆️ CORRECCIÓN 2: Aumentamos el tamaño de 4.5rem a 6rem */
+    font-size: 6rem; 
 
-    /* EFECTO DE RESPLANDOR AZUL/CIAN (LIMPIO Y FUTURISTA) */
+    /* Efecto Neon Verde de baja intensidad */
     text-shadow: 
-        0 0 8px rgba(255, 255, 255, 0.9), /* Blanco Interno Brillante */
-        0 0 30px #00FFFF, /* Resplandor Cian/Azul Brillante */
-        0 0 80px rgba(0, 255, 255, 0.6), /* Capa Azul Difusa */
-        0 0 100px rgba(0, 168, 120, 0.2); /* Sutil Tinte Verde Esmeralda al final */
+        0 0 6px rgba(255, 255, 255, 0.9), 
+        0 0 15px #00A878, 
+        0 0 40px rgba(0, 168, 120, 0.6); 
         
     margin-bottom: 0.8rem;
     animation: fadeInScaleUp 1.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
     opacity: 0;
 }
 
-/* SUBTÍTULO: Color Sólido de Contraste y Mejor Sombra */
+/* SUBTÍTULO: Panel de Administración Central (Muy Pequeño y con Espaciado Ajustado) */
 .hud-subtitle {
-    font-family: 'Inter', sans-serif; /* Unificado con el título */
-    font-weight: 700; /* Peso audaz para el subtítulo */
-    
-    /* FALLBACK Y COLOR BASE: BLANCO PURO para máxima legibilidad */
+    font-family: 'Inter', sans-serif; 
+    font-weight: 700; 
     color: white; 
     
-    /* Eliminamos el degradado. Usamos sombra de texto potente para resaltar. */
     background-image: none; 
     -webkit-background-clip: unset;
     -webkit-text-fill-color: unset;
     
-    letter-spacing: 7px; /* Mayor espaciado, más elegante */
-    font-size: 2rem; /* TAMAÑO REDUCIDO */
+    /* 🛠️ CORRECCIÓN 3: Ajustamos el espaciado de 5px a 4px (más legible) */
+    letter-spacing: 4px; 
+    /* Mantenemos el tamaño muy pequeño: 0.5rem */
+    font-size: 0.5rem; 
     text-transform: uppercase;
-    white-space: nowrap; 
+    
+    /* Permite el salto de línea en móvil */
+    white-space: normal; 
+    max-width: 90%; 
 
-    /* Sombra para el efecto de luz proyectada (Blanco y Azul para contraste) */
+    /* Sombra blanca sutil y sombra azul profunda */
     text-shadow: 
-        0 0 5px rgba(255, 255, 255, 0.9), /* Sombra blanca para resaltar */
-        0 0 15px var(--color-marine-deep); /* Sombra Azul Profundo que le da profundidad */
+        0 0 3px rgba(255, 255, 255, 0.7), 
+        0 0 15px var(--color-marine-deep); 
 
     margin-top: 1rem;
     animation: fadeInScaleUp 2.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
@@ -84,26 +84,27 @@
 }
 
 /* Ajustes Responsivos para pantallas más pequeñas */
-@media (max-width: 992px) { /* Ajustar el breakpoint para pantallas medianas */
+@media (max-width: 992px) { /* Tabletas */
     .hud-title {
-        font-size: 3.5rem; /* Reduce el tamaño del título */
-        letter-spacing: 7px;
-        white-space: normal; /* Permite que el título se divida en líneas */
+        /* Aumentamos para que siga dominando */
+        font-size: 4.5rem; 
+        letter-spacing: 5px;
+        white-space: normal; 
     }
     .hud-subtitle {
-        font-size: 1.8rem; /* Reduce el tamaño del subtítulo */
-        letter-spacing: 4px;
-        white-space: normal; /* Permite que el subtítulo se divida en líneas */
+        font-size: 0.4rem; 
+        letter-spacing: 3px;
+        white-space: normal; 
     }
 }
 
-@media (max-width: 576px) { /* Ajustar para pantallas muy pequeñas */
+@media (max-width: 576px) { /* Móviles */
     .hud-title {
-        font-size: 2.5rem;
-        letter-spacing: 4px;
+        font-size: 3rem;
+        letter-spacing: 3px;
     }
     .hud-subtitle {
-        font-size: 1.2rem;
-        letter-spacing: 2px;
+        font-size: 0.35rem; 
+        letter-spacing: 1px;
     }
 }

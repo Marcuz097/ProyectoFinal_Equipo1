@@ -2,7 +2,7 @@ from django.shortcuts import render # Permite renderizar plantillas HTML y devol
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView # Vistas genéricas de Django para listar, crear, actualizar y eliminar registros
 from .models import Paciente, Medico, Cita, Especialidad # Importa los modelos definidos en el mismo módulo para ser usados en las vistas
 from django.contrib import messages # Sistema de mensajes de Django (usado para mostrar notificaciones al usuario)
-
+from django.db.models import Q # Permite construir consultas complejas con operadores lógicos
 
 from django.urls import reverse_lazy # Genera URLs de forma perezosa, útil para evitar dependencias circulares
 
@@ -24,6 +24,17 @@ class EspecialidadListView(RolRequiredMixin, ListView): # Muestra la lista de es
  rol_permitido = 'admin' # Solo los usuarios con rol 'admin' pueden acceder a esta vista
  template_name = 'especialidad/especialidad-list.html' # Plantilla HTML a utilizar
  context_object_name = 'especialidades' # Nombre de la variable que contendrá los datos en la plantilla
+ def get_queryset(self):
+        qs = super().get_queryset()
+        filtro = self.request.GET.get('buscar', '')
+        if filtro:
+            qs = qs.filter(nombre__icontains=filtro)
+        return qs
+
+ def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filtro'] = self.request.GET.get('buscar', '')
+        return context
 
 
 class EspecialidadCreateView(RolRequiredMixin, CreateView): # Permite crear una nueva especialidad
@@ -59,6 +70,17 @@ class PacienteListView(RolRequiredMixin, ListView): # Muestra todos los paciente
  rol_permitido = 'admin' # Solo administradores pueden acceder
  template_name = 'paciente/paciente-list.html' # Plantilla de la lista de pacientes
  context_object_name = 'pacientes' # Variable de contexto accesible en la plantilla
+ def get_queryset(self):
+        qs = super().get_queryset()
+        filtro = self.request.GET.get('buscar', '')
+        if filtro:
+            qs = qs.filter(usuario_first_nameicontains=filtro) | qs.filter(usuariolast_name_icontains=filtro)
+        return qs
+
+ def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filtro'] = self.request.GET.get('buscar', '')
+        return context
 
 
 class PacienteCreateView(RolRequiredMixin, CreateView): # Permite crear un nuevo paciente
@@ -94,7 +116,24 @@ class MedicoListView(RolRequiredMixin, ListView): # Muestra la lista de médicos
  rol_permitido = 'admin' # Solo admin puede acceder
  template_name = 'medico/medico-list.html' # Plantilla HTML con la lista
  context_object_name = 'medicos' # Nombre de la variable de contexto en la plantilla
+def get_queryset(self):  
+    queryset = super().get_queryset()  # Obtiene todos los registros del modelo  
+    filtro = self.request.GET.get('buscar', '')  # Captura el texto ingresado en el buscador  
 
+    if filtro:  # Si hay texto para filtrar  
+        queryset = queryset.filter(  # Filtra por nombre, apellido o especialidad del médico  
+            Q(usuario__first_name__icontains=filtro) |
+            Q(usuario__last_name__icontains=filtro) |
+            Q(especialidades__nombre__icontains=filtro)
+        )
+
+    return queryset  # Devuelve la lista filtrada  
+
+
+def get_context_data(self, **kwargs):  
+    context = super().get_context_data(**kwargs)  # Obtiene el contexto base  
+    context['filtro'] = self.request.GET.get('buscar', '')  # Mantiene el valor del buscador activo  
+    return context  # Devuelve el contexto actualizado  
 
 class MedicoCreateView(RolRequiredMixin, CreateView): # Permite registrar un nuevo médico
  model = Medico # Modelo asociado
@@ -127,6 +166,7 @@ class CitaListView(RolRequiredMixin, ListView): # Muestra la lista de citas disp
  model = Cita # Modelo a listar
  template_name = 'cita/cita-list.html' # Plantilla HTML donde se muestran las citas
  context_object_name = 'citas' # Nombre de la variable que contendrá las citas en la plantilla
+ 
 
 
  rol_permitido = 'admin' # Solo ciertos roles pueden acceder a esta vista ('admin', 'medico', 'paciente')
@@ -144,6 +184,26 @@ def get_queryset(self): # Método que filtra las citas según el rol del usuario
   return Cita.objects.filter(paciente__usuario=user) # Muestra solo las citas del paciente actual
  else:
   return Cita.objects.none() # Si el rol no es válido, no devuelve resultados
+ 
+def get_queryset(self):  
+    from django.db.models import Q  # Permite usar filtros con condiciones OR  
+    qs = super().get_queryset()  # Obtiene todos los registros del modelo  
+    filtro = self.request.GET.get('buscar', '')  # Captura el valor del buscador  
+
+    if filtro:  # Si hay texto de búsqueda  
+        qs = qs.filter(  # Filtra por fecha, médico o paciente  
+            Q(fecha_hora__icontains=filtro) |
+            Q(medico__usuario__first_name__icontains=filtro) |
+            Q(paciente__usuario__first_name__icontains=filtro)
+        )
+    return qs  # Devuelve los resultados filtrados  
+
+
+def get_context_data(self, **kwargs):  
+    context = super().get_context_data(**kwargs)  # Obtiene el contexto base  
+    context['filtro'] = self.request.GET.get('buscar', '')  # Mantiene el texto del buscador  
+    return context  # Devuelve el contexto actualizado  
+
 
 
 class CitaCreateView(RolRequiredMixin, CreateView): # Permite crear una nueva cita médica

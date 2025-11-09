@@ -27,13 +27,20 @@ urlpatterns = [
     path('paciente/citas/<int:pk>/editar/', views.PacienteCitaUpdateView.as_view(), name='paciente_cita_edit'),
     path('paciente/citas/<int:pk>/eliminar/', views.PacienteCitaDeleteView.as_view(), name='paciente_cita_delete'),
     
+    # NUEVA URL DE PERFIL DEL PACIENTE
+    path('paciente/perfil/', views.paciente_perfil, name='paciente_perfil'),
+    
     # Completar perfil paciente
     path('completar-perfil/paciente/', views.completar_perfil_paciente, name='completar_perfil_paciente'),
     
-    #Medico URLs Agenda
-    path('medico/agenda/', views.agenda_medico, name='agenda_medico'),
+    # Médico URLs
+    path('medico/agenda/', views.agenda_medico, name='medico_agenda'),
     path('medico/actualizar-estado/', views.actualizar_estado_cita, name='medico-actualizar-estado'),
     
-    #Registrar medico
+    # URLs de Perfil del Médico
+    path('medico/perfil/', views.medico_perfil, name='medico_perfil'),
+    path('medico/perfil/editar/', views.medico_perfil_edit, name='medico_perfil_edit'),
+    
+    # Registrar medico
     path('admin/registrar_medico/', views.registrar_medico, name='registrar_medico'),
 ]

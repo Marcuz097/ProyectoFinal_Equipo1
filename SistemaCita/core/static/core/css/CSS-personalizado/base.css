@@ -107,33 +107,29 @@ body {
     box-shadow: 0 10px 30px rgba(0, 168, 120, 0.6); /* Sombra intensa del nuevo color */
 }
 
-/* Botones de Acción Secundaria (Contorno con Sombra) */
-.btn-outline-marine, .btn-outline-danger-subtle {
+/* Botón de Cerrar Sesión INNOVADOR (MOVIDO DESDE agenda-medico.css) */
+.btn-logout-innovative { 
+    background-color: transparent;
+    border: 2px solid var(--color-accent-green);
+    color: var(--color-accent-green) !important;
     font-weight: 700;
-    border: 2px solid;
-    border-radius: var(--border-radius-xl); 
-    padding: 0.8rem 1.6rem;
-    transition: all var(--transition-speed) ease;
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
+    box-shadow: 0 0 8px rgba(0, 168, 120, 0.5); 
 }
 
-.btn-outline-marine {
-    color: var(--color-marine-base) !important;
-    border-color: var(--color-marine-base) !important;
-}
-.btn-outline-marine:hover {
-    background-color: var(--color-marine-base) !important;
+.btn-logout-innovative:hover {
+    background-color: var(--color-accent-green) !important;
     color: white !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(19, 55, 87, 0.3);
+    transform: scale(1.1) rotate(2deg); 
+    box-shadow: 0 8px 20px rgba(0, 168, 120, 0.8); 
+    animation: bounceEffect 0.6s ease-in-out infinite alternate; 
 }
 
-.btn-outline-danger-subtle {
-    color: var(--color-danger-vibrant) !important;
-    border-color: var(--color-danger-vibrant) !important;
-}
-.btn-outline-danger-subtle:hover {
-    background-color: var(--color-danger-vibrant) !important;
-    color: white !important;
+/* Keyframes para el rebote del botón de cerrar sesión */
+@keyframes bounceEffect {
+    from { transform: scale(1.1) rotate(2deg); }
+    to { transform: scale(1.08) rotate(-2deg); }
 }
 
 /* ---------------------- 4. CONTENIDO: HEADERS Y TABLAS (Atractivo y Nítido) ---------------------- */

@@ -36,6 +36,19 @@
     }
 }
 
+/* **NUEVA ANIMACIÓN:** Efecto de "Latido" para el focus del filtro */
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 0 0 var(--color-accent-green);
+    }
+    50% {
+        box-shadow: 0 0 0 5px rgba(0, 168, 120, 0.15); /* Pulso suave */
+    }
+    100% {
+        box-shadow: 0 0 0 0 var(--color-accent-green);
+    }
+}
+
 /* Colores de texto unificados */
 .text-deep-navy { color: var(--color-primary-navy) !important; }
 .text-contrast-blue { color: var(--color-accent-green) !important; } 
@@ -92,6 +105,7 @@
 /* ---------------------- 3. ESTILOS DE LA TARJETA DE PACIENTE (ELEVADA Y ELEGANTE) ---------------------- */
 /* ================================================================= */
 .paciente-widget-compact {
+    /* Renombrado de cita-widget-compact a paciente-widget-compact */
     border: none; 
     border-radius: var(--border-radius-xxl); 
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); 
@@ -132,6 +146,7 @@
 
 /* FRanja de Nombre / Header - DISEÑO REFINADO DE BARRA DE TÍTULO */
 .paciente-header-final {
+    /* Renombrado de cita-header-final a paciente-header-final */
     background: linear-gradient(90deg, var(--color-primary-navy) 0%, var(--color-primary-light) 100%);
     color: white;
     padding: 1.2rem 2rem; 
@@ -185,6 +200,7 @@
  
 /* ID DE LA TARJETA (Franja de metadata) */
 .paciente-id-strip {
+    /* Renombrado de cita-id-strip a paciente-id-strip */
     background-color: var(--color-bg-light);
     color: var(--color-primary-dark); 
     padding: 0.6rem 2rem; 
@@ -205,6 +221,7 @@
 
 /* CUERPO DE DETALLES (GRID COMPACTO CON ICONOGRAFÍA DE ACENTO) */
 .paciente-card-body-details {
+    /* Renombrado de cita-card-body-details a paciente-card-body-details */
     padding: 1.5rem 2rem; 
     flex-grow: 1; 
     display: grid;
@@ -287,4 +304,75 @@
         grid-template-columns: 1fr; 
         gap: 0.9rem;
     }
+}
+
+
+/* =================================================================
+    4. ESTILOS INNOVADORES DEL CAMPO DE FILTRO (DISEÑO "WOW" NEUMORFICO)
+    =================================================================
+*/
+
+/* Contenedor principal que maneja la animación de entrada suave. */
+.filter-container {
+    animation: fadeInUp 0.7s ease-out forwards;
+    animation-delay: 0.2s; /* Aparece un poco después del título */
+    opacity: 0;
+    margin-bottom: 3rem; 
+}
+
+/* Contenedor que permite posicionar el icono y el input uno encima del otro */
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Estilo del icono de búsqueda (Lupa) */
+.search-input-wrapper i.bi-search {
+    position: absolute;
+    left: 20px; /* Posiciona el icono a la izquierda */
+    font-size: 1.4rem; /* Un poco más grande para más impacto */
+    color: var(--color-primary-navy); 
+    transition: color 0.3s ease, transform 0.3s ease;
+    z-index: 10;
+}
+
+
+/* Diseño del campo de texto (Input) - Neumorfismo Sutil + Cápsula */
+#filtro {
+    /* Quitamos el borde sólido y usamos sombra para el efecto neumórfico */
+    border: none; 
+    border-radius: 50px; 
+    padding: 0.9rem 1.5rem; /* Más padding para que se vea más robusto */
+    padding-left: 55px !important; /* Espacio extra para el icono */
+    font-size: 1.1rem;
+    color: var(--color-primary-navy);
+    font-weight: 500;
+    width: 100%; 
+    background-color: var(--color-bg-light); /* Fondo suave */
+    
+    /* Sombra compleja para el efecto "hundido" o Neumorfismo */
+    box-shadow: inset 2px 2px 5px var(--color-border-subtle), /* Sombra oscura (interno inferior) */
+                -2px -2px 5px var(--color-bg-white), /* Sombra clara (interno superior) */
+                0 6px 15px rgba(0, 0, 0, 0.1); /* Sombra externa suave */
+    transition: all var(--transition-speed);
+}
+
+/* Efecto al enfocar (Focus) - El efecto clave de innovación (Pulso de Salud) */
+#filtro:focus {
+    /* Quitamos las sombras internas para simular que "sale" un poco del hueco */
+    box-shadow: 0 0 0 0.5px var(--color-accent-green), 
+                0 0 0 4px rgba(0, 168, 120, 0.2), /* El "glow" o "halo" */
+                0 6px 20px rgba(0, 0, 0, 0.15); 
+    outline: none;
+    transform: translateY(-1px); /* Pequeña elevación */
+    
+    /* Aplica la animación de pulso que simula un latido de salud */
+    animation: pulse-glow 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* Efecto al enfocar: El icono se resalta y se mueve */
+#filtro:focus + i.bi-search {
+    color: var(--color-accent-green);
+    transform: scale(1.1) translateY(-1px) rotateY(180deg); /* Animación más dramática */
 }

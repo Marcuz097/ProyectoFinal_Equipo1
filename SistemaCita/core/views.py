@@ -13,7 +13,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 # Decorador para requerir que una vista solo acepte solicitudes POST
 from django.views.decorators.http import require_POST
 # Proporciona utilidades para trabajar con fechas y horas considerando la zona horaria
-from django.utils import timezone
+from django.utils import timezone 
 # Para devolver respuestas en formato JSON
 # Para devolver una respuesta HTTP de “prohibido” (403)
 from django.http import JsonResponse, HttpResponseForbidden
@@ -41,7 +41,7 @@ from .mixins import RolRequiredMixin
 def landing_page(request):
     # Si el usuario ya está autenticado, lo redirigimos a su dashboard
     if request.user.is_authenticated:
-        return redirect('home') # 'home' ahora es la vista que redirige por rol
+        return redirect('home') 
         
     # Si NO está autenticado, mostramos la página principal con los botones de login
     return render(request, 'core/home.html')
@@ -50,12 +50,13 @@ def landing_page(request):
 # 🔹 LOGIN Y LOGOUT PERSONALIZADOS
 # ==========================================================
 class CustomLoginView(LoginView):
-    template_name = "core/login.html" # Plantilla para login
-    redirect_authenticated_user = True # Redirige si ya está logueado
+    template_name = "core/login.html" 
+    redirect_authenticated_user = True 
 
 
 class CustomLogoutView(LogoutView):
-    next_page = reverse_lazy('login') # Redirige al login tras cerrar sesión
+    # CAMBIO CLAVE: Redirige a la landing page (home.html) después del logout.
+    next_page = reverse_lazy('landing_page')
 
 
 # ==========================================================
@@ -63,14 +64,14 @@ class CustomLogoutView(LogoutView):
 # ==========================================================
 def registro(request):
     if request.method == 'POST':
-        form = RegistroForm(request.POST) # Se reciben datos del formulario
-        if form.is_valid(): # Validación de formulario
-            user = form.save() # Guarda el usuario
-            login(request, user) # Inicia sesión automáticamente
+        form = RegistroForm(request.POST) 
+        if form.is_valid(): 
+            user = form.save() 
+            login(request, user) 
             # Redirige a completar perfil de paciente
             return redirect('completar_perfil_paciente') 
     else:
-        form = RegistroForm() # Formulario vacío si GET
+        form = RegistroForm() 
     return render(request, 'core/registro.html', {'form': form})
 
 
@@ -84,7 +85,7 @@ def home_page(request):
     if usuario.rol == 'admin':
         return redirect('admin_dashboard')
     elif usuario.rol == 'medico':
-        return redirect('agenda_medico')
+        return redirect('medico_agenda')
     else:
         return redirect('paciente_cita_list')
 
@@ -92,7 +93,6 @@ def home_page(request):
 @login_required
 @admin_required
 def admin_dashboard(request):
-    # CORRECCIÓN APLICADA: Renderizar la plantilla específica del panel de administración
     return render(request, 'admin/panel_admin.html', {}) 
 
 
@@ -126,8 +126,84 @@ def agenda_medico(request):
 
 @paciente_required
 def paciente_cita_list(request):
-    # Renderiza la lista de citas del paciente
-    return render(request, 'paciente/paciente_cita_list.html')
+    # NOTA: Esta vista funcional solo pasa 'now', el listado de citas
+    # debe ser manejado por la PacienteCitaListView, que es la vista principal.
+    context = {
+        'now': timezone.now(), 
+    }
+    return render(request, 'paciente/paciente_cita_list.html', context)
+
+# ==========================================================
+# 🔹 VISTAS DEL PERFIL DEL MÉDICO
+# ==========================================================
+@login_required
+def medico_perfil(request):
+    """
+    Muestra la información del perfil del médico actual.
+    """
+    # Intentamos obtener el objeto Medico asociado al usuario logueado.
+    try:
+        medico = Medico.objects.get(usuario=request.user)
+    except Medico.DoesNotExist:
+        # Manejo de error si el usuario no tiene un perfil de Medico asociado
+        # Podrías redirigir a una página de error o a completar perfil si es necesario.
+        return redirect('home') 
+
+    context = {
+        'medico': medico,
+        'now': timezone.now(),  # Usamos la zona horaria actual para la fecha
+    }
+    # Renderizamos el template que creamos anteriormente
+    return render(request, 'medico/medico_perfil.html', context)
+
+
+@login_required
+def medico_perfil_edit(request):
+    """
+    Permite al médico editar su perfil. Por ahora, es una vista de marcador de posición.
+    """
+    # Obtener el objeto Medico actual
+    medico = get_object_or_404(Medico, usuario=request.user)
+
+    # Lógica de manejo del formulario de edición (placeholder)
+    if request.method == 'POST':
+        # Aquí iría la lógica para procesar el formulario de edición
+        # Por ejemplo: form = MedicoPerfilForm(request.POST, instance=medico)
+        # if form.is_valid(): form.save(); return redirect('medico_perfil')
+        pass 
+        
+    context = {
+        'medico': medico,
+        'now': timezone.now(),
+        # 'form': form, # Si se usa un formulario
+    }
+    
+    # Renderizar un template de edición de perfil (necesitarás crear este HTML)
+    return render(request, 'medico/medico_perfil_edit.html', context)
+
+
+# ==========================================================
+# 🔹 VISTAS DEL PERFIL DEL PACIENTE (NUEVA)
+# ==========================================================
+@login_required
+@paciente_required
+def paciente_perfil(request):
+    """
+    Muestra la información del perfil del paciente actual.
+    """
+    try:
+        # Intentamos obtener el objeto Paciente asociado al usuario logueado.
+        paciente = Paciente.objects.get(usuario=request.user)
+    except Paciente.DoesNotExist:
+        # Si el usuario es paciente pero no ha completado el perfil, redirigir
+        return redirect('completar_perfil_paciente') 
+        
+    context = {
+        'paciente': paciente,
+        'now': timezone.now(),  # Usamos la zona horaria actual para la fecha
+    }
+    # Renderizamos el template que creamos
+    return render(request, 'paciente/paciente_perfil.html', context)
 
 
 # ==========================================================
@@ -135,12 +211,12 @@ def paciente_cita_list(request):
 # ==========================================================
 def completar_perfil_paciente(request):
     user = request.user
-    form = PacientePerfilForm(request.POST or None) # Formulario con POST o vacío
+    form = PacientePerfilForm(request.POST or None) 
 
     if request.method == 'POST' and form.is_valid():
-        paciente = form.save(commit=False) # No guarda todavía
-        paciente.usuario = user # Asigna usuario logueado
-        paciente.save() # Guarda paciente
+        paciente = form.save(commit=False) 
+        paciente.usuario = user 
+        paciente.save() 
         return redirect('home')
 
     return render(request, 'core/completar_perfil.html', {
@@ -154,17 +230,21 @@ def completar_perfil_paciente(request):
 # ==========================================================
 class PacienteCitaListView(RolRequiredMixin, ListView):
     model = Cita
-    rol_permitido = 'paciente' # Solo pacientes
+    rol_permitido = 'paciente' 
     template_name = 'paciente/paciente_cita_list.html'
     context_object_name = 'citas'
 
     def get_queryset(self):
         user = self.request.user
         if user.rol == 'paciente':
-            # Filtra citas solo del paciente logueado
             return Cita.objects.filter(paciente__usuario=user).order_by('-fecha_hora')
         return Cita.objects.none()
 
+    # CORRECCIÓN PARA PASAR 'now' a la VBC, resolviendo el error de la fecha
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['now'] = timezone.now()
+        return context
 
 class PacienteCitaCreateView(RolRequiredMixin, CreateView):
     model = Cita
@@ -251,7 +331,7 @@ def registrar_medico(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Médico registrado correctamente.")
-            return redirect('gestion_citas:medico-list') # Redirige al listado de médicos
+            return redirect('gestion_citas:medico-list') 
     else:
         form = MedicoRegistroForm()
 

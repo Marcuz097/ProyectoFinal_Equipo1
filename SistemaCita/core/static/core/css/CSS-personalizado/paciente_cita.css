@@ -1,36 +1,81 @@
 /* --- ESTILOS ESPECÍFICOS DE LA VISTA DEL PACIENTE (FINAL Y PULIDO) --- */
 
+/* ================================================================= */
+/* ---------------------- 1. PALETA Y VARIABLES (DISEÑO UNIFICADO) ---------------------- */
+/* ================================================================= */
+:root {
+    /* RESTAURACIÓN Y DEFINICIÓN DE COLORES */
+    --color-marine-deep: #021C3F; /* Azul Marino Profundo (El color del NAVBAR) */
+    --color-marine-base: #133757; /* Azul Marino Base */
+    --color-primary-navy: var(--color-marine-deep); 
+    --color-primary-dark: var(--color-marine-base);
+    
+    --color-accent-green: #00A878; 
+    --color-accent-green-light: #00C890; 
+
+    /* Fondo, Sombras y Peligro */
+    --color-bg-light: #F7F9FC; 
+    --color-bg-white: #FFFFFF;
+    
+    /* Variables de estado */
+    --color-warning-strong: #ff9800; 
+    --color-success-strong: #4caf50; 
+    --color-danger-strong: #f44336; 
+    --color-info-strong: #2196f3; 
+    
+    --color-danger-subtle: #D32F2F; 
+    --color-border-subtle: #D9E2ED;
+    --shadow-hover: 0 30px 60px rgba(28, 63, 96, 0.5); 
+    --transition-speed: 0.35s;
+    --border-radius-xl: 16px;
+    --border-radius-xxl: 20px;
+}
+
+/* Definición de la Animación de Entrada */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* **NUEVA ANIMACIÓN:** Efecto de "Latido" para el focus del filtro */
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 0 0 var(--color-accent-green);
+    }
+    50% {
+        box-shadow: 0 0 0 5px rgba(0, 168, 120, 0.15); /* Pulso suave */
+    }
+    100% {
+        box-shadow: 0 0 0 0 var(--color-accent-green);
+    }
+}
+
+/* Colores de texto unificados */
+.text-deep-navy { color: var(--color-primary-navy) !important; } 
+.text-contrast-blue { color: var(--color-accent-green) !important; } 
+
+/* 🎯 CORRECCIÓN: Definición de texto "apagado" para que el gris se vea bien */
+.text-muted {
+    color: #6c757d !important; /* Gris neutro y legible para textos secundarios */
+}
+
+
 body {
     background-color: var(--color-bg-light);
 }
 
 
-/* 1. Definición de colores VIVOS/FUERTES para los estados */
-:root {
-    /* Colores Vivos/Fuertes para Badges */
-    --color-warning-strong: #ff9800;
-    /* Pendiente - Naranja/Ámbar Brillante */
-    --color-success-strong: #4caf50;
-    /* Completada - Verde Brillante */
-    --color-danger-strong: #f44336;
-    /* Cancelada - Rojo Vivo */
-    --color-info-strong: #2196f3;
-    /* Confirmada - Azul Brillante */
-
-    /* Asumo estas variables de tu base.css para consistencia */
-    --color-marine-deep: #021C3F;
-    --color-marine-base: #133757;
-    --color-accent-green: #00A878;
-    --color-marine-text: #191919;
-    --color-bg-light: #FBFDFF;
-    --border-radius-xl: 16px;
-}
-
 /* --- 2. Navbar, Header y Botones Globales --- */
 
-/* NAVBAR: Estilo corporativo */
+/* NAVBAR: Restaurado a tu color original */
 .system-navbar-paciente {
-    background-color: var(--color-marine-deep) !important;
+    background-color: var(--color-marine-deep) !important; 
     border-bottom: 3px solid var(--color-accent-green);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
@@ -48,22 +93,34 @@ body {
 }
 
 
-/* Botón de Cerrar Sesión (Rediseño Lindo y Visible) */
+/* 🚀 Botón de Cerrar Sesión INNOVADOR */
 .btn-logout-innovative {
-    background: linear-gradient(45deg, var(--color-marine-base) 0%, #3a608d 100%) !important;
-    border: none;
-    color: white !important;
+    background-color: transparent;
+    border: 2px solid var(--color-accent-green);
+    color: var(--color-accent-green) !important;
+    font-weight: 700;
     border-radius: 50px;
-    font-weight: 600;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 4px 12px rgba(19, 55, 87, 0.5);
+    box-shadow: 0 0 8px rgba(0, 168, 120, 0.5);
 }
 
 .btn-logout-innovative:hover {
-    background: linear-gradient(45deg, #3a608d 0%, var(--color-marine-base) 100%) !important;
-    transform: scale(1.05);
-    box-shadow: 0 6px 18px rgba(19, 55, 87, 0.8);
-    color: var(--color-accent-green) !important;
+    background-color: var(--color-accent-green) !important;
+    color: white !important;
+    transform: scale(1.1) rotate(2deg);
+    box-shadow: 0 8px 20px rgba(0, 168, 120, 0.8);
+    animation: bounceEffect 0.6s ease-in-out infinite alternate;
+}
+
+/* Keyframes para el rebote del botón de cerrar sesión */
+@keyframes bounceEffect {
+    from {
+        transform: scale(1.1) rotate(2deg);
+    }
+
+    to {
+        transform: scale(1.08) rotate(-2deg);
+    }
 }
 
 
@@ -71,7 +128,7 @@ body {
 .agenda-header-clean {
     border-bottom: none;
     padding-bottom: 25px;
-    margin-bottom: 3rem !important;
+    margin-bottom: 1.5rem !important; /* Espacio para el filtro */
     position: relative;
 }
 
@@ -83,10 +140,10 @@ body {
     width: 100%;
     height: 3px;
     background: linear-gradient(to right,
-            var(--color-marine-base) 0%,
-            var(--color-marine-base) 30%,
-            var(--color-accent-green) 70%,
-            var(--color-accent-green) 100%);
+                var(--color-marine-base) 0%,
+                var(--color-marine-base) 30%,
+                var(--color-accent-green) 70%,
+                var(--color-accent-green) 100%);
     border-radius: 1.5px;
     transform: scaleX(0);
     transform-origin: left;
@@ -101,7 +158,7 @@ body {
 
 .h1-elegant-clean {
     font-weight: 900;
-    color: var(--color-marine-deep);
+    color: var(--color-primary-navy); 
     font-size: 3.5rem;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -111,6 +168,97 @@ body {
     text-shadow: 1px 1px 5px rgba(0, 168, 120, 0.6);
     transition: transform 0.3s ease-in-out;
 }
+
+/* ✨ REGLAS FINAL: FECHA CON BADGE SUTIL Y BIEN ALINEADO */
+.header-date-elegant {
+    font-size: 0.95rem !important; 
+    font-weight: 600;
+    color: var(--color-marine-deep) !important;
+    padding: 0.4rem 1rem;
+    background-color: #e8eef3; 
+    border: 1px solid #d4dbe3; 
+    border-radius: 20px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); 
+    transition: all 0.3s ease;
+    display: inline-block; 
+    align-self: center; 
+}
+
+.header-date-elegant:hover {
+    transform: translateY(-2px) scale(1.01); 
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15); 
+}
+
+/* Ocultamos los estilos de fecha que no se usan */
+.top-date-ribbon {
+    display: none; 
+}
+
+
+/* ---------------------- 3. ESTILOS DE FILTRO NEUMÓRFICO (CENTRAL) ---------------------- */
+
+/* Contenedor principal que maneja la animación de entrada suave. */
+.filter-container {
+    animation: fadeInUp 0.7s ease-out forwards;
+    animation-delay: 0.2s; 
+    opacity: 0;
+    margin-bottom: 2.5rem !important; /* Espacio antes de las tarjetas */
+    margin-top: 0.5rem !important; 
+}
+
+/* Contenedor que permite posicionar el icono y el input uno encima del otro */
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Estilo del icono de búsqueda (Lupa) */
+.search-input-wrapper i.bi-search {
+    position: absolute;
+    left: 20px; 
+    font-size: 1.4rem; 
+    color: var(--color-primary-navy); 
+    transition: color 0.3s ease, transform 0.3s ease;
+    z-index: 10;
+}
+
+
+/* Diseño del campo de texto (Input) - Neumorfismo Sutil + Cápsula */
+#filtro {
+    border: none; 
+    border-radius: 50px; 
+    padding: 0.9rem 1.5rem; 
+    padding-left: 55px !important; /* Espacio extra para el icono */
+    font-size: 1.1rem;
+    color: var(--color-primary-navy);
+    font-weight: 500;
+    width: 100%; 
+    background-color: var(--color-bg-white); 
+    
+    box-shadow: inset 2px 2px 5px var(--color-border-subtle), 
+                -2px -2px 5px var(--color-bg-white), 
+                0 6px 15px rgba(0, 0, 0, 0.1); 
+    transition: all var(--transition-speed);
+}
+
+/* Efecto al enfocar (Focus) - Pulso de Salud */
+#filtro:focus {
+    box-shadow: 0 0 0 0.5px var(--color-accent-green), 
+                0 0 0 4px rgba(0, 168, 120, 0.2), 
+                0 6px 20px rgba(0, 0, 0, 0.15); 
+    outline: none;
+    transform: translateY(-1px); 
+    animation: pulse-glow 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* Efecto al enfocar: El icono se resalta y se mueve */
+#filtro:focus + i.bi-search {
+    color: var(--color-accent-green);
+    transform: scale(1.1) translateY(-1px) rotateY(180deg); 
+}
+/* ---------------------- FIN ESTILOS DE FILTRO NEUMÓRFICO ---------------------- */
+
 
 /* Botón Agendar Nueva Cita (Verde Innovador) */
 .btn-primary-innovative {
@@ -130,28 +278,29 @@ body {
 }
 
 
-/* --- 3. Diseño de Tarjeta de Cita (Restaurado y Pulido) --- */
+/* --- 4. Diseño de Tarjeta de Cita (ELEVADO Y ELEGANTE) --- */
 
 .cita-card-item {
     border: none;
-    border-radius: 10px;
-    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+    border-radius: var(--border-radius-xxl); /* Usamos el radio grande */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); /* Sombra de tarjeta unificada */
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
     overflow: hidden;
-    background: white;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    background: var(--color-bg-white);
 }
 
 .cita-card-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(19, 55, 87, 0.15) !important;
+    transform: translateY(-10px); /* Elevación más notable */
+    box-shadow: 0 30px 60px rgba(28, 63, 96, 0.5) !important; /* Sombra de hover unificada */
 }
 
-/* Header de la Cita (FECHA Y HORA UNIFICADAS) */
+/* Header de la Cita - FONDO AZUL MARINO Y TEXTO BLANCO */
 .cita-header-paciente {
-    background-color: var(--color-marine-deep) !important;
-    color: white;
+    background-color: var(--color-marine-deep) !important; /* AZUL MARINO DEL NAVBAR */
+    color: white; /* Base blanca */
     padding: 1.2rem 1.5rem;
     border-bottom: 5px solid var(--color-accent-green);
+    border-radius: var(--border-radius-xxl) var(--border-radius-xxl) 0 0; /* Bordes redondeados */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -160,7 +309,7 @@ body {
 .time-label {
     font-weight: 900;
     font-size: 1.8rem;
-    color: white;
+    color: white !important; /* Forzar blanco */
     margin-bottom: 5px;
 }
 
@@ -168,6 +317,7 @@ body {
     font-weight: 400;
     font-size: 1.1rem;
     margin-top: 0;
+    color: white !important; /* Forzar blanco */
 }
 
 /* Contenido del Cuerpo de la Tarjeta */
@@ -189,7 +339,7 @@ body {
 }
 
 
-/* --- 4. Estado y Acciones (Colores FUERTES y Visibles) --- */
+/* --- 5. Estado y Acciones (Colores FUERTES y Visibles) --- */
 
 /* Badge de Estado - Colores VIVOS y Redondeado */
 .status-badge {
@@ -236,79 +386,70 @@ body {
 }
 
 .action-btn {
-    background-color: transparent !important;
-    border: none !important;
+    /* Base para los nuevos botones */
+    border: 2px solid;
     font-weight: 700;
-    font-size: 0.95rem;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    box-shadow: 0 0 0 0 transparent;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px; /* Más redondeado */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto de rebote sutil */
 }
 
 .action-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.02); /* Se levanta más */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
+/* Modificar (Verde Esmeralda) */
 .btn-outline-info-custom {
     color: var(--color-accent-green);
+    border-color: var(--color-accent-green);
 }
 
 .btn-outline-info-custom:hover {
     color: white !important;
     background-color: var(--color-accent-green) !important;
-    box-shadow: 0 4px 8px rgba(0, 168, 120, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 168, 120, 0.6);
 }
 
+/* Cancelar (Rojo Vivo) */
 .btn-outline-danger-custom {
     color: var(--color-danger-strong);
+    border-color: var(--color-danger-strong);
 }
 
 .btn-outline-danger-custom:hover {
     color: white !important;
     background-color: var(--color-danger-strong) !important;
-    box-shadow: 0 4px 8px rgba(244, 69, 54, 0.4);
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.6);
 }
 
 
-/* --- Estilo mejorado para las especialidades del doctor --- */
+/* --- 6. Otros Estilos de Detalle --- */
 .patient-doctor-name+p .badge {
     font-size: 0.95rem;
-    /* Un poco más grande */
     padding: 0.35rem 0.75rem;
-    /* Espaciado cómodo */
     border-radius: 8px;
-    /* Bordes más suaves y redondeados */
     font-weight: 600;
-    /* Un poco más marcado */
-    background-color: #f3f6f8 !important;
-    /* Gris azulado suave */
+    background-color: #f0f4f7 !important;
     color: var(--color-marine-base) !important;
-    /* Azul marino suave */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    /* Sombrita sutil */
 }
 
-/* --- 5. Animación Global CORREGIDA (Solo Entrada, SIN SCROLL) --- */
+/* --- 7. Animación Global --- */
 
 @keyframes fadeInSlide {
-
-    /* Estado inicial: un poco abajo y transparente */
     from {
         opacity: 0;
         transform: translateY(20px);
     }
-
-    /* Estado final: visible y en posición */
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-/* Aplicamos la animación al contenedor principal, y hacemos que sea visible por defecto. */
-/* Esto reemplaza cualquier clase JavaScript que pudiera estar ocultándolo inicialmente. */
 .main-content-fade-in {
     animation: fadeInSlide 0.8s ease-out forwards;
-    /* Animación más rápida */
-    /* El elemento NO debe tener 'opacity: 0;' por defecto para que las tarjetas se vean al inicio */
 }

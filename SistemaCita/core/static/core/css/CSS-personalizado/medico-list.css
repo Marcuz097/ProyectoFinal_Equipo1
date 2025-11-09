@@ -1,5 +1,5 @@
 /* ================================================================= */
-/* ---------------------- 1. PALETA Y VARIABLES (DISEÑO UNIFICADO DE CITA) ---------------------- */
+/* ---------------------- 1. PALETA Y VARIABLES (DISEÑO UNIFICADO DE MÉDICO) ---------------------- */
 /* ================================================================= */
 :root {
     /* Colores Principales (Azul/Verde Sofisticado) */
@@ -26,7 +26,9 @@
     --border-radius-xxl: 20px;
 }
 
-/* Definición de la Animación de Entrada */
+/* ---------------------- DEFINICIÓN DE ANIMACIONES ---------------------- */
+
+/* Animación de Entrada General (Usada en Header, Tarjetas y Filtro) */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -38,6 +40,30 @@
     }
 }
 
+/* **ANIMACIÓN WOW:** Efecto de "Latido" para el focus del filtro */
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 0 0 var(--color-accent-green);
+    }
+    50% {
+        box-shadow: 0 0 0 5px rgba(0, 168, 120, 0.15); /* Pulso suave */
+    }
+    100% {
+        box-shadow: 0 0 0 0 var(--color-accent-green);
+    }
+}
+
+/* **NUEVA ANIMACIÓN:** Efecto de Neón/Pulso para el botón secundario (Borde Azul) */
+@keyframes neon-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(45, 101, 154, 0.5); /* Color primario light */
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(45, 101, 154, 0); /* Pulso hacia afuera (transparente) */
+    }
+}
+
+
 /* Colores de texto unificados */
 .text-deep-navy { color: var(--color-primary-navy) !important; }
 .text-contrast-blue { color: var(--color-accent-green) !important; } /* Acento Verde */
@@ -47,6 +73,7 @@
 /* ---------------------- 2. TÍTULO Y ACCIONES GLOBALES (BLOQUE FLOTANTE) ---------------------- */
 /* ================================================================= */
 .header-dynamic-block {
+    /* Contenedor del título y los botones */
     background-color: var(--color-bg-white);
     border-top: 5px solid var(--color-border-subtle); 
     padding: 1.5rem 2.5rem; 
@@ -70,7 +97,9 @@
     letter-spacing: -0.5px;
 }
 
-/* BOTÓN DE ACCIÓN PRINCIPAL (NUEVO MÉDICO) - GRADIENTE SOFISTICADO Y EFECTO 3D */
+/* --- ESTILOS DE BOTONES DE ACCIÓN PRINCIPAL Y SECUNDARIA --- */
+
+/* BOTÓN 1 (Principal): Asignar Perfil Médico (Gradiente) */
 .btn-main-action {
     background: linear-gradient(135deg, var(--color-primary-navy) 0%, var(--color-primary-light) 100%);
     border: none;
@@ -89,11 +118,34 @@
     box-shadow: 0 15px 40px rgba(28, 63, 96, 0.7);
 }
 
+/* BOTÓN 2 (Secundario): Crear Nuevo Usuario (Contorno Elegante con Efecto Neón Pulsante) */
+.btn-secondary-action {
+    background-color: var(--color-bg-white);
+    color: var(--color-primary-navy) !important;
+    border: 2px solid var(--color-primary-navy);
+    padding: 0.8rem 2rem;
+    font-weight: 700;
+    border-radius: 50px;
+    transition: all 0.4s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-subtle);
+}
+.btn-secondary-action:hover {
+    /* Efecto de relleno sutil al pasar el ratón */
+    background-color: var(--color-primary-navy);
+    color: white !important;
+    transform: translateY(-2px);
+    /* Aplica el pulso de neón */
+    animation: neon-pulse 1.5s infinite; 
+    box-shadow: 0 0 0 0.5px var(--color-primary-light), 0 0 0 4px rgba(45, 101, 154, 0.3);
+}
+
 
 /* ================================================================= */
-/* ---------------------- 3. ESTILOS DE LA TARJETA DE MÉDICO (ELEVADA Y ELEGANTE) ---------------------- */
+/* ---------------------- 3. ESTILOS DE LA TARJETA DE MÉDICO ---------------------- */
 /* ================================================================= */
-.medico-widget-compact { /* Renombrado de cita-widget-compact */
+.medico-widget-compact { /* Contenedor de la tarjeta */
     border: none;
     border-radius: var(--border-radius-xxl);
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); 
@@ -107,7 +159,7 @@
     opacity: 0; 
 }
 
-/* Efecto Brillo (Pseudo-Elemento) */
+/* Efecto Brillo (Pseudo-Elemento) para el hover de la tarjeta */
 .medico-widget-compact::before {
     content: '';
     position: absolute;
@@ -128,14 +180,14 @@
     box-shadow: 0 30px 60px rgba(28, 63, 96, 0.5); 
 }
 
-/* Efecto Brillo Activado */
+/* Activa el brillo esmeralda al pasar el ratón */
 .medico-widget-compact:hover::before {
     box-shadow: 0 0 30px 12px rgba(0, 168, 120, 1); 
     opacity: 1;
 }
 
-/* Franja de Nombre / Header */
-.medico-name-header-final { /* Renombrado de cita-header-final */
+/* Franja de Nombre / Header del Médico */
+.medico-name-header-final { 
     background: linear-gradient(90deg, var(--color-primary-navy) 0%, var(--color-primary-light) 100%);
     color: white;
     padding: 1.5rem 2rem; 
@@ -145,10 +197,10 @@
     justify-content: flex-start;
     position: relative;
     z-index: 2;
-    transition: background 0.3s ease; /* Transición para el fondo del header */
+    transition: background 0.3s ease; 
 }
 
-/* NUEVO EFECTO: Animación de Deslizamiento del Título y Zoom del Ícono */
+/* Efectos de Hover: Degradado Invertido, Deslizamiento del Título y Zoom del Ícono */
 .medico-widget-compact:hover .medico-name-header-final {
     background: linear-gradient(90deg, var(--color-primary-light) 0%, var(--color-primary-navy) 100%);
 }
@@ -159,30 +211,24 @@
     line-height: 1.2;
     font-size: 1.5rem;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); 
-    
-    /* Propiedad de Animación de Texto */
     transition: transform 0.3s ease;
 }
 .medico-widget-compact:hover .medico-name-header-final h5 {
-    transform: translateX(5px); /* Desliza el texto 5px a la derecha */
+    transform: translateX(5px); /* Desliza el texto a la derecha */
 }
-
 
 .medico-name-header-final i {
     font-size: 2.2rem; 
     margin-right: 1rem;
     opacity: 0.9;
-    
-    /* Propiedad de Animación del Ícono */
     transition: transform 0.3s ease;
 }
 .medico-widget-compact:hover .medico-name-header-final i {
-    transform: scale(1.1); /* Agranda el ícono al 110% */
+    transform: scale(1.1); /* Agranda el ícono */
 }
-/* FIN NUEVO EFECTO */
  
 /* ID DE LA TARJETA (Franja de metadata) */
-.medico-id-strip { /* Renombrado de cita-id-strip */
+.medico-id-strip { 
     background-color: var(--color-bg-light);
     color: #666; 
     padding: 0.8rem 2rem; 
@@ -202,16 +248,14 @@
 
 
 /* CUERPO DE DETALLES (GRID COMPACTO CON ICONOGRAFÍA DE ACENTO) */
-.medico-card-body-details { /* Renombrado de cita-card-body-details */
+.medico-card-body-details { 
     padding: 1.5rem 2rem; 
     flex-grow: 1; 
     display: grid;
-    /* AJUSTE CLAVE: Proporción 1fr para etiqueta, 2fr para valor */
     grid-template-columns: 1fr 2fr; 
     gap: 1.2rem 1rem; 
 }
  
-.medico-card-body-details p { margin-bottom: 0; font-size: 0.95rem; }
 .medico-card-body-details .label-icon {
     font-weight: 700; 
     color: var(--color-primary-dark); 
@@ -231,14 +275,13 @@
     display: block; 
     width: 100%; 
     text-align: left; 
-    /* Mantener las propiedades de ellipsis para evitar desbordamiento vertical */
     overflow: hidden; 
     white-space: nowrap; 
     text-overflow: ellipsis; 
     font-size: 0.95rem; 
 }
 
-/* Footer de Acciones */
+/* Footer con botones de acción (Editar/Eliminar) */
 .widget-footer-actions {
     padding: 1rem 2rem; 
     background-color: var(--color-bg-light);
@@ -286,4 +329,75 @@
         grid-template-columns: 1fr; 
         gap: 0.9rem;
     }
+}
+
+
+/* =================================================================
+    4. ESTILOS INNOVADORES DEL CAMPO DE FILTRO (DISEÑO "WOW" NEUMORFICO)
+    =================================================================
+*/
+
+/* Contenedor principal que maneja la animación de entrada suave. */
+.filter-container {
+    animation: fadeInUp 0.7s ease-out forwards;
+    animation-delay: 0.2s; /* Aparece un poco después del título */
+    opacity: 0;
+    margin-bottom: 3rem; 
+}
+
+/* Contenedor que permite posicionar el icono y el input uno encima del otro */
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Estilo del icono de búsqueda (Lupa) */
+.search-input-wrapper i.bi-search {
+    position: absolute;
+    left: 20px; /* Posiciona el icono a la izquierda */
+    font-size: 1.4rem; /* Un poco más grande para más impacto */
+    color: var(--color-primary-navy); 
+    transition: color 0.3s ease, transform 0.3s ease;
+    z-index: 10;
+}
+
+
+/* Diseño del campo de texto (Input) - Neumorfismo Sutil + Cápsula */
+#filtro {
+    /* Quitamos el borde sólido y usamos sombra para el efecto neumórfico */
+    border: none; 
+    border-radius: 50px; 
+    padding: 0.9rem 1.5rem; /* Más padding para que se vea más robusto */
+    padding-left: 55px !important; /* Espacio extra para el icono */
+    font-size: 1.1rem;
+    color: var(--color-primary-navy);
+    font-weight: 500;
+    width: 100%; 
+    background-color: var(--color-bg-light); /* Fondo suave */
+    
+    /* Sombra compleja para el efecto "hundido" o Neumorfismo */
+    box-shadow: inset 2px 2px 5px var(--color-border-subtle), /* Sombra oscura (interno inferior) */
+                -2px -2px 5px var(--color-bg-white), /* Sombra clara (interno superior) */
+                0 6px 15px rgba(0, 0, 0, 0.1); /* Sombra externa suave */
+    transition: all var(--transition-speed);
+}
+
+/* Efecto al enfocar (Focus) - El efecto clave de innovación (Pulso de Salud) */
+#filtro:focus {
+    /* Quitamos las sombras internas para simular que "sale" un poco del hueco */
+    box-shadow: 0 0 0 0.5px var(--color-accent-green), 
+                0 0 0 4px rgba(0, 168, 120, 0.2), /* El "glow" o "halo" */
+                0 6px 20px rgba(0, 0, 0, 0.15); 
+    outline: none;
+    transform: translateY(-1px); /* Pequeña elevación */
+    
+    /* Aplica la animación de pulso que simula un latido de salud */
+    animation: pulse-glow 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* Efecto al enfocar: El icono se resalta y se mueve */
+#filtro:focus + i.bi-search {
+    color: var(--color-accent-green);
+    transform: scale(1.1) translateY(-1px) rotateY(180deg); /* Animación más dramática */
 }

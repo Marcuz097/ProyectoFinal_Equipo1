@@ -133,7 +133,7 @@ class CitaForm(forms.ModelForm):  # Formulario para crear o modificar citas
         required = True
         fields = ['fecha_hora', 'motivo', 'estado', 'paciente', 'medico']
         widgets = {
-            'fecha_hora': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'fecha_hora': forms.DateTimeInput(format='%Y-%m-%dT%H:%M', attrs={'type': 'datetime-local', 'class': 'form-control'}),
             'motivo': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Describa brevemente el motivo de la cita'}),
             'estado': forms.Select(choices=[('Pendiente', 'Pendiente'), ('Confirmada', 'Confirmada'), ('Cancelada', 'Cancelada'), ('Completada', 'Completada')], attrs={'class': 'form-select'}),
             'paciente': forms.Select(attrs={'class': 'form-select'}),
@@ -148,7 +148,14 @@ class CitaForm(forms.ModelForm):  # Formulario para crear o modificar citas
         }
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs) 
+
+        # <-- ESTA ES LA PARTE QUE SOLUCIONA QUE SE MUESTRE LA FECHA AL EDITAR -->
+       # ✅ Mostrar correctamente la fecha al editar
+        if self.instance and self.instance.pk and self.instance.fecha_hora:
+         fecha_local = timezone.localtime(self.instance.fecha_hora)
+         self.fields['fecha_hora'].initial = fecha_local.strftime('%Y-%m-%dT%H:%M')
+
         self.fields['paciente'].queryset = Paciente.objects.select_related('usuario').all()  # Pacientes con sus usuarios
         self.fields['paciente'].label_from_instance = lambda obj: f"{obj.usuario.first_name} {obj.usuario.last_name}"
         self.fields['medico'].queryset = Medico.objects.select_related('usuario').all()  # Médicos con sus usuarios

@@ -109,3 +109,75 @@
     font-size: 1.2rem; 
     line-height: 1; 
 }
+
+/* ============================================================= */
+/* 8. RESPONSIVE (Ajuste definitivo: Apilamiento Vertical Forzado)                                                 */
+/* ============================================================= */
+@media (max-width: 576px) {
+
+    /* La tarjeta ocupa el 95% del ancho */
+    .card-delete-elegant {
+        max-width: 95% !important;
+        margin: 0 auto !important;
+    }
+
+    /* Reducir el padding interno del cuerpo de la tarjeta */
+    .card-body-delete {
+        padding: 1rem !important;
+    }
+
+    /* 🚨 AJUSTE CLAVE: FORZAR APILAMIENTO Y ANCHO 100% */
+    /* (Asumiendo que los botones están dentro de un <form> o un <div> con clase 'form') */
+    .card-body-delete form {
+        /* CLAVE: Fuerza a que los botones se apilen verticalmente (uno encima del otro) */
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.8rem !important;
+        width: 100% !important;
+    }
+
+    /* Ambos botones ocupan el 100% del ancho */
+    .btn-confirm-delete,
+    .btn-outline-marine-action {
+        max-width: 60% !important;
+        width: 60% !important;
+
+        /* Ajuste de fuente y padding para evitar desbordamiento del texto largo */
+        font-size: 0.75rem !important;
+        /* Fuente muy compacta para el texto largo */
+        padding: 0.8rem 1rem !important;
+        line-height: 1.3 !important;
+        white-space: normal !important;
+
+        /* Centrado de contenido */
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    /* Iconos dentro de los botones */
+    .btn-confirm-delete i,
+    .btn-outline-marine-action i {
+        font-size: 0.9rem !important;
+        margin-right: 0.4rem !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Reducción de texto general para evitar desbordamiento */
+    .card-header-danger-solid {
+        font-size: 1.1rem !important;
+    }
+
+    .card-body-delete h3 {
+        font-size: 1.2rem !important;
+    }
+
+    .card-body-delete p {
+        font-size: 0.85rem !important;
+    }
+
+    .detail-block {
+        font-size: 0.8rem !important;
+    }
+}

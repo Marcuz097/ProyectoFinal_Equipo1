@@ -19,7 +19,7 @@
     --border-radius-xxl: 20px; 
     --shadow-premium: 0 15px 45px rgba(0, 0, 0, 0.15); 
     --transition-speed: 0.35s;
-    /* Reducimos el ancho para que sea compacto como solicitaste antes */
+    /* Ancho Máximo para el formulario (usado en .card-innovadora) */
     --max-width-form: 500px; 
 }
 
@@ -47,11 +47,10 @@ body {
 }
 
 /* ================================================================= */
-/* ---------------------- 2. TARJETA DE FORMULARIO (Efecto de Brillo y Entrada) ---------------------- */
+/* ---------------------- 2. TARJETA DE FORMULARIO ---------------------- */
 /* ================================================================= */
 
-/* Estilos de Tarjeta (FLOTANTE Y ELEGANTE) */
-.card-innovadora { /* Usamos el selector del diseño original */
+.card-innovadora { 
     border: none; 
     background-color: white;
     border-radius: var(--border-radius-xxl); 
@@ -61,13 +60,10 @@ body {
     transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
     position: relative;
     overflow: hidden; 
-
-    /* APLICACIÓN DEL EFECTO DE ENTRADA */
     animation: fadeInUp 0.8s ease-out forwards; 
     opacity: 0; 
 }
 
-/* Efecto Brillo (Pseudo-Elemento) */
 .card-innovadora::before {
     content: '';
     position: absolute;
@@ -83,31 +79,27 @@ body {
     z-index: 1; 
 }
 
-/* Efectos al pasar el ratón */
 .card-innovadora:hover {
     transform: translateY(-5px); 
     box-shadow: 0 15px 35px rgba(28, 63, 96, 0.2); 
 }
 
-/* Efecto Brillo Activado */
 .card-innovadora:hover::before {
     box-shadow: 0 0 15px 5px rgba(0, 168, 120, 0.8); 
     opacity: 1;
 }
 
-/* Header: Título enérgico y unificado */
 .card-header-marine {
     background-color: var(--color-primary-navy); 
     color: white;
     border-radius: var(--border-radius-xxl) var(--border-radius-xxl) 0 0 !important;
-    padding: 1.5rem; /* Padding ajustado */
+    padding: 1.5rem; 
     border-bottom: 5px solid var(--color-accent-green); 
     z-index: 2; 
     position: relative;
     transition: all var(--transition-speed);
 }
 
-/* EFECTO HOVER PARA EL ENCABEZADO (Color Sutil) */
 .card-innovadora:hover .card-header-marine {
     background-color: var(--color-primary-darker); 
     border-bottom-color: var(--color-accent-green-light); 
@@ -121,9 +113,9 @@ body {
 }
 
 /* -----------------------------------------------------------
-    ESTILOS DE CAMPOS RENDERIZADOS POR Django (Limpios y Reactivos)
+    ESTILOS DE CAMPOS RENDERIZADOS POR Django
     ----------------------------------------------------------- */
-.form-container-pad { /* Contenedor del body */
+.form-container-pad { 
     padding: 2rem; 
 }
 .form-label {
@@ -145,7 +137,6 @@ body {
 }
 
 .form-control-styled:focus {
-    /* Efecto Focus: Borde grueso y sombra vibrante Verde Esmeralda */
     border-color: var(--color-accent-green) !important; 
     box-shadow: 0 0 0 3px rgba(0, 168, 120, 0.4); 
     outline: none;
@@ -155,7 +146,6 @@ body {
 
 /* ---------------------- 4. BOTONES (Vibrantes y Definidos) ---------------------- */
 
-/* Botón Principal (Guardar/Actualizar): Verde Esmeralda con degradado */
 .btn-principal {
     background: linear-gradient(45deg, var(--color-accent-green) 0%, var(--color-accent-green-light) 100%); 
     border: none;
@@ -175,7 +165,6 @@ body {
     box-shadow: 0 10px 25px rgba(0, 168, 120, 0.9);
 }
 
-/* BOTÓN CANCELAR: Contraste fuerte (Rojo Vivo) */
 .btn-secundario {
     background: none;
     color: var(--color-danger-vibrant) !important;
@@ -197,13 +186,86 @@ body {
 
 /* ---------------------- 5. ESTILOS ADICIONALES (ERRORES) ---------------------- */
 .text-danger {
-    /* Asegurar que los errores de campo sean rojos */
     color: var(--color-danger-vibrant) !important; 
     font-weight: 600;
 }
 .alert-danger {
-    /* Fondo claro para la alerta de errores no relacionados con campos */
     background-color: #f8d7da; 
     color: var(--color-danger-vibrant);
     border-color: rgba(211, 47, 47, 0.2);
+}
+
+
+/* ================================================================= */
+/* ---------------------- 6. RESPONSIVIDAD DE LISTA/FORMULARIO ---------------------- */
+/* ================================================================= */
+
+/* Ajustes para Tablet (Ancho <= 991.98px) */
+@media (max-width: 991.98px) {
+    .form-container-pad {
+        padding: 1.5rem;
+    }
+
+    .card-header-marine {
+        padding: 1rem 1.5rem;
+    }
+    .card-header-marine h3 {
+        font-size: 1.4rem !important;
+    }
+    
+    .card-innovadora {
+        width: 100%;
+        max-width: none; 
+    }
+    
+    .form-label {
+        font-size: 0.9rem;
+    }
+    
+    .btn-principal, .btn-secundario {
+        padding: 0.7rem 2rem; 
+        font-size: 0.9rem;
+    }
+}
+
+/* Ajustes para Teléfono (Ancho <= 575.98px) */
+@media (max-width: 575.98px) {
+    /* Reducir el padding interno de la tarjeta */
+    .form-container-pad {
+        padding: 1rem;
+    }
+
+    /* Reducir el tamaño del header aún más */
+    .card-header-marine h3 {
+        font-size: 1.25rem !important;
+    }
+
+    /* 🚨 CLAVE: Ajuste de Botones en Móvil */
+    /* Aseguramos que los botones se apilen y ocupen el 100% */
+    
+    /* Si estás usando un contenedor d-flex/row de Bootstrap para los botones */
+    .d-flex.gap-3 {
+        flex-direction: column !important; /* Forzar apilamiento vertical */
+        gap: 10px !important; /* Espacio uniforme entre ellos */
+        width: 100%; /* Ocupar el 100% del contenedor */
+    }
+    
+    .btn-principal, .btn-secundario {
+        width: 100% !important; /* Ocupar el ancho completo */
+        margin-left: 0 !important; /* Eliminar cualquier margen flotante */
+        margin-right: 0 !important;
+        margin-top: 5px; /* Pequeño espacio si no se usa gap */
+    }
+    
+    /* Ajustes específicos para el botón principal (Guardar) */
+    .btn-principal {
+         /* En móvil, le damos más padding vertical para ser un objetivo más fácil */
+        padding: 1rem 1rem; 
+    }
+    
+    /* Ajustes específicos para el botón secundario (Cancelar) */
+    .btn-secundario {
+        /* En móvil, alineamos el texto del botón secundario para que se vea bien */
+        text-align: center !important; 
+    }
 }

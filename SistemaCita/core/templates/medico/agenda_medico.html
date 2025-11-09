@@ -1,139 +1,82 @@
-{% load static %} <!-- Carga etiquetas estáticas de Django -->
-<!DOCTYPE html> <!-- Define el tipo de documento como HTML5 -->
-<html lang="es" class="h-100"> <!-- Elemento html, idioma español y altura completa -->
-<head> <!-- Inicio de la sección head -->
-    <meta charset="utf-8" /> <!-- Codificación de caracteres UTF-8 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Meta para diseño responsive -->
-    <title>Agenda del Médico - HealthCare System</title> <!-- Título de la página -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" /> <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" /> <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+{% load static %} <!DOCTYPE html> <html lang="es" class="h-100"> <head> <meta charset="utf-8" /> <meta name="viewport" content="width=device-width, initial-scale=1" /> <title>Agenda del Médico - HealthCare System</title> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" /> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" /> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJ+cnSa5k51S7hQ9T7o5/1a7T/w/n7s38r7L+7/z9dC/O1/o11g1o1g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" /> <!-- Font Awesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" /> <!-- Fuente Inter -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> <!-- CSS de animaciones AOS -->
-    <link rel="stylesheet" href="{% static 'core/css/CSS-personalizado/base.css' %}"> <!-- CSS base personalizado -->
-    <link rel="stylesheet" href="{% static 'core/css/CSS-personalizado/agenda_medico.css' %}"> <!-- CSS agenda médico -->
-</head> <!-- Fin de head -->
-
-<body class="h-100 d-flex flex-column position-relative"> <!-- Body con altura completa y flex column -->
-<div class="bg-overlay-custom"></div> <!-- Overlay de fondo personalizado -->
-<header> <!-- Inicio header -->
-    <nav class="navbar navbar-expand-lg sticky-top py-3" data-bs-theme="dark"> <!-- Navbar fija y tema oscuro -->
-        <div class="container"> <!-- Contenedor navbar -->
-            <a class="navbar-brand text-white fw-bold fs-4" href="{% url 'home' %}"> <!-- Logo y enlace home -->
-                <i class="bi bi-heart-pulse-fill me-2"></i> HealthCare System
+        crossorigin="anonymous" referrerpolicy="no-referrer" /> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" /> <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> <link rel="stylesheet" href="{% static 'core/css/CSS-personalizado/base.css' %}"> <link rel="stylesheet" href="{% static 'core/css/CSS-personalizado/agenda_medico.css' %}"> 
+</head> <body class="h-100 d-flex flex-column position-relative"> <div class="bg-overlay-custom"></div> <header> <nav class="navbar navbar-expand-lg sticky-top py-3" data-bs-theme="dark"> <div class="container"> <a class="navbar-brand text-white fw-bold fs-4" href="{% url 'home' %}"> <i class="bi bi-heart-pulse-fill me-2"></i> HealthCare System
             </a>
             <button class="navbar-toggler border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <!-- Botón menú responsive -->
-                <span class="navbar-toggler-icon"></span> <!-- Icono botón -->
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav"> <!-- Contenedor colapsable -->
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0"> <!-- Menú principal -->
-                    <li class="nav-item"> <!-- Item Mi Agenda -->
-                        <a class="nav-link nav-link-custom active" href="#"> <!-- Enlace activo -->
-                            <i class="bi bi-calendar-check-fill me-1"></i> Mi Agenda
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+            <div class="collapse navbar-collapse" id="navbarNav"> <ul class="navbar-nav me-auto mb-2 mb-lg-0"> <li class="nav-item"> <a class="nav-link nav-link-custom active" href="#"> <i class="bi bi-calendar-check-fill me-1"></i> Mi Agenda
                         </a>
                     </li>
-                    <li class="nav-item"> <!-- Item Mi Perfil -->
-                        <a class="nav-link nav-link-custom" href="{% url 'medico_perfil' %}"> <!-- Enlace perfil -->
-                            <i class="bi bi-person-circle me-1"></i> Mi Perfil
+                    <li class="nav-item"> <a class="nav-link nav-link-custom" href="{% url 'medico_perfil' %}"> <i class="bi bi-person-circle me-1"></i> Mi Perfil
                         </a>
                     </li>
                 </ul>
-                <div class="d-flex align-items-center gap-2 ms-lg-auto"> <!-- Contenedor usuario y logout -->
-                    <span class="navbar-text text-white fw-semibold"> <!-- Nombre médico -->
-                        <i class="bi bi-person-circle"></i> Dr(a). {{ medico.usuario.get_full_name|default:"Usuario" }}
+                <div class="d-flex align-items-center gap-2 ms-lg-auto"> <span class="navbar-text text-white fw-semibold"> <i class="bi bi-person-circle"></i> Dr(a). {{ medico.usuario.get_full_name|default:"Usuario" }}
                     </span>
-                    <form method="post" action="{% url 'logout' %}"> <!-- Form logout -->
-                        {% csrf_token %} <!-- Token CSRF -->
-                        <button type="submit" class="btn btn-logout-innovative btn-sm shadow-sm"> <!-- Botón cerrar sesión -->
-                            <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
+                    <form method="post" action="{% url 'logout' %}"> {% csrf_token %} <button type="submit" class="btn btn-logout-innovative btn-sm shadow-sm"> <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
                         </button>
                     </form>
                 </div>
             </div>
         </div>
     </nav>
-</header> <!-- Fin header -->
-
-<main class="flex-shrink-0"> <!-- Inicio main -->
-    <div class="container py-5 main-content-fade-in"> <!-- Contenedor principal -->
-        <div class="agenda-header-clean mb-5"> <!-- Cabecera agenda -->
-            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between"> <!-- Layout responsive -->
-                <h1 class="h1-elegant-clean"> <!-- Título agenda -->
-                    <i class="bi bi-calendar-check-fill me-3 text-accent-green"></i> Mi Agenda
+</header> <main class="flex-shrink-0"> <div class="container py-5 main-content-fade-in"> <div class="agenda-header-clean mb-5"> <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between"> <h1 class="h1-elegant-clean"> <i class="bi bi-calendar-check-fill me-3 text-accent-green"></i> Mi Agenda
                 </h1>
-                <p class="header-date-elegant text-muted mt-2 mt-md-0"> <!-- Fecha actual -->
-                    Hoy: {{ now|date:"l"|capfirst }}, {{ now|date:"d" }} de {{ now|date:"F"|capfirst }} de {{ now|date:"Y, H:i" }}
+                <p class="header-date-elegant text-muted mt-2 mt-md-0"> Hoy: {{ now|date:"l"|capfirst }}, {{ now|date:"d" }} de {{ now|date:"F"|capfirst }} de {{ now|date:"Y, H:i" }}
                 </p>
             </div>
         </div>
 
-        <div class="row filter-container mb-5"> <!-- Contenedor filtro -->
-            <div class="col-12 col-md-8 col-lg-6 mx-auto"> <!-- Centrado input -->
-                <div class="search-input-wrapper"> <!-- Wrapper input -->
-                    <input type="text" id="filtro" class="form-control" placeholder="Buscar citas por nombre del paciente o motivo..."> <!-- Input búsqueda -->
-                    <i class="bi bi-search"></i> <!-- Icono búsqueda -->
-                </div>
+        <div class="row filter-container mb-5"> <div class="col-12 col-md-8 col-lg-6 mx-auto"> <div class="search-input-wrapper"> <input type="text" id="filtro" class="form-control" placeholder="Buscar citas por nombre del paciente o motivo..."> <i class="bi bi-search"></i> </div>
             </div>
         </div>
 
-        {% if dias_ordenados %} <!-- Si hay citas -->
-            {% for dia, citas in dias_ordenados %} <!-- Itera días -->
-                <div class="card mb-5 cita-day-card" data-aos="fade-up"> <!-- Tarjeta día -->
-                    <div class="card-header day-card-header-navy p-3"> <!-- Header día -->
-                        <h5 class="mb-0 text-white fw-bold">
-                            {% if dia %} <!-- Si fecha definida -->
-                                <i class="bi bi-calendar-event me-2 text-accent-green"></i> {{ dia|date:"l, d F Y"|capfirst }}
-                            {% else %} <!-- Fecha no definida -->
-                                <i class="bi bi-calendar-x me-2"></i> Fecha no definida
+        {% if dias_ordenados %} {% for dia, citas in dias_ordenados %} <div class="card mb-5 cita-day-card" data-aos="fade-up"> <div class="card-header day-card-header-navy p-3"> <h5 class="mb-0 text-white fw-bold">
+                            {% if dia %} <i class="bi bi-calendar-event me-2 text-accent-green"></i> {{ dia|date:"l, d F Y"|capfirst }}
+                            {% else %} <i class="bi bi-calendar-x me-2"></i> Fecha no definida
                             {% endif %}
                         </h5>
                     </div>
 
-                    <div class="list-group list-group-flush"> <!-- Lista citas -->
-                        {% for cita in citas %} <!-- Itera citas -->
-                            <div class="list-group-item appointment-item 
+                    <div class="list-group list-group-flush"> {% for cita in citas %} <div class="list-group-item appointment-item d-flex align-items-center w-100 
                                 {% if cita.estado == 'Pendiente' %}border-pending{% endif %}
                                 {% if cita.estado == 'Confirmada' %}border-confirmed{% endif %}
                                 {% if cita.estado == 'Completada' %}border-completed{% endif %}
                                 {% if cita.estado == 'Cancelada' %}border-cancelled{% endif %}" 
-                                data-cita-id="{{ cita.pk }}" data-filtro-item> <!-- Cita individual -->
-                                <div class="cita-flex-container d-flex align-items-center w-100"> <!-- Flex cita -->
-                                    <div class="appointment-time-name-wrapper d-flex align-items-center flex-shrink-0"> <!-- Hora y nombre -->
-                                        <div class="appointment-time-box text-marine"> <!-- Hora -->
-                                            {{ cita.fecha_hora|date:"H:i" }}
-                                        </div>
-                                        <h6 class="mb-0 flex-grow-1 text-truncate patient-name-innovative patient-name-filter"> <!-- Nombre paciente -->
-                                            {{ cita.paciente.usuario.get_full_name }}
-                                        </h6>
-                                    </div>
-
-                                    <div class="reason-wrapper flex-shrink-0 mx-4"> <!-- Motivo cita -->
+                                data-cita-id="{{ cita.pk }}" data-filtro-item> <div class="appointment-time-box text-marine flex-shrink-0">
+                                    {{ cita.fecha_hora|date:"H:i" }}
+                                </div>
+                                
+                                <div class="patient-info-mobile-wrap flex-grow-1 d-flex flex-column flex-md-row align-items-md-center justify-content-md-start">
+                                    
+                                    <h6 class="mb-0 flex-grow-1 text-truncate patient-name-innovative patient-name-filter">
+                                        {{ cita.paciente.usuario.get_full_name }}
+                                    </h6>
+                                    
+                                    <div class="reason-wrapper flex-shrink-0 mt-2 mt-md-0 me-md-4">
                                         <p class="mb-0 text-muted small fw-medium reason-text motive-filter">
                                             <i class="bi bi-chat-left-dots me-1 text-marine"></i> Motivo: {{ cita.motivo|default:"(sin especificar)" }}
                                         </p>
                                     </div>
-
-                                    <div class="actions-wrapper flex-grow-1 text-md-end"> <!-- Estado y acciones -->
-                                        <div class="d-flex align-items-center justify-content-md-end status-actions-box">
-                                            {% with estado_class=cita.estado|lower %} <!-- Clase según estado -->
-                                                <span class="badge status-badge status-{{ estado_class }} me-4">{{ cita.estado }}</span>
-                                            {% endwith %}
-                                            <form class="form-estado d-flex form-image-style" data-cita="{{ cita.pk }}"> <!-- Form cambio estado -->
-                                                <select class="form-select form-select-sm status-select-custom-image"> <!-- Select estado -->
-                                                    <option value="Pendiente" {% if cita.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
-                                                    <option value="Confirmada" {% if cita.estado == 'Confirmada' %}selected{% endif %}>Confirmada</option>
-                                                    <option value="Completada" {% if cita.estado == 'Completada' %}selected{% endif %}>Completada</option>
-                                                    <option value="Cancelada" {% if cita.estado == 'Cancelada' %}selected{% endif %}>Cancelada</option>
-                                                </select>
-                                                <button type="button" class="btn btn-save-status btn-sm" title="Guardar estado"> <!-- Botón guardar -->
-                                                    <i class="bi bi-check-lg"></i>
-                                                </button>
-                                            </form>
-                                        </div>
+                                    
+                                </div>
+                                
+                                <div class="actions-wrapper flex-shrink-0">
+                                    <div class="d-flex align-items-center justify-content-md-end status-actions-box">
+                                        {% with estado_class=cita.estado|lower %} <span class="badge status-badge status-{{ estado_class }} me-4">{{ cita.estado }}</span>
+                                        {% endwith %}
+                                        
+                                        <form class="form-estado d-flex form-image-style" data-cita="{{ cita.pk}}">
+                                            <select class="form-select form-select-sm status-select-custom-image"> <option value="Pendiente" {% if cita.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                                                <option value="Confirmada" {% if cita.estado == 'Confirmada' %}selected{% endif %}>Confirmada</option>
+                                                <option value="Completada" {% if cita.estado == 'Completada' %}selected{% endif %}>Completada</option>
+                                                <option value="Cancelada" {% if cita.estado == 'Cancelada' %}selected{% endif %}>Cancelada</option>
+                                            </select>
+                                            <button type="button" class="btn btn-save-status btn-sm" title="Guardar estado"> <i class="bi bi-check-lg"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -141,31 +84,21 @@
                     </div>
                 </div>
             {% endfor %}
-        {% else %} <!-- No hay citas -->
-            <div class="alert alert-info text-center py-4 rounded-3 shadow-sm alert-custom"> <!-- Mensaje info -->
-                <i class="bi bi-info-circle-fill fs-4 me-2"></i> <strong> ¡Excelente! </strong> No tienes citas programadas por el momento.
+        {% else %} <div class="alert alert-info text-center py-4 rounded-3 shadow-sm alert-custom"> <i class="bi bi-info-circle-fill fs-4 me-2"></i> <strong> ¡Excelente! </strong> No tienes citas programadas por el momento.
             </div>
         {% endif %}
     </div>
 </main>
 
-<footer class="footer mt-auto" data-bs-theme="dark"> <!-- Footer -->
-    <div class="container text-center"> <!-- Contenedor footer -->
-        <p class="mb-0 small text-white-50"> <!-- Derechos autor -->
-            <i class="bi bi-shield-lock-fill me-1"></i> © {{ now|date:"Y" }} HealthCare System. Todos los derechos reservados.
+<footer class="footer mt-auto" data-bs-theme="dark"> <div class="container text-center"> <p class="mb-0 small text-white-50"> <i class="bi bi-shield-lock-fill me-1"></i> © {{ now|date:"Y" }} HealthCare System. Todos los derechos reservados.
         </p>
     </div>
 </footer>
 
-<!-- Scripts JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script> <!-- Bootstrap JS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> <!-- AOS JS -->
-
-<!-- Funcionalidad JS principal -->
-<script> 
-
+    crossorigin="anonymous"></script> <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> <script> 
+// ... (Tu código JavaScript para AOS, CSRF, y el filtro) ...
 AOS.init({
     duration: 900,
     once: true,
@@ -195,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const citaId = form.getAttribute('data-cita');
             const estado = form.querySelector('.status-select-custom-image').value;
             const csrftoken = getCookie('csrftoken');
+            
             fetch("{% url 'medico-actualizar-estado' %}", {
                 method: 'POST',
                 headers: {
@@ -239,6 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const patientName = item.querySelector('.patient-name-filter').innerText.toLowerCase();
             const motive = item.querySelector('.motive-filter').innerText.toLowerCase();
             const contenido = patientName + " " + motive;
+            
             const isVisible = contenido.includes(texto);
             item.style.display = isVisible ? "flex" : "none";
         });

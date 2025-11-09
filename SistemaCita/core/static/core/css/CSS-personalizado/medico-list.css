@@ -1,5 +1,5 @@
 /* ================================================================= */
-/* ---------------------- 1. PALETA Y VARIABLES (DISEÑO UNIFICADO DE MÉDICO) ---------------------- */
+/* ---------------------- 1. PALETA Y VARIABLES (DISEÑO UNIFICADO DE CITA) ---------------------- */
 /* ================================================================= */
 :root {
     /* Colores Principales (Azul/Verde Sofisticado) */
@@ -26,9 +26,7 @@
     --border-radius-xxl: 20px;
 }
 
-/* ---------------------- DEFINICIÓN DE ANIMACIONES ---------------------- */
-
-/* Animación de Entrada General (Usada en Header, Tarjetas y Filtro) */
+/* Definición de la Animación de Entrada */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -40,7 +38,7 @@
     }
 }
 
-/* **ANIMACIÓN WOW:** Efecto de "Latido" para el focus del filtro */
+/* **NUEVA ANIMACIÓN:** Efecto de "Latido" para el focus del filtro */
 @keyframes pulse-glow {
     0% {
         box-shadow: 0 0 0 0 var(--color-accent-green);
@@ -53,17 +51,6 @@
     }
 }
 
-/* **NUEVA ANIMACIÓN:** Efecto de Neón/Pulso para el botón secundario (Borde Azul) */
-@keyframes neon-pulse {
-    0%, 100% {
-        box-shadow: 0 0 0 0 rgba(45, 101, 154, 0.5); /* Color primario light */
-    }
-    50% {
-        box-shadow: 0 0 0 8px rgba(45, 101, 154, 0); /* Pulso hacia afuera (transparente) */
-    }
-}
-
-
 /* Colores de texto unificados */
 .text-deep-navy { color: var(--color-primary-navy) !important; }
 .text-contrast-blue { color: var(--color-accent-green) !important; } /* Acento Verde */
@@ -73,7 +60,6 @@
 /* ---------------------- 2. TÍTULO Y ACCIONES GLOBALES (BLOQUE FLOTANTE) ---------------------- */
 /* ================================================================= */
 .header-dynamic-block {
-    /* Contenedor del título y los botones */
     background-color: var(--color-bg-white);
     border-top: 5px solid var(--color-border-subtle); 
     padding: 1.5rem 2.5rem; 
@@ -97,55 +83,66 @@
     letter-spacing: -0.5px;
 }
 
-/* --- ESTILOS DE BOTONES DE ACCIÓN PRINCIPAL Y SECUNDARIA --- */
+/* --- ESTILOS DE BOTONES DE ACCIÓN (PÍLDORA ANCHA Y TEXTO MEDIO) --- */
 
-/* BOTÓN 1 (Principal): Asignar Perfil Médico (Gradiente) */
+.btn-main-action, .btn-secondary-action {
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    text-decoration: none; line-height: 1.2; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 50px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;
+    flex-grow: 1; 
+    
+    /* ESCRITORIO: TAMAÑO EQUILIBRADO */
+    padding: 0.9rem 1.4rem; 
+    font-size: 1rem; 
+}
+
+/* BOTÓN 1 (Principal): Asignar Perfil Médico (Gradiente con REFLEJO) */
 .btn-main-action {
     background: linear-gradient(135deg, var(--color-primary-navy) 0%, var(--color-primary-light) 100%);
     border: none;
-    color: white;
-    padding: 0.8rem 2rem;
-    font-weight: 700;
-    border-radius: 50px;
-    box-shadow: 0 8px 25px rgba(28, 63, 96, 0.4); 
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    color: white; /* Letra blanca */
+    box-shadow: 0 0 10px rgba(45, 101, 154, 0.5), 0 8px 25px rgba(28, 63, 96, 0.4); 
 }
 .btn-main-action:hover {
     background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary-navy) 100%);
     transform: translateY(-3px) scale(1.02); 
-    box-shadow: 0 15px 40px rgba(28, 63, 96, 0.7);
+    box-shadow: 0 0 15px rgba(45, 101, 154, 0.8), 0 15px 40px rgba(28, 63, 96, 0.7);
+}
+.btn-main-action i {
+    font-size: 1.4rem; margin-right: 0.5rem; 
 }
 
-/* BOTÓN 2 (Secundario): Crear Nuevo Usuario (Contorno Elegante con Efecto Neón Pulsante) */
+/* 🚨 BOTÓN 2 (Secundario): Crear Nuevo Usuario (ESTILOS RESTAURADOS) */
 .btn-secondary-action {
     background-color: var(--color-bg-white);
-    color: var(--color-primary-navy) !important;
+    color: var(--color-primary-navy) !important; /* CLAVE: Letra Azul Marino */
     border: 2px solid var(--color-primary-navy);
-    padding: 0.8rem 2rem;
-    font-weight: 700;
-    border-radius: 50px;
-    transition: all 0.4s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: var(--shadow-subtle);
+    /* CLAVE: Sombra para darle ese volumen/reflejo sutil */
+    box-shadow: 0 0 0 0.5px var(--color-primary-navy), 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 .btn-secondary-action:hover {
-    /* Efecto de relleno sutil al pasar el ratón */
     background-color: var(--color-primary-navy);
-    color: white !important;
-    transform: translateY(-2px);
-    /* Aplica el pulso de neón */
-    animation: neon-pulse 1.5s infinite; 
-    box-shadow: 0 0 0 0.5px var(--color-primary-light), 0 0 0 4px rgba(45, 101, 154, 0.3);
+    color: white !important; /* Letra blanca al hacer hover */
+    transform: translateY(-2px) scale(1.02);
+    /* Sombra más profunda para el hover */
+    box-shadow: 0 0 0 2px var(--color-primary-light), 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.btn-secondary-action i {
+    font-size: 1.4rem; margin-right: 0.5rem; 
+}
+/* Asegurar que la fila de botones use flexbox */
+.action-buttons-row {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem; /* Espacio estándar entre botones */
+    padding: 1.5rem 0;
 }
 
 
 /* ================================================================= */
-/* ---------------------- 3. ESTILOS DE LA TARJETA DE MÉDICO ---------------------- */
+/* ---------------------- 3. ESTILOS DE LA TARJETA DE MÉDICO (ELEVADA Y ELEGANTE) ---------------------- */
 /* ================================================================= */
-.medico-widget-compact { /* Contenedor de la tarjeta */
+.medico-widget-compact { /* Renombrado de cita-widget-compact */
     border: none;
     border-radius: var(--border-radius-xxl);
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); 
@@ -159,7 +156,7 @@
     opacity: 0; 
 }
 
-/* Efecto Brillo (Pseudo-Elemento) para el hover de la tarjeta */
+/* Efecto Brillo (Pseudo-Elemento) */
 .medico-widget-compact::before {
     content: '';
     position: absolute;
@@ -180,14 +177,14 @@
     box-shadow: 0 30px 60px rgba(28, 63, 96, 0.5); 
 }
 
-/* Activa el brillo esmeralda al pasar el ratón */
+/* Efecto Brillo Activado */
 .medico-widget-compact:hover::before {
     box-shadow: 0 0 30px 12px rgba(0, 168, 120, 1); 
     opacity: 1;
 }
 
-/* Franja de Nombre / Header del Médico */
-.medico-name-header-final { 
+/* Franja de Nombre / Header */
+.medico-name-header-final { /* Renombrado de cita-header-final */
     background: linear-gradient(90deg, var(--color-primary-navy) 0%, var(--color-primary-light) 100%);
     color: white;
     padding: 1.5rem 2rem; 
@@ -197,10 +194,10 @@
     justify-content: flex-start;
     position: relative;
     z-index: 2;
-    transition: background 0.3s ease; 
+    transition: background 0.3s ease; /* Transición para el fondo del header */
 }
 
-/* Efectos de Hover: Degradado Invertido, Deslizamiento del Título y Zoom del Ícono */
+/* NUEVO EFECTO: Animación de Deslizamiento del Título y Zoom del Ícono */
 .medico-widget-compact:hover .medico-name-header-final {
     background: linear-gradient(90deg, var(--color-primary-light) 0%, var(--color-primary-navy) 100%);
 }
@@ -211,24 +208,30 @@
     line-height: 1.2;
     font-size: 1.5rem;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); 
+    
+    /* Propiedad de Animación de Texto */
     transition: transform 0.3s ease;
 }
 .medico-widget-compact:hover .medico-name-header-final h5 {
-    transform: translateX(5px); /* Desliza el texto a la derecha */
+    transform: translateX(5px); /* Desliza el texto 5px a la derecha */
 }
+
 
 .medico-name-header-final i {
     font-size: 2.2rem; 
     margin-right: 1rem;
     opacity: 0.9;
+    
+    /* Propiedad de Animación del Ícono */
     transition: transform 0.3s ease;
 }
 .medico-widget-compact:hover .medico-name-header-final i {
-    transform: scale(1.1); /* Agranda el ícono */
+    transform: scale(1.1); /* Agranda el ícono al 110% */
 }
+/* FIN NUEVO EFECTO */
  
 /* ID DE LA TARJETA (Franja de metadata) */
-.medico-id-strip { 
+.medico-id-strip { /* Renombrado de cita-id-strip */
     background-color: var(--color-bg-light);
     color: #666; 
     padding: 0.8rem 2rem; 
@@ -248,14 +251,16 @@
 
 
 /* CUERPO DE DETALLES (GRID COMPACTO CON ICONOGRAFÍA DE ACENTO) */
-.medico-card-body-details { 
+.medico-card-body-details { /* Renombrado de cita-card-body-details */
     padding: 1.5rem 2rem; 
     flex-grow: 1; 
     display: grid;
+    /* AJUSTE CLAVE: Proporción 1fr para etiqueta, 2fr para valor */
     grid-template-columns: 1fr 2fr; 
     gap: 1.2rem 1rem; 
 }
  
+.medico-card-body-details p { margin-bottom: 0; font-size: 0.95rem; }
 .medico-card-body-details .label-icon {
     font-weight: 700; 
     color: var(--color-primary-dark); 
@@ -275,13 +280,14 @@
     display: block; 
     width: 100%; 
     text-align: left; 
+    /* Mantener las propiedades de ellipsis para evitar desbordamiento vertical */
     overflow: hidden; 
     white-space: nowrap; 
     text-overflow: ellipsis; 
     font-size: 0.95rem; 
 }
 
-/* Footer con botones de acción (Editar/Eliminar) */
+/* Footer de Acciones */
 .widget-footer-actions {
     padding: 1rem 2rem; 
     background-color: var(--color-bg-light);
@@ -400,4 +406,66 @@
 #filtro:focus + i.bi-search {
     color: var(--color-accent-green);
     transform: scale(1.1) translateY(-1px) rotateY(180deg); /* Animación más dramática */
+}
+
+/* ================================================================= */
+/* ---------------------- 5. RESPONSIVIDAD ESPECÍFICA (ACCIONES GLOBALES - FINAL) ---------------------- */
+/* ================================================================= */
+
+/* Ajustes para Tablet (Ancho <= 991px) */
+@media (max-width: 991px) {
+    /* Reducir el padding general y el tamaño del título */
+    .header-dynamic-block {
+        padding: 1rem 1.5rem;
+        margin-bottom: 2rem !important;
+    }
+    .header-dynamic-block h1 {
+        font-size: 2rem;
+    }
+    
+    /* Reducir el espacio y el tamaño de los botones en Tablet */
+    .action-buttons-row {
+        gap: 1rem;
+        padding: 0.5rem 0;
+    }
+    .btn-main-action, .btn-secondary-action {
+        /* Tamaño de fuente intermedio para Tablet */
+        padding: 0.7rem 1.2rem;
+        font-size: 0.95rem; 
+    }
+    .btn-main-action i, .btn-secondary-action i {
+        font-size: 1.3rem; /* Icono intermedio */
+    }
+}
+
+/* Ajustes para Teléfono (Ancho <= 575px) */
+@media (max-width: 575px) {
+    
+    /* 🚨 CLAVE: Apilamiento vertical de los botones y 100% de ancho */
+    .action-buttons-row {
+        flex-direction: column; /* Apila verticalmente */
+        gap: 10px; /* Espacio uniforme entre botones */
+        padding: 0.5rem 0;
+    }
+
+    /* Los botones ocupan el 100% del ancho y se centran */
+    .btn-main-action, .btn-secondary-action {
+        width: 100% !important; 
+        max-width: none; /* Asegura que tome el 100% del contenedor */
+        margin: 0 auto; 
+        
+        /* Padding y fuente compactos para móvil */
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem; /* Fuente más pequeña en móvil */
+
+        /* Asegurar que el icono y el texto estén en línea (horizontal) */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .btn-main-action i, .btn-secondary-action i {
+        font-size: 1.1rem; /* Ícono más pequeño en móvil */
+        margin-right: 8px; 
+        margin-bottom: 0;
+    }
 }

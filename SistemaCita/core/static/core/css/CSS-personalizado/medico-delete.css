@@ -146,17 +146,64 @@
 }
 
 /* ============================================================= */
-/* 8. RESPONSIVE                                                 */
+/* 8. RESPONSIVE (Optimizaciones forzadas para Teléfono)                                                 */
 /* ============================================================= */
 @media (max-width: 576px) {
+    /* La tarjeta ocupa el 95% del ancho para dejar un pequeño margen */
     .card-delete-elegant {
-        max-width: 95%;
-    }
+    max-width: 95% !important; /* Forzamos el ancho máximo */
+    margin: 0 auto !important; /* Centramos */
+}
+    
+    /* Reducir el padding interno del cuerpo de la tarjeta */
     .card-body-delete {
-        padding: 1.2rem;
+    padding: 1rem !important; 
+}
+    
+    /* 🚨 AJUSTE CLAVE: FORZAR APILAMIENTO Y ANCHO 100% */
+    .card-body-delete form {
+        /* Fuerza a que los botones se apilen verticalmente, anulando cualquier d-flex horizontal */
+        display: flex !important; 
+        flex-direction: column !important; 
+        gap: 0.8rem !important;
+        width: 100% !important;
     }
+
+    /* Ajuste clave para los botones: Ocupar el 100% y tamaño de fuente adecuado */
     .btn-confirm-delete,
     .btn-outline-marine-action {
-        max-width: 100%;
+        max-width: 100% !important; /* Ocupa el 100% del ancho disponible */
+        width: 100% !important; /* Fuerza el 100% */
+        
+        /* Ajuste de fuente y padding para evitar desbordamiento del texto largo */
+        font-size: 0.8rem !important; /* Reducción de fuente (ej: SÍ, ELIMINAR PERMANENTEMENTE) */
+        padding: 0.7rem 0.8rem !important; 
+        white-space: normal !important; /* Permite que el texto largo se envuelva */
+        
+        /* Asegura que el contenido (icono y texto) esté centrado */
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    
+    /* Iconos dentro de los botones */
+    .btn-confirm-delete i,
+    .btn-outline-marine-action i {
+        font-size: 1rem;
+        margin-right: 0.5rem; 
+    }
+
+    /* Reducción de texto general para evitar desbordamiento */
+    .card-header-danger-solid {
+        font-size: 1.1rem;
+    }
+    .card-body-delete h3 {
+        font-size: 1.2rem;
+    }
+    .card-body-delete p {
+        font-size: 0.85rem;
+    }
+    .detail-block {
+        font-size: 0.85rem;
     }
 }

@@ -803,3 +803,92 @@
     transform: translateY(-1px) scale(0.98);
     box-shadow: 0 3px 10px rgba(255, 75, 75, 0.2);
 }
+/* 🌐 RESPONSIVIDAD PARA LA ALERTA PERSONALIZADA (TABLET Y TELÉFONO) */
+@media (max-width: 991.98px) {
+    .custom-alert-content {
+        width: 85%;
+        margin: 0 auto;
+        border-radius: 18px;
+        padding: 1.5rem;
+        box-shadow:
+            0 15px 40px rgba(0, 0, 0, 0.25),
+            0 0 30px 6px rgba(87, 152, 200, 0.7);
+    }
+
+    .custom-alert-header .bi {
+        width: 70px;
+        height: 70px;
+        font-size: 2.4rem;
+    }
+
+    .custom-alert-header h5 {
+        font-size: 1.6rem;
+    }
+
+    .custom-alert-body p {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .custom-alert-content .btn {
+        width: 100%;
+        font-size: 1rem;
+        padding: 0.9rem 1rem;
+        border-radius: 12px;
+    }
+}
+
+/* 📱 MODO TELÉFONO (pantallas pequeñas) */
+@media (max-width: 575.98px) {
+    .custom-alert-content {
+        width: 90%;
+        padding: 1.2rem;
+        border-radius: 15px;
+        box-shadow:
+            0 10px 25px rgba(0, 0, 0, 0.25),
+            0 0 25px 4px rgba(87, 152, 200, 0.6);
+        animation: fadeInScaleMobile 0.45s ease-out forwards;
+    }
+
+    @keyframes fadeInScaleMobile {
+        0% {
+            opacity: 0;
+            transform: scale(0.85) translateY(15px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    .custom-alert-header .bi {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .custom-alert-header h5 {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+
+    .custom-alert-body {
+        padding: 1rem 1.2rem;
+        text-align: center;
+    }
+
+    .custom-alert-body p {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .custom-alert-content .btn {
+        font-size: 0.95rem;
+        padding: 0.8rem 1.2rem;
+        width: 100%;
+        border-radius: 10px;
+        text-align: center;
+    }
+}

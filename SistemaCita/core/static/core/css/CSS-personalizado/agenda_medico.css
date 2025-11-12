@@ -1,4 +1,4 @@
-/* --- ESTILOS ESPECÍFICOS DE LA VISTA AGENDA DEL MÉDICO (FINAL CON ESTILO VIBRANTE) --- */
+/* --- ESTILOS ESPECÍFICOS DE LA VISTA AGENDA DEL MÉDICO (SINTAXIS LIMPIA) --- */
 
 /* 1. Definición de colores VIVOS/FUERTES para los estados y NUEVAS VARIABLES */
 :root {
@@ -15,34 +15,82 @@
     --color-border-subtle: #D9E2ED;
     --transition-speed: 0.35s;
     --border-radius-xl: 16px;
+
+    /* VARIABLES PARA ALERTA AZUL MARINO/NEÓN */
+    --alert-primary-blue: #021C3F;
+    /* Azul marino más oscuro para el contraste */
+    --alert-glow-blue: #5798C8;
+    /* Tono de neón más claro */
+    --alert-glow-shadow-intense: rgba(87, 152, 200, 0.8);
+    /* Sombra neón más intensa y transparente */
 }
 
 /* 🎯 ANIMACIONES GLOBALES Y KEYFRAMES */
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes pulse-glow {
-    0% { box-shadow: 0 0 0 0 var(--color-accent-green); }
-    50% { box-shadow: 0 0 0 5px rgba(0, 168, 120, 0.15); }
-    100% { box-shadow: 0 0 0 0 var(--color-accent-green); }
-}
-@keyframes fadeInSlide {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes bounceEffect {
-    from { transform: scale(1.1) rotate(2deg); }
-    to { transform: scale(1.08) rotate(-2deg); }
-}
-@keyframes buttonPulse {
-    from { transform: scale(1.15) rotate(5deg); box-shadow: 0 8px 25px rgba(0, 168, 120, 0.7); }
-    to { transform: scale(1.12) rotate(3deg); box-shadow: 0 6px 20px rgba(0, 168, 120, 0.5); }
-}
-@keyframes drawLine {
-    to { transform: scaleX(1); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 0 0 var(--color-accent-green);
+    }
+
+    50% {
+        box-shadow: 0 0 0 5px rgba(0, 168, 120, 0.15);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 var(--color-accent-green);
+    }
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceEffect {
+    from {
+        transform: scale(1.1) rotate(2deg);
+    }
+
+    to {
+        transform: scale(1.08) rotate(-2deg);
+    }
+}
+
+@keyframes buttonPulse {
+    from {
+        transform: scale(1.15) rotate(5deg);
+        box-shadow: 0 8px 25px rgba(0, 168, 120, 0.7);
+    }
+
+    to {
+        transform: scale(1.12) rotate(3deg);
+        box-shadow: 0 6px 20px rgba(0, 168, 120, 0.5);
+    }
+}
+
+@keyframes drawLine {
+    to {
+        transform: scaleX(1);
+    }
+}
 
 /* --- 2. Header, Iconos y Botones --- */
 
@@ -61,10 +109,10 @@
     width: 100%;
     height: 3px;
     background: linear-gradient(to right,
-                var(--color-marine-base) 0%,
-                var(--color-marine-base) 30%,
-                var(--color-accent-green) 70%,
-                var(--color-accent-green) 100%);
+            var(--color-marine-base) 0%,
+            var(--color-marine-base) 30%,
+            var(--color-accent-green) 70%,
+            var(--color-accent-green) 100%);
     border-radius: 1.5px;
     transform: scaleX(0);
     transform-origin: left;
@@ -136,7 +184,6 @@
 .disabled-link:hover {
     opacity: 0.8;
 }
-
 
 /* ---------------------- 3. ESTILOS DE FILTRO NEUMÓRFICO ---------------------- */
 
@@ -237,10 +284,21 @@
 }
 
 /* Bordes por estado */
-.border-pending { border-left-color: var(--color-warning-strong); }
-.border-confirmed { border-left-color: var(--color-info-strong); }
-.border-completed { border-left-color: var(--color-success-strong); }
-.border-cancelled { border-left-color: var(--color-danger-strong); }
+.border-pending {
+    border-left-color: var(--color-warning-strong);
+}
+
+.border-confirmed {
+    border-left-color: var(--color-info-strong);
+}
+
+.border-completed {
+    border-left-color: var(--color-success-strong);
+}
+
+.border-cancelled {
+    border-left-color: var(--color-danger-strong);
+}
 
 .appointment-time-box {
     font-size: 1.8rem;
@@ -257,15 +315,15 @@
 
 /* Wrapper principal de info de paciente (contenedor flexible) */
 .patient-info-mobile-wrap {
-    margin-right: 1.5rem; 
+    margin-right: 1.5rem;
 }
 
 .patient-name-innovative {
     font-size: 1.3rem;
     font-weight: 700 !important;
     color: var(--color-marine-text);
-    flex-shrink: 1; 
-    min-width: 0; 
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 /* Motivo de la Cita */
@@ -297,7 +355,6 @@
     color: var(--color-marine-base);
 }
 
-
 /* --- 5. Badges de Estado --- */
 
 .status-actions-box {
@@ -324,13 +381,27 @@
 }
 
 /* Paleta de colores VIVOS */
-.status-pendiente { background-color: var(--color-warning-strong); color: var(--color-marine-deep); }
-.status-confirmada { background-color: var(--color-info-strong); color: white; }
-.status-completada { background-color: var(--color-success-strong); color: white; }
-.status-cancelada { background-color: var(--color-danger-strong); color: white; }
+.status-pendiente {
+    background-color: var(--color-warning-strong);
+    color: var(--color-marine-deep);
+}
 
+.status-confirmada {
+    background-color: var(--color-info-strong);
+    color: white;
+}
 
-/* --- 6. Recuadro de Edición de Estado */
+.status-completada {
+    background-color: var(--color-success-strong);
+    color: white;
+}
+
+.status-cancelada {
+    background-color: var(--color-danger-strong);
+    color: white;
+}
+
+/* --- 6. Recuadro de Edición de Estado --- */
 
 .form-estado {
     border: none;
@@ -393,7 +464,6 @@
     animation: buttonPulse 0.8s infinite alternate;
 }
 
-
 /* --- 7. Responsividad (AJUSTES FINALES PARA TABLET Y MÓVIL) --- */
 
 /* Base para dispositivos medianos o superiores (Escritorio/Tablet Horizontal) */
@@ -401,6 +471,7 @@
     .status-actions-box {
         justify-content: flex-end !important;
     }
+
     .actions-wrapper {
         margin-left: auto;
     }
@@ -412,75 +483,72 @@
         font-size: 2.5rem;
         letter-spacing: -1px;
     }
+
     .appointment-item {
-        /* Reducimos el padding general para ganar espacio */
-        padding: 1.2rem 1.2rem; 
+        padding: 1.2rem 1.2rem;
     }
+
     .appointment-time-box {
-        /* Hacemos la hora más pequeña para liberar espacio horizontal */
-        min-width: 60px; 
+        min-width: 60px;
         font-size: 1.5rem;
         padding-right: 10px;
         margin-right: 10px;
     }
-    
-    /* 🚨 CLAVE: Forzamos el apilamiento vertical en Tablet para liberar espacio */
+
     .patient-info-mobile-wrap {
-        flex-direction: column !important; /* APILAMIENTO FORZADO: Nombre sobre Motivo */
+        flex-direction: column !important;
         align-items: flex-start !important;
-        flex-grow: 1; /* Ocupa el espacio central restante */
-        margin-right: 15px; 
+        flex-grow: 1;
+        margin-right: 15px;
     }
-    
-    /* Nombre del Paciente: SEPARACIÓN */
+
     .patient-name-innovative {
         font-size: 1.1rem;
         margin-right: 0;
-        margin-bottom: 5px; /* Pequeña separación del motivo */
-        width: 100%; 
+        margin-bottom: 5px;
+        width: 100%;
     }
+
     .reason-wrapper {
         margin-right: 0 !important;
         margin-top: 0 !important;
-        white-space: normal; 
+        white-space: normal;
     }
+
     .reason-text {
         font-size: 0.85rem;
     }
-    
-    /* Contenedor de Acciones (Badge y Formulario) */
+
     .actions-wrapper {
         flex-shrink: 0;
-        min-width: 250px; /* Asegura que la acción tenga el espacio mínimo */
-        margin-left: auto; 
+        min-width: 250px;
+        margin-left: auto;
     }
+
     .status-badge {
         font-size: 0.8rem;
         min-width: 90px;
-        margin-right: 10px !important; 
+        margin-right: 10px !important;
     }
+
     .status-select-custom-image {
-        width: 110px; /* Selector de estado más compacto */
+        width: 110px;
     }
 }
 
-
 /* 🟠 AJUSTES CRÍTICOS PARA TELÉFONOS (575.98px y menos) - MODO VERTICAL */
 @media (max-width: 575.98px) {
-    /* 1. Header */
     .h1-elegant-clean {
         font-size: 2rem;
         letter-spacing: -0.5px;
     }
 
-    /* 2. Tarjeta de Cita: APILAMIENTO PRINCIPAL VERTICAL */
     .appointment-item {
-        flex-direction: column; 
-        align-items: flex-start !important; 
+        flex-direction: column;
+        align-items: flex-start !important;
         padding: 1rem 1.2rem;
     }
 
-    /* 3. Caja de Hora: ARRIBA (Full Width) */
     .appointment-time-box {
         font-size: 1.6rem;
         border-right: none;
@@ -488,53 +556,48 @@
         padding-right: 0;
         padding-bottom: 10px;
         margin-right: 0;
-        margin-bottom: 15px; 
+        margin-bottom: 15px;
         min-width: unset;
         width: 100%;
     }
 
-    /* 4. WRAPPER DE INFO Y MOTIVO: APILAMIENTO INTERNO */
     .patient-info-mobile-wrap {
-        flex-direction: column !important; 
+        flex-direction: column !important;
         align-items: flex-start !important;
         width: 100%;
         margin-right: 0;
         margin-bottom: 15px;
-        flex-grow: 1; 
-    }
-    
-    /* Nombre del Paciente: SEPARACIÓN FINAL CORREGIDA */
-    .patient-name-innovative {
-        font-size: 1.1rem;
-        width: 100%; 
-        margin-right: 0; 
-        margin-bottom: 12px !important; /* SEPARACIÓN DEFINITIVA */
+        flex-grow: 1;
     }
 
-    /* Motivo de la Cita (Separado y visible) */
+    .patient-name-innovative {
+        font-size: 1.1rem;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 12px !important;
+    }
+
     .reason-wrapper {
         width: 100%;
-        margin-top: 0 !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
+        margin: 0 !important;
     }
+
     .reason-text {
         font-size: 0.85rem;
         white-space: normal;
-        display: block; 
+        display: block;
         width: fit-content;
     }
 
-    /* 5. Contenedor de Acciones (Badge y Formulario) */
     .actions-wrapper {
         width: 100%;
     }
-    
+
     .status-actions-box {
-        flex-direction: column; 
+        flex-direction: column;
         align-items: flex-start;
         width: 100%;
-        gap: 10px; 
+        gap: 10px;
     }
 
     .status-badge {
@@ -542,11 +605,10 @@
         margin-bottom: 0 !important;
         margin-right: 0 !important;
         min-width: unset;
-        width: 100%; 
+        width: 100%;
         text-align: center;
     }
 
-    /* 6. Formulario de Estado: FULL WIDTH */
     .form-estado {
         width: 100%;
         margin-top: 0;
@@ -557,22 +619,187 @@
     }
 }
 
-
-/* 🟠 Ajustes para pantallas más pequeñas que 768px (Móvil y Tablet) */
+/* 🟠 Ajustes para pantallas más pequeñas que 768px */
 @media (max-width: 767.98px) {
     .status-actions-box {
         justify-content: flex-start !important;
         width: 100%;
         margin-top: 10px;
     }
+
     .form-estado {
         flex-grow: 1;
     }
 }
 
-
 /* --- ANIMACIÓN DE ENTRADA GLOBAL --- */
 .main-content-fade-in {
     animation: fadeInSlide 1.2s ease-out forwards;
     opacity: 0;
+}
+
+
+/* ============================================
+   ALERTA PERSONALIZADA - ESTILO MARINO PROFUNDO (NEÓN REFINADO SIN BORDE DURO)
+   ============================================ */
+
+/* 1. CONTENEDOR PRINCIPAL (La caja de la alerta) */
+.custom-alert-content {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+
+    /* Fondo sólido */
+    background-color: var(--color-bg-white);
+
+    /* Eliminamos cualquier borde sólido directo, solo se usará el box-shadow */
+    border: none;
+
+    /* Resplandor AZUL NEÓN como única "orilla" y sombra para profundidad */
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.3),
+        /* Sombra inferior/profunda sutil */
+        0 0 40px 10px var(--alert-glow-shadow-intense);
+    /* Resplandor NEÓN como orilla principal */
+
+    /* Animación de Entrada Elástica */
+    animation: fadeInScale 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    opacity: 0;
+}
+
+/* KEYFRAMES DE ENTRADA */
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.7) translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* 2. CABECERA E ICONO */
+
+/* Icono dentro de la cabecera con efecto NEÓN reforzado */
+.custom-alert-header .bi {
+    /* Fondo Icono: Degradado de Azul Marino a Base */
+    background: linear-gradient(135deg, var(--color-marine-deep) 0%, var(--color-marine-base) 100%);
+    color: #ffffff;
+    font-size: 3rem;
+    border-radius: 50%;
+    width: 80px;
+    /* Un poco más grande */
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+
+    /* Sombra y Resplandor AZUL NEÓN con pulso sutil */
+    box-shadow:
+        0 0 0 6px #fff,
+        /* Borde blanco interno más grueso */
+        0 0 20px 8px rgba(87, 152, 200, 0.9);
+    /* Resplandor NEÓN unificado con el de la orilla */
+
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    animation: iconPulseGlow 2s infinite alternate;
+}
+
+@keyframes iconPulseGlow {
+    0% {
+        box-shadow: 0 0 0 6px #fff, 0 0 20px 8px rgba(87, 152, 200, 0.9);
+    }
+
+    100% {
+        box-shadow: 0 0 0 6px #fff, 0 0 30px 12px rgba(87, 152, 200, 0.6);
+        /* Pulso más suave */
+    }
+}
+
+.custom-alert-header .bi:hover {
+    /* Efecto más animado en hover */
+    transform: scale(1.1) rotate(5deg);
+    box-shadow:
+        0 0 0 6px #fff,
+        0 0 35px 15px rgba(87, 152, 200, 0.9);
+    /* Resplandor intensificado en hover */
+    animation: none;
+    /* Detenemos la animación de pulso al pasar el ratón */
+}
+
+/* Título de la alerta (Mejor contraste) */
+.custom-alert-header h5 {
+    font-size: 2rem;
+    /* Más grande y prominente */
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.5);
+    color: var(--color-marine-deep);
+}
+
+
+/* 3. CUERPO (Confirmamos la eliminación de la línea decorativa) */
+.custom-alert-body {
+    padding: 2rem 2.4rem;
+    color: #333;
+    position: relative;
+}
+
+.custom-alert-body p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #444;
+    margin-bottom: 2rem;
+    font-weight: 500;
+}
+
+
+/* 4. BOTONES (Se mantienen los estilos funcionales de éxito/peligro) */
+.custom-alert-content .btn {
+    border-radius: 15px;
+    padding: 1rem 2rem;
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+    transition: all 0.25s ease-out;
+}
+
+/* Botón de éxito (Estilo verde) */
+.alert-success-style .btn-success {
+    background: linear-gradient(135deg, #00c896 0%, #00e2aa 100%);
+    border: none;
+    color: #fff;
+    box-shadow: 0 8px 25px rgba(0, 200, 150, 0.5);
+}
+
+.alert-success-style .btn-success:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 200, 150, 0.7);
+}
+
+.alert-success-style .btn-success:active {
+    transform: translateY(-1px) scale(0.98);
+    box-shadow: 0 3px 10px rgba(0, 200, 150, 0.3);
+}
+
+/* Botón de error (Estilo rojo) */
+.alert-danger-style .btn-danger {
+    background: linear-gradient(135deg, #ff4b4b 0%, #ff6c6c 100%);
+    border: none;
+    color: #fff;
+    box-shadow: 0 8px 25px rgba(255, 75, 75, 0.45);
+}
+
+.alert-danger-style .btn-danger:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(255, 75, 75, 0.6);
+}
+
+.alert-danger-style .btn-danger:active {
+    transform: translateY(-1px) scale(0.98);
+    box-shadow: 0 3px 10px rgba(255, 75, 75, 0.2);
 }

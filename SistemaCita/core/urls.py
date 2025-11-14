@@ -46,4 +46,7 @@ urlpatterns = [
     
     # Registrar medico
     path('admin/registrar_medico/', views.registrar_medico, name='registrar_medico'),
+
+     # Listado de pacientes en Medico
+    path('medico/pacientes/', views.pacientes_medico, name='pacientes_medico'),
 ]

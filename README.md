@@ -34,7 +34,21 @@ jenniruiz0820
 
 ------------------------------------------------------------------------------------------------------------------
 
+PRIMEROS AVANCES DEL PROYECTO 
+
+Fecha: 15 / 10 /  2025
+
+Creacion del proyecto 
+
+Creacion de core 
+
+Migraciones a la base de datos y conexion a ella 
+
+Creacion de tablas en el models 
+
+-------------------------------------------------------------------------------------------------------------------
 AVANCES DEL PROYECTO HASTA EL MOMENTO 
+Fecha: 22/ 10 / 2025
 
 Core: maneja la autenticación de usuarios, registro e inicio de sesión, así como la asignación de roles (administrador, médico y paciente).
 

@@ -1,64 +1,37 @@
 {% load static %}
 {% load widget_tweaks %}
 <!DOCTYPE html>
-<html lang="es" class="h-100">
+<html lang="es">
 <head>
-    <!-- ========================== -->
-    <!-- ⚙️ CONFIGURACIÓN BÁSICA -->
-    <!-- ========================== -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- 🔁 Título dinámico: cambia según si el formulario edita o crea una cita -->
-    <title>{% if form.instance.pk %}Editar Cita{% else %}Nueva Cita{% endif %}</title>
-
-    <!-- ========================== -->
-    <!-- 🎨 ESTILOS Y FUENTES -->
-    <!-- ========================== -->
-
-    <!-- Bootstrap 5: base de estilos y diseño responsive -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Íconos de Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
-    <!-- Fuente Inter (moderna y limpia para todo el sistema) -->
-    <link href="https://fonts.googleapis.com/com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
-    
-    <!-- Librería AOS (Animate On Scroll) para animaciones suaves -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    <!-- Archivos CSS personalizados -->
-    <link rel="stylesheet" href="{% static 'core/css/CSS-personalizado/base.css' %}">
-    <link rel="stylesheet" href="{% static 'core/css/CSS-personalizado/paciente_cita_form.css' %}">
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if form.instance.pk %}Editar Cita{% else %}Nueva Cita{% endif %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    .is-invalid + .invalid-feedback { display:block; }
+  </style>
 </head>
+<body class="bg-light">
 
-<!-- ========================== -->
-<!-- 🧍‍♂️ CUERPO PRINCIPAL -->
-<!-- ========================== -->
-<body class="h-100 d-flex flex-column position-relative"> 
+<div class="container py-5">
+  <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+    <div class="card-header bg-primary text-white text-center">
+      <h3>
+        <i class="bi bi-calendar-plus me-2"></i>
+        {% if form.instance.pk %}EDITAR CITA{% else %}AGENDAR NUEVA CITA{% endif %}
+      </h3>
+    </div>
 
-    <!-- Fondo decorativo con efecto translúcido -->
-    <div class="bg-overlay-custom"></div>
+    <div class="card-body">
+      <form method="post" novalidate>
+        {% csrf_token %}
 
-    <!-- ========================== -->
-    <!-- 🧭 BARRA DE NAVEGACIÓN -->
-    <!-- ========================== -->
-    <header>
-        <nav class="navbar navbar-expand-lg sticky-top py-3 navbar-dark system-navbar-paciente shadow-lg">
-            <div class="container-fluid container-xl">
-                
-                <!-- Logo del sistema (vuelve al listado de citas del paciente) -->
-                <a class="navbar-brand text-white fw-bold fs-4" href="{% url 'paciente_cita_list' %}">
-                    <i class="bi bi-person-heart me-2"></i> HealthCare Portal
-                </a>
-                
-                <!-- Botón tipo "hamburguesa" visible en dispositivos pequeños -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#pacienteNavbar" aria-controls="pacienteNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+        {% endif %}
 
+<<<<<<< HEAD
                 <!-- Contenedor del menú -->
                 <div class="collapse navbar-collapse" id="pacienteNavbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -81,14 +54,33 @@
                             </a>
                         </li>
                     </ul>
+=======
+        {% for field in form %}
+          <div class="mb-3">
+            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+>>>>>>> ce2e80c19d20542001d515035121d76d3caf88bf
 
-                    <!-- Sección lateral derecha del navbar -->
-                    <div class="d-flex align-items-center ms-auto">
-                        <!-- Muestra el nombre del usuario autenticado -->
-                        <span class="navbar-text text-white fw-semibold me-3 d-none d-lg-inline">
-                            Bienvenido/a, {{ request.user.username }}
-                        </span>
+            {% if field.errors %}
+              {% if field.field.widget.__class__.__name__ == "Select" %}
+                {% render_field field class+="form-select is-invalid" %}
+              {% elif field.field.widget.__class__.__name__ == "Textarea" %}
+                {% render_field field class+="form-control is-invalid" rows="3" %}
+              {% else %}
+                {% render_field field class+="form-control is-invalid" %}
+              {% endif %}
+              <div class="invalid-feedback">{{ field.errors|striptags }}</div>
+            {% else %}
+              {% if field.field.widget.__class__.__name__ == "Select" %}
+                {% render_field field class+="form-select" %}
+              {% elif field.field.widget.__class__.__name__ == "Textarea" %}
+                {% render_field field class+="form-control" rows="3" %}
+              {% else %}
+                {% render_field field class+="form-control" %}
+              {% endif %}
+              <div class="invalid-feedback"></div>
+            {% endif %}
 
+<<<<<<< HEAD
                         <!-- Botón para cerrar sesión -->
                         <!-- Formulario para cerrar sesión -->
                         <form method="post" action="{% url 'logout' %}?next={% url 'landing_page' %}" class="d-flex">
@@ -152,43 +144,83 @@
     </div>
         
     </main>
+=======
+            {% if field.help_text %}
+              <div class="form-text">{{ field.help_text }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
 
-    <!-- ========================== -->
-    <!-- ⚙️ PIE DE PÁGINA -->
-    <!-- ========================== -->
-    <footer class="footer mt-auto py-3 system-navbar-paciente footer-corporate-style" style="width: 100%;">
-        <div class="container text-center">
-            <p class="mb-0 small text-white-50">
-                <i class="bi bi-shield-lock-fill me-1"></i> © {{ now|date:"Y" }} HealthCare Portal.
-            </p>
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-success">
+            {% if form.instance.pk %}Actualizar Cita{% else %}Crear Cita{% endif %}
+          </button>
         </div>
-    </footer>
+      </form>
+>>>>>>> ce2e80c19d20542001d515035121d76d3caf88bf
 
-    <!-- ========================== -->
-    <!-- 🧠 SCRIPTS Y EFECTOS -->
-    <!-- ========================== -->
+      <div class="text-center mt-3">
+        <a href="{% url 'paciente_cita_list' %}" class="btn btn-secondary btn-sm">
+          <i class="bi bi-arrow-left"></i> Volver a Mis Citas
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
-    <!-- Bootstrap JS (funcionalidad interactiva de la interfaz) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Validación en tiempo real: sin popups del navegador -->
+<script>
+  // Ajusta IDs si difieren; por defecto Django usa id_<name>
+  const fields = ['id_medico','id_fecha_hora','id_motivo'];
 
-    <!-- Librería AOS (animaciones al hacer scroll) -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  function showError(input, msg) {
+    input.classList.add('is-invalid');
+    const fb = input.parentElement.querySelector('.invalid-feedback');
+    if (fb) { fb.textContent = msg || fb.textContent; fb.style.display = 'block'; }
+  }
+  function clearError(input) {
+    input.classList.remove('is-invalid');
+    const fb = input.parentElement.querySelector('.invalid-feedback');
+    if (fb) { fb.style.display = 'none'; }
+  }
+  function validate(id) {
+    const el = document.getElementById(id);
+    if (!el) return true;
+    const name = el.name;
+    const val = (el.value || '').trim();
 
-    <script>
-        // Inicializa las animaciones AOS con duración y retardo configurados
-        AOS.init({
-            duration: 900,  // Duración en milisegundos
-            once: true,     // Solo se ejecuta una vez
-            delay: 50       // Pequeño retardo antes de iniciar
-        });
-        
-        // 💧 (Opcional) Preparación del efecto ripple para el botón principal
-        document.querySelectorAll('.btn-principal').forEach(button => {
-            button.addEventListener('click', function(e) {
-                // El CSS controla la animación, aquí solo se podría
-                // agregar lógica visual adicional si se desea.
-            });
-        });
-    </script>
+    if (name === 'medico') {
+      if (!val) { showError(el, 'Debes seleccionar un médico.'); return false; }
+    }
+    if (name === 'fecha_hora') {
+      if (!val) { showError(el, 'Debes seleccionar la fecha y hora de la cita.'); return false; }
+      const dt = new Date(val);
+      if (isNaN(dt.getTime()) || dt < new Date()) { showError(el, 'La fecha y hora no puede ser en el pasado.'); return false; }
+    }
+    if (name === 'motivo') {
+      if (val.length < 5) { showError(el, 'El motivo debe tener al menos 5 caracteres.'); return false; }
+    }
+
+    clearError(el);
+    return true;
+  }
+
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('blur', () => validate(id));
+    el.addEventListener('input', () => validate(id));
+    el.addEventListener('change', () => validate(id));
+  });
+
+  // Evita envío si hay errores
+  const form = document.querySelector('form');
+  form.addEventListener('submit', (e) => {
+    const ok = fields.map(validate).every(Boolean);
+    if (!ok) e.preventDefault();
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

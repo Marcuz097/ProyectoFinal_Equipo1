@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os  # 👈 agrega esto al inicio
+import re
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -130,21 +133,24 @@ DATABASES = {
         },
     }
 }
+
+# 🔹 Validador personalizado para contraseñas
+class LettersOnlyValidator:
+    def validate(self, password, user=None):
+        if not re.search(r'[A-Z]', password) or not re.search(r'[a-z]', password):
+            raise ValidationError(
+                _("La contraseña debe contener al menos una letra mayúscula y una minúscula."),
+                code='password_no_letters'
+            )
+
+    def get_help_text(self):
+        return _("Su contraseña debe contener al menos una letra mayúscula y una minúscula.")
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'SistemaCitas.settings.LettersOnlyValidator',  # Solo mayúsculas y minúsculas
     },
 ]
 

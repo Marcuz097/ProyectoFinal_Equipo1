@@ -35,10 +35,15 @@ jenniruiz0820
 ------------------------------------------------------------------------------------------------------------------
 
 PRIMEROS AVANCES DEL PROYECTO 
+
 Fecha: 15 / 10 /  2025
+
 Creacion del proyecto 
+
 Creacion de core 
+
 Migraciones a la base de datos y conexion a ella 
+
 Creacion de tablas en el models 
 
 -------------------------------------------------------------------------------------------------------------------

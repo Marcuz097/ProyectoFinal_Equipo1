@@ -336,3 +336,24 @@ def registrar_medico(request):
         form = MedicoRegistroForm()
 
     return render(request, 'admin/registrar_medico.html', {'form': form})
+
+# 🔹 LISTA DE PACIENTES EN VISTA DE MEDICOS 
+@medico_required
+def pacientes_medico(request):
+    medico = request.user.medico  # médico logueado
+
+    # Obtener todos los IDs de usuario de pacientes con citas con este médico
+    pacientes_ids = (
+        Cita.objects.filter(medico=medico)
+        .values_list('paciente__usuario_id', flat=True)
+        .distinct()
+    )
+
+    # Buscar los pacientes basados en su usuario_id
+    pacientes = Paciente.objects.filter(usuario_id__in=pacientes_ids)
+
+    return render(request, 'medico/pacientes_medico.html', {
+        'medico': medico,
+        'pacientes': pacientes,
+         "now": timezone.localtime(timezone.now()),   # <--- IMPORTANTE
+    })

@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es" class="h-100">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,7 +53,13 @@
                                 <i class="bi bi-calendar-check me-1"></i> Mis Citas
                             </a>
                         </li>
-                        <!-- Enlace al perfil -->
+                        <!-- Enlace al listado de médicos -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'medicos_paciente' %}">
+                                <i class="bi bi-person-circle me-1"></i> Medicos Disponibles
+                            </a>
+                        </li>    
+                     <!-- Enlace al perfil -->
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'paciente_perfil' %}">
                                 <i class="bi bi-person-circle me-1"></i> Mi Perfil

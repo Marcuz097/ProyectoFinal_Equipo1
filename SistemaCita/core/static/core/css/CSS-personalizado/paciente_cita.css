@@ -158,9 +158,10 @@ body {
 
 .h1-elegant-clean {
     font-weight: 900;
-    color: var(--color-primary-navy); 
-    font-size: 3.5rem;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    color: var(--color-marine-deep);
+    font-size: 3.2rem; 
+    letter-spacing: -1.5px;
+    margin-bottom: 0;
 }
 
 .h1-elegant-clean i {

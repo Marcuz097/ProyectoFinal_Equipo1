@@ -46,8 +46,8 @@ class PacienteForm(forms.ModelForm):  # Formulario basado en el modelo Paciente
             'usuario': {'required': 'Debes indicar el paciente.'},
         }
 
-    def __init__(self, *args, **kwargs):  # Inicializador del formulario
-        super().__init__(*args, **kwargs)
+    def _init_(self, *args, **kwargs):  # Inicializador del formulario
+        super()._init_(*args, **kwargs)
         # Muestra solo usuarios con rol paciente en el campo usuario
         self.fields['usuario'].queryset = User.objects.filter(rol='paciente')
         # Personaliza cómo se muestran los nombres en el select
@@ -100,8 +100,8 @@ class MedicoForm(forms.ModelForm):  # Formulario para registrar o editar médico
             'usuario': {'required': 'Debes indicar el médico.'},
         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def _init_(self, *args, **kwargs):
+        super()._init_(*args, **kwargs)
         self.fields['usuario'].queryset = User.objects.filter(rol='medico')  # Muestra solo usuarios médicos
         self.fields['usuario'].label_from_instance = lambda obj: f"{obj.username} ({obj.first_name} {obj.last_name})"
 
@@ -127,15 +127,17 @@ class MedicoForm(forms.ModelForm):  # Formulario para registrar o editar médico
 # ==============================
 # FORMULARIO PARA CITA
 # ==============================
-class CitaForm(forms.ModelForm):  # Formulario para crear o modificar citas
+class CitaForm(forms.ModelForm):
     class Meta:
         model = Cita
-        required = True
         fields = ['fecha_hora', 'motivo', 'estado', 'paciente', 'medico']
         widgets = {
-            'fecha_hora': forms.DateTimeInput(format='%Y-%m-%dT%H:%M', attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'fecha_hora': forms.DateTimeInput(
+                format='%Y-%m-%dT%H:%M',
+                attrs={'type': 'datetime-local', 'class': 'form-control'}
+            ),
             'motivo': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Describa brevemente el motivo de la cita'}),
-            'estado': forms.Select(choices=[('Pendiente', 'Pendiente'), ('Confirmada', 'Confirmada'), ('Cancelada', 'Cancelada'), ('Completada', 'Completada')], attrs={'class': 'form-select'}),
+            'estado': forms.Select(attrs={'class': 'form-select'}),
             'paciente': forms.Select(attrs={'class': 'form-select'}),
             'medico': forms.Select(attrs={'class': 'form-select'}),
         }
@@ -148,7 +150,16 @@ class CitaForm(forms.ModelForm):  # Formulario para crear o modificar citas
         }
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs) 
+        super().__init__(*args, **kwargs)
+        self.fields['estado'].choices = [
+            ('', '-- Seleccionar --'),
+            ('pendiente', 'Pendiente'),
+            ('confirmada', 'Confirmada'),
+            ('cancelada', 'Cancelada'),
+            ('atendida', 'Atendida'),
+        ]
+        self.initial.pop('estado', None)
+
 
         # <-- ESTA ES LA PARTE QUE SOLUCIONA QUE SE MUESTRE LA FECHA AL EDITAR -->
        # ✅ Mostrar correctamente la fecha al editar

@@ -16,3 +16,4 @@ class CoreConfig(AppConfig):
         from .utils import crear_admin
         # 🔹 Crea automáticamente un usuario admin si no existe
         crear_admin()
+        

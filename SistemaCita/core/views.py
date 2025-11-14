@@ -336,3 +336,22 @@ def registrar_medico(request):
         form = MedicoRegistroForm()
 
     return render(request, 'admin/registrar_medico.html', {'form': form})
+
+# ==========================================================
+# 🔹 LISTADO DE MÉDICOS PARA PACIENTES
+# ==========================================================
+@login_required
+@paciente_required
+def medicos_paciente(request):
+    """
+    Vista para que los pacientes puedan ver el listado de médicos.
+    """
+    # Obtenemos todos los médicos del sistema
+    medicos = Medico.objects.select_related('usuario').prefetch_related('especialidades').all()
+
+    context = {
+        'medicos': medicos,
+        'now': timezone.now(),
+    }
+
+    return render(request, 'paciente/medicos_paciente.html', context)

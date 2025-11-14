@@ -27,11 +27,14 @@ urlpatterns = [
     path('paciente/citas/<int:pk>/editar/', views.PacienteCitaUpdateView.as_view(), name='paciente_cita_edit'),
     path('paciente/citas/<int:pk>/eliminar/', views.PacienteCitaDeleteView.as_view(), name='paciente_cita_delete'),
     
-    # NUEVA URL DE PERFIL DEL PACIENTE
-    path('paciente/perfil/', views.paciente_perfil, name='paciente_perfil'),
-    
     # Completar perfil paciente
     path('completar-perfil/paciente/', views.completar_perfil_paciente, name='completar_perfil_paciente'),
+    
+     # NUEVA URL DE PERFIL DEL PACIENTE
+    path('paciente/perfil/', views.paciente_perfil, name='paciente_perfil'),
+    
+     # NUEVA URL DE LISTADO DE MEDICOS
+    path('medicos/', views.medicos_paciente, name='medicos_paciente'),
     
     # Médico URLs
     path('medico/agenda/', views.agenda_medico, name='medico_agenda'),

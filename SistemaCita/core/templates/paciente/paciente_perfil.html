@@ -55,9 +55,9 @@
         <nav class="navbar navbar-expand-lg sticky-top py-3" data-bs-theme="dark">
             <!-- Comentario: Barra de navegación fija con tema oscuro. -->
             <div class="container">
-                <!-- Marca / logo que enlaza al inicio del sitio -->
-                <a class="navbar-brand text-white fw-bold fs-4" href="{% url 'home' %}">
-                    <i class="bi bi-heart-pulse-fill me-2"></i> HealthCare System
+                   <!-- Nombre del sistema -->
+                <a class="navbar-brand text-white fw-bold fs-4" href="#">
+                    <i class="bi bi-person-heart me-2"></i> HealthCare Portal
                 </a>
                 <!-- Comentario: Logo o título del sistema que redirige al inicio. -->
 
@@ -78,6 +78,12 @@
                                 <i class="bi bi-calendar-check-fill me-1"></i> Mis Citas
                             </a>
                         </li>
+                        <!-- Enlace al listado de médicos -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'medicos_paciente' %}">
+                                <i class="bi bi-person-circle me-1"></i> Medicos Disponibles
+                            </a>
+                        </li> 
                         <li class="nav-item">
                             <!-- Enlace al perfil del paciente (página actual). -->
                             <a class="nav-link" href="{% url 'paciente_perfil' %}">
@@ -85,14 +91,13 @@
                             </a>
                         </li>
                     </ul>
-
-                    <!-- Sección derecha del navbar: nombre del paciente y botón de cerrar sesión -->
-                    <div class="d-flex align-items-center gap-2 ms-lg-auto">
-                        <!-- Comentario: Sección derecha del navbar: usuario y botón de cierre. -->
-                        <span class="navbar-text text-white fw-semibold">
-                            <i class="bi bi-person-circle"></i> {{ paciente.usuario.get_full_name|default:"Paciente" }}
+                    
+                     <!-- Información del usuario y botón de cerrar sesión -->
+                    <div class="d-flex align-items-center ms-auto gap-3">
+                        <span class="navbar-text text-white fw-semibold me-3 d-none d-lg-inline">
+                            <i class="bi bi-person-circle me-1"></i> Bienvenido/a, {{ request.user.username }}
                         </span>
-                        
+
                         <form method="post" action="{% url 'logout' %}">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-logout-innovative btn-sm shadow-sm">
@@ -119,9 +124,9 @@
                         <i class="bi bi-person-circle me-3 text-accent-green"></i> Mi Perfil
                     </h1>
                     
-                    <p class="header-date-elegant text-muted mt-2 mt-md-0">
-                        <!-- Comentario: Muestra la fecha actual con formato legible. -->
-                        Hoy: {{ now|date:"l"|capfirst }}, {{ now|date:"d" }} de {{ now|date:"F"|capfirst }} de {{ now|date:"Y, H:i" }}
+                      <!-- FECHA -->
+                    <p class="header-date-elegant date-box-system text-muted mt-2 mt-md-0">
+                    Hoy: {{ now|date:"l"|capfirst }}, {{ now|date:"d" }} de {{ now|date:"F"|capfirst }} de {{ now|date:"Y, H:i" }}
                     </p>
                 </div>
             </div>

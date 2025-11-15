@@ -1,0 +1,41 @@
+# ----------------------------------------------------
+# 1. ARCHIVOS Y CARPETAS DE PYTHON Y AMBIENTE VIRTUAL
+# ----------------------------------------------------
+# Archivos de caché y compilados (no son código fuente)
+*.pyc
+*~
+__pycache__
+*.pid
+*.egg-info/
+
+# Entorno Virtual (venv) - ¡CRÍTICO NO SUBIR ESTO!
+/venv
+/env
+.venv
+
+# Base de datos local (SQLite)
+db.sqlite3
+
+# Archivos de logs
+*.log
+
+# ----------------------------------------------------
+# 2. ARCHIVOS GENERADOS POR DJANGO Y ESTÁTICOS
+# ----------------------------------------------------
+# Archivos de configuración sensibles (credenciales, etc.)
+# Si tienes un archivo settings.py local que sobreescribe claves, ¡ignóralo!
+# Por ejemplo:
+# /SistemaCita/settings_local.py 
+
+# Archivos estáticos y de media recolectados/subidos
+/static_root/
+/media/
+
+# Archivos de migración compilados
+*/migrations/*.pyc
+
+# ----------------------------------------------------
+# 3. ARCHIVOS GENERADOS POR EL EDITOR (VS CODE)
+# ----------------------------------------------------
+.vscode/
+.DS_Store

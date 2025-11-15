@@ -1,31 +1,105 @@
-/* * Asumiendo que las variables de color están definidas en base.css, 
- * las definimos aquí como fallback si no se cargan o para claridad:
- */
+/* ============================================================
+   ROOT — VARIABLES GLOBALES
+   ============================================================ */
 :root {
-    --color-marine-deep: #021c3f; /* Azul Marino Oscuro */
-    --color-marine-base: #0a1f44;  /* Azul Marino Base */
-    --color-accent-green: #00a878; /* Verde Neón Acento */
-    --color-bg-white: #ffffff;
-    --border-radius-xxl: 1.5rem; /* 24px */
+    /* Variables de base tomadas de agenda_medico.css */
+    --color-marine-deep: #021C3F;
+    /* Azul Marino Oscuro */
+    --color-marine-base: #133757;
+    /* Azul marino base */
+    --color-accent-green: #00A878;
+    /* VERDE ESMERALDA (Acento principal) */
+    --color-bg-white: #FFFFFF;
+    --color-border-subtle: #D9E2ED;
+    /* Borde sutil para input */
+    --transition-speed: 0.35s;
+    --border-radius-xl: 16px;
 }
 
+/* ---------------------- Animaciones (Globales) ---------------------- */
 
-/* ===========================================
-    FONDO SUAVE DETRÁS DEL CONTENIDO
-    =========================================== */
+@keyframes drawLine {
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideGradient {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+
+    to {
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 0 0 var(--color-accent-green);
+    }
+
+    50% {
+        box-shadow: 0 0 0 5px rgba(0, 168, 120, 0.15);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 var(--color-accent-green);
+    }
+}
+
+@keyframes rotateOnce {
+    0% {
+        transform: rotateY(0deg);
+    }
+
+    100% {
+        transform: rotateY(180deg);
+    }
+}
+
+/* ============================================================
+   FONDO SUAVE
+   ============================================================ */
 .bg-overlay-custom {
-    /* Manteniendo un fondo claro y profesional */
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
     position: fixed;
     inset: 0;
     z-index: -1;
 }
 
-/* ===========================================
-    ANIMACIÓN GENERAL DEL CONTENIDO
-    =========================================== */
+/* ============================================================
+   ANIMACIÓN DE ENTRADA
+   ============================================================ */
 .main-content-fade-in {
-    animation: fadeSlide 0.7s ease-out;
+    animation: fadeInSlide 1.2s ease-out forwards;
+    opacity: 0;
 }
 
 @keyframes fadeSlide {
@@ -33,17 +107,18 @@
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-/* ===========================================
-    TÍTULO PRINCIPAL (MIS PACIENTES)
-    =========================================== */
+/* ============================================================
+   TÍTULO PRINCIPAL
+   ============================================================ */
 .h1-elegant-clean {
-    font-size: clamp(2rem, 5vw, 2.6rem); /* Responsive font size */
+    font-size: clamp(2rem, 5vw, 2.6rem);
     font-weight: 900;
     color: var(--color-marine-deep);
     display: flex;
@@ -51,51 +126,84 @@
     gap: 12px;
 }
 
-/* ICONO CON BRILLO SUAVE */
 .h1-elegant-clean i {
     font-size: clamp(2.5rem, 6vw, 3rem);
     color: var(--color-accent-green);
-
-    /* 🔥 BRILLO SUAVIZADO */
-    filter: drop-shadow(0 0 3px rgba(0, 168, 120, 0.5))
-            drop-shadow(0 0 8px rgba(0, 168, 120, 0.3));
+    filter: drop-shadow(0 0 3px rgba(0, 168, 120, 0.5)) drop-shadow(0 0 8px rgba(0, 168, 120, 0.3));
     transition: filter 0.3s ease;
 }
 
-/* ===========================================
-    FECHA/HORA ESTILO AGENDA
-    =========================================== */
+/* ============================================================
+   FECHA/HORA HEADER (PÍLDORA)
+   ============================================================ */
 .header-date-elegant {
-    font-size: 0.9rem !important; /* Ligeramente más pequeño */
+    font-size: 0.9rem !important;
     font-weight: 600 !important;
     color: var(--color-marine-base) !important;
     padding: 0.5rem 1.2rem;
-    background-color: #f0f4f7;
-    border: 1px solid rgba(10, 31, 68, 0.1); /* Borde más sutil */
+    background: #f0f4f7;
     border-radius: 25px;
+
+    /* Contorno Azul Marino de 2px por defecto */
+    border: 2px solid var(--color-marine-base);
+
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s ease;
+
+    /* Necesario para el efecto de brillo diagonal */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto de Brillo Diagonal (Shine Effect) en la Píldora */
+.header-date-elegant::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    /* Posición inicial */
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.6) 50%,
+            /* El brillo blanco */
+            rgba(255, 255, 255, 0) 100%);
+    transform: skewX(-25deg);
+    transition: all 0.8s ease;
+    pointer-events: none;
+    z-index: 10;
 }
 
 .header-date-elegant:hover {
-    transform: translateY(-3px); /* Menos movimiento */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    /* Aumentar tamaño, texto verde, y quitar glow neón */
+    transform: translateY(-5px) scale(1.05);
+    /* Ligeramente más grande */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+    /* Sombra oscura más pronunciada, sin glow verde */
+
+    border: 2px solid var(--color-marine-base);
+    /* Mantenemos el borde azul marino */
     color: var(--color-accent-green) !important;
-    background-color: #e5eef3;
+    /* ¡Texto Verde Neón! */
+    background: #f0f4f7;
+    /* Mantenemos el fondo */
 }
 
-/* ===========================================
-    LÍNEA DIVISORA ANIMADA ESTILO AGENDA
-    =========================================== */
+/* Activación de la pasada diagonal al hacer HOVER */
+.header-date-elegant:hover::after {
+    left: 140%;
+    /* La diagonal se mueve de izquierda a derecha */
+}
+
+/* ============================================================
+   LÍNEA DIVISORA
+   ============================================================ */
 .section-divider {
-    height: 3px; /* Más sutil */
+    height: 3px;
     width: 100%;
-    margin-top: 10px;
-    background: linear-gradient(
-        90deg,
-        var(--color-marine-base) 0%,
-        var(--color-accent-green) 100%
-    );
+    margin-top: 12px;
+    background: linear-gradient(90deg, var(--color-marine-base), var(--color-accent-green));
     border-radius: 20px;
     animation: slideGradient 1.6s ease-out forwards;
 }
@@ -105,83 +213,174 @@
         width: 0;
         opacity: 0;
     }
+
     to {
         width: 100%;
         opacity: 1;
     }
 }
 
+/* ============================================================
+   FILTRO DE BÚSQUEDA 🔎
+   ============================================================ */
+.filter-container {
+    animation: fadeInUp 0.7s ease-out forwards;
+    animation-delay: 0.2s;
+    opacity: 0;
+    margin-top: 1.5rem !important;
+    margin-bottom: 3rem !important;
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input-wrapper i.bi-search {
+    position: absolute;
+    left: 20px;
+    font-size: 1.4rem;
+    color: var(--color-marine-deep);
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+#filtro {
+    border: none;
+    border-radius: 50px;
+    padding: 0.9rem 1.5rem;
+    padding-left: 55px !important;
+    font-size: 1.1rem;
+    color: var(--color-marine-deep);
+    font-weight: 500;
+    width: 100%;
+    background-color: var(--color-bg-white);
+    box-shadow: inset 2px 2px 5px var(--color-border-subtle),
+        -2px -2px 5px var(--color-bg-white),
+        0 6px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+}
+
+#filtro:focus {
+    /* Efecto de foco: pulso verde */
+    box-shadow: 0 0 0 0.5px var(--color-accent-green),
+        0 0 0 4px rgba(0, 168, 120, 0.2),
+        0 6px 20px rgba(0, 0, 0, 0.15);
+    outline: none;
+    animation: pulse-glow 2s infinite;
+}
+
+/* Animación y color del ícono al enfocar */
+.search-input-wrapper:focus-within i.bi-search {
+    color: var(--color-accent-green) !important;
+    animation: rotateOnce 0.4s ease forwards;
+}
 
 /* ============================================================
-   TARJETA GENERAL CON BRILLO VERDE DETRÁS (estilo EXACTO)
-   ============================================================ */
+   TARJETA CON GLOW Y ANIMACIÓN EN HOVER
+   ============================================================ */
 .patient-card-hover {
     position: relative;
     background: #ffffff;
     border-radius: 18px;
-    padding: 0;
     overflow: hidden;
-
-    /* sombra suave */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
-    transition: all 0.25s ease;
+    padding: 0;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    transition: all 0.4s ease;
+    /* Aumentado para la animación de subida */
 }
 
-/* === BRILLO VERDE RECTANGULAR REAL === */
+/* Glow verde detrás */
 .patient-card-hover::before {
     content: "";
     position: absolute;
     inset: -20px;
     border-radius: 22px;
-
-    /* AQUÍ EL VERDE PURO Y CLARO */
     background: rgba(0, 255, 140, 0.55);
-
-    /* Difuminado grande alrededor */
     filter: blur(45px);
-
-    opacity: 10;
+    opacity: 0;
     z-index: -1;
-
     transition: all 0.3s ease;
 }
 
-
-
-
 .patient-card-hover:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 0 28px 6px rgba(0, 150, 80, 0.35);
+    /* Animación de subida de la tarjeta */
+    transform: translateY(-10px) scale(1.02);
+    box-shadow:
+        0 20px 50px rgba(2, 28, 63, 0.3),
+        /* Sombra marina */
+        0 0 35px 2px rgba(0, 168, 120, 0.8);
+    /* Brillo verde fuerte */
 }
 
-
-
+.patient-card-hover:hover::before {
+    opacity: 1;
+}
 
 /* ============================================================
-   ENCABEZADO (igual al de la imagen)
-   ============================================================ */
+   HEADER DE LA TARJETA (Fondo degradado y contenedor del Shine)
+   ============================================================ */
 .patient-card-header {
-    background: #0d2b50; /* azul exacto */
+    /* Fondo degradado adaptado del .medico-widget-header */
+    background: linear-gradient(135deg, var(--color-marine-deep) 0%, var(--color-marine-base) 100%);
     padding: 18px 22px;
     display: flex;
     align-items: center;
     gap: 14px;
+    position: relative;
+    overflow: hidden;
 }
 
-/* ICONO CIRCULAR DEL HEADER */
+/* ============================================================
+   DIAGONAL ANIMADA (SHINE EFFECT) ✨
+   - Activado por el hover de la tarjeta
+   ============================================================ */
+.patient-card-header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    /* Posición inicial fuera de la vista */
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.4) 50%,
+            /* Brillo blanco */
+            rgba(255, 255, 255, 0) 100%);
+    transform: skewX(-25deg);
+    /* Inclinación diagonal */
+    transition: all 0.8s ease;
+    /* Transición para el efecto de "pasada" */
+    pointer-events: none;
+}
+
+/* Activación de la pasada diagonal al hacer HOVER en la TARJETA COMPLETA */
+.patient-card-hover:hover .patient-card-header::after {
+    left: 140%;
+    /* La diagonal se mueve de izquierda a derecha */
+}
+
+/* ============================================================
+   ICONO HEADER (Con animación al hacer hover en la tarjeta)
+   ============================================================ */
 .patient-card-icon {
     width: 48px;
     height: 48px;
-    background: #1db45a; /* verde exacto */
+    background: var(--color-accent-green);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.3s ease;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+    /* Efecto 3D ligero */
 }
 
-.patient-card-icon i {
-    font-size: 1.7rem;
-    color: white;
+/* Animación del ícono al hacer hover en la tarjeta */
+.patient-card-hover:hover .patient-card-icon {
+    transform: scale(1.1) rotate(3deg);
 }
 
 .patient-card-header h5 {
@@ -191,28 +390,26 @@
 }
 
 /* ============================================================
-   CUERPO DE INFORMACIÓN (ESTILO DE LA FOTO)
-   ============================================================ */
+   CUERPO DE INFORMACIÓN DEL PACIENTE
+   ============================================================ */
 .patient-card-body {
     padding: 20px 24px;
     background: #ffffff;
 }
 
-/* BLOQUE DE INFORMACIÓN — estilo EXACTO */
 .patient-info-group {
     background: #f7f7f7;
     border-radius: 10px;
-    padding: 14px 14px;
+    padding: 14px;
     margin-bottom: 12px;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    border-left: 4px solid #1db45a; /* barra verde a la izquierda */
+    border-left: 4px solid #1db45a;
 }
 
-/* Etiqueta del campo (especialidades, teléfono…) */
 .patient-info-label {
     font-size: .88rem;
     font-weight: 700;
@@ -222,7 +419,10 @@
     gap: 8px;
 }
 
-/* Valor a la derecha */
+.patient-info-label i {
+    color: #1db45a;
+}
+
 .patient-info-value {
     font-size: .88rem;
     font-weight: 700;
@@ -230,68 +430,74 @@
     text-align: right;
 }
 
-/* iconos verdes */
-.patient-info-label i {
-    color: #1db45a;
-}
-
-/* Quitar estilos bootstrap */
+/* Quitar estilos Bootstrap internos */
 .patient-card-hover .card {
     background: transparent !important;
     box-shadow: none !important;
 }
 
-
-/* ===========================================
-    ALERTA DE "NO HAY PACIENTES"
-    =========================================== */
+/* ============================================================
+   ALERTA "NO HAY PACIENTES"
+   ============================================================ */
 .alert-custom {
     border-left: 5px solid var(--color-accent-green);
-    background: rgba(0, 168, 120, 0.08); /* Fondo con el color de acento */
+    background: rgba(0, 168, 120, 0.08);
     color: #0a3d2c;
     border-radius: 10px !important;
 }
 
-/* ===========================================
-    BOTÓN DE LOGOUT
-    =========================================== */
+/* ============================================================
+   BOTÓN LOGOUT 🔄 ESTILO FINAL DEL VIDEO (Salto Horizontal)
+   ============================================================ */
 .btn-logout-innovative {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
-}
-.btn-logout-innovative:hover {
-    background: #00e09d; /* Verde acento */
-    color: var(--color-marine-deep);
-    border-color: #00e09d;
+    background-color: transparent;
+    border: 2px solid var(--color-accent-green);
+    color: var(--color-accent-green) !important;
+    font-weight: 700;
+    border-radius: 50px;
+    transition: all 0.4s;
+    box-shadow: 0 0 8px rgba(0,168,120,0.5);
 }
 
-/* ===========================================
-    FOOTER
-    =========================================== */
+.btn-logout-innovative:hover {
+    background-color: var(--color-accent-green) !important;
+    color: white !important;
+    transform: scale(1.1) rotate(2deg);
+    box-shadow: 0 8px 20px rgba(0,168,120,0.8);
+    animation: bounceEffect 0.6s ease-in-out infinite alternate;
+}
+/* ============================================================
+   FOOTER
+   ============================================================ */
 .footer {
     background: #041833;
     padding: 20px 0;
     color: white;
 }
 
-/* ===========================================
-    RESPONSIVE
-    =========================================== */
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
 @media (max-width: 768px) {
     .h1-elegant-clean {
         font-size: 2rem;
         flex-direction: column;
         align-items: flex-start;
     }
+
     .h1-elegant-clean i {
         font-size: 2.5rem;
-        margin-bottom: 5px;
     }
 
     .header-date-elegant {
-        margin-top: 1rem !important;
-        font-size: 0.85rem !important;
+        margin-top: 1rem;
+        font-size: 0.85rem;
     }
+}
+/* Animación lateral tipo "shake suave" */
+@keyframes sideMove {
+    0% { transform: translateX(0); }
+    30% { transform: translateX(-3px); }
+    60% { transform: translateX(3px); }
+    100% { transform: translateX(0); }
 }

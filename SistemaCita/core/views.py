@@ -337,7 +337,7 @@ def registrar_medico(request):
 
     return render(request, 'admin/registrar_medico.html', {'form': form})
 
-<<<<<<< HEAD
+
 # ==========================================================
 # 🔹 LISTADO DE MÉDICOS PARA PACIENTES
 # ==========================================================
@@ -356,7 +356,7 @@ def medicos_paciente(request):
     }
 
     return render(request, 'paciente/medicos_paciente.html', context)
-=======
+
 # 🔹 LISTA DE PACIENTES EN VISTA DE MEDICOS 
 @medico_required
 def pacientes_medico(request):
@@ -377,4 +377,4 @@ def pacientes_medico(request):
         'pacientes': pacientes,
          "now": timezone.localtime(timezone.now()),   # <--- IMPORTANTE
     })
->>>>>>> ce2e80c19d20542001d515035121d76d3caf88bf
+
